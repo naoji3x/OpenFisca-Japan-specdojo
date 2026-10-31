@@ -28,6 +28,7 @@ specdojo:
 - `make docs` で `docs/_data` を作り直し、YAML の修正と同じ commit に入れている。CI の `make check-docs` が生成物との差を検出するため。
 - `make test` と `make check-docs` が通る。
 - パラメータの一覧のページで、3.1.2 の金額が「28,840 円」のように「円」付きで表示される。
+- `feature/openfisca-hot-reload` の `make serve-dev` を起動したまま 3.1 の修正を当てると、サーバーが自動で再起動し、API の `metadata.unit` が修正後の値に変わる。確かめた結果は「4. 対応結果」に記録する。
 
 ## 3. 作業内容
 
@@ -36,7 +37,8 @@ specdojo:
 | 1   | `../OpenFisca-Japan` で `develop` から作業ブランチを切る | BA   | open | ブランチ名の例: `fix/parameter-units`                |
 | 2   | 3.1 の 34 ファイルを直す                                 | BA   | open | -                                                    |
 | 3   | `make docs` / `make test` / `make check-docs` を流す     | BA   | open | -                                                    |
-| 4   | 作業ブランチを commit し、PR を出す                      | BA   | open | commit メッセージに `Refs: prj-0001:PJR-KS3C` を書く |
+| 4   | 3.2 の手順で hot-reload を確かめる                       | BA   | open | -                                                    |
+| 5   | 作業ブランチを commit し、PR を出す                      | BA   | open | commit メッセージに `Refs: prj-0001:PJR-KS3C` を書く |
 
 ### 3.1. 直す箇所
 
@@ -128,6 +130,56 @@ metadata:
 | --- | ----------------------------------------------------------------- |
 | 1   | `openfisca_japan/parameters/福祉/育児/児童扶養手当/上限学年.yaml` |
 | 2   | `openfisca_japan/parameters/福祉/育児/児童育成手当/上限学年.yaml` |
+
+### 3.2. hot-reload での確かめ方
+
+`feature/openfisca-hot-reload` の `make serve-dev` は、watchmedo で `openfisca_japan` の下の `.py`・`.yaml`・`.csv` を見張り、変更があるとサーバーを再起動する。OpenFisca の API の `GET /parameter/<パス>` は `metadata` をそのまま返すため、`unit` の修正がサーバーを止めずに反映されたかを応答で確かめられる。`<作業ブランチ>` は、3 の No 1 で切ったブランチ（例: `fix/parameter-units`）に読み替える。
+
+1. 衝突がないことを確かめる。次のコマンドで衝突が出ないこと。
+
+   ```bash
+   git merge-tree --write-tree feature/openfisca-hot-reload <作業ブランチ>
+   ```
+
+2. 準備する。`feature/openfisca-hot-reload` に切り替え、作業ツリーに変更がないことを確かめる。リポジトリの外で import 先を確かめ、ワークスペースの `openfisca_japan/__init__.py` が表示されること。違う場所が表示された場合は、`docs/devcontainer_note.md` の「バックエンドのホットリロード（editable install）」の手順で戻す。`watchmedo` がなければ `sudo make install` を流す。
+
+   ```bash
+   git switch feature/openfisca-hot-reload
+   git status --short
+   (cd /tmp && python -c "import openfisca_japan; print(openfisca_japan.__file__)")
+   watchmedo --help > /dev/null || sudo make install
+   ```
+
+3. ターミナル 1 でサーバーを起動する。
+
+   ```bash
+   make serve-dev
+   ```
+
+4. ターミナル 2 で、直す前の値を記録する。健康保険料率は `unit` が `currency-JPY`、特別障害者手当の支給額と傷病手当金の日数は `threshold_unit` があり `unit` がないこと。
+
+   ```bash
+   show() { curl -s "http://localhost:50000/parameter/$1" | python3 -c "import json,sys; print(json.load(sys.stdin)['metadata'])"; }
+   show 社会保険料/健康保険料率
+   show 福祉/特別障害者手当/支給額
+   show 福祉/傷病手当金/日数_会社員
+   ```
+
+5. 修正だけを取り込む。ターミナル 1 で、数秒のうちにサーバーが再起動すること。
+
+   ```bash
+   git checkout <作業ブランチ> -- openfisca_japan/parameters
+   ```
+
+6. 4 と同じ 3 つを取得し、`unit` がそれぞれ `/1`・`currency-JPY`・`day` に変わり、`threshold_unit` と `rate_unit` がないこと。
+7. 元に戻す。ターミナル 1 で `Ctrl+C` を押してサーバーを止め、hot-reload のブランチを元の状態に戻す。`git status --short` で変更がないこと。
+
+   ```bash
+   git restore --source=HEAD --staged --worktree openfisca_japan/parameters
+   git status --short
+   ```
+
+「4. 対応結果」には、再起動にかかった秒数、4 と 6 の `unit` の値、1 の衝突の有無を記録する。
 
 ## 4. 対応結果
 
