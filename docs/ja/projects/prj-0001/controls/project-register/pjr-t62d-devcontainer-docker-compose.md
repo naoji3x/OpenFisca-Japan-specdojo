@@ -25,10 +25,12 @@ specdojo:
 
 - 変更は、このリポジトリの `.devcontainer/` の下に限る。
 - `.devcontainer/devcontainer.json` に、devcontainer の feature `ghcr.io/devcontainers/features/docker-outside-of-docker:1` を足す。ベースのイメージが Debian 13（trixie）で Moby のパッケージがないため、`moby: false` を指定する。`.devcontainer/devcontainer-lock.json` にも、この feature の版と digest を足す。
-- `remoteEnv` に `LOCAL_WORKSPACE_FOLDER` を足し、ホストの `../OpenFisca-Japan` のパス（`${localWorkspaceFolder}/../OpenFisca-Japan`）を渡す。`docker-compose.yml` の bind mount は、ホストの Docker デーモンがホストのパスで解決するためである。
+- `containerEnv` に `LOCAL_WORKSPACE_FOLDER` を足し、ホストの `../OpenFisca-Japan` のパス（`${localWorkspaceFolder}/../OpenFisca-Japan`）を渡す。`docker-compose.yml` の bind mount は、ホストの Docker デーモンがホストのパスで解決するためである。`remoteEnv` は `docker exec` で入る tmux に届かないため使わない（2026-10-31 に `remoteEnv` で入れ、tmux で mounts denied になったため移した）。
+- `customizations.vscode.settings` に `"dev.containers.dockerCredentialHelper": false` を足し、VS Code の Docker の認証ヘルパーを止める。ヘルパーは tmux の中で `error getting credentials` になり、ホストの Docker の認証情報を agent に渡すためである（2026-10-31 に足した）。
 - devcontainer の作り直しのあと、ホストで次を確かめる。コンテナの中からは作り直しを確かめられないため、確認は利用者が行い、結果を「4. 対応結果」に記録するまで close しない。
   - `node` ユーザーで `docker version` と `docker compose version` が通る。
-  - `../OpenFisca-Japan` で `docker compose up --build -d` が通り、`openfisca` と `dashboard` のコンテナが起動する。
+  - tmux の中で `echo $LOCAL_WORKSPACE_FOLDER` がホストのパスを表示し、`~/.docker/config.json` に `credsStore` がない。
+  - tmux の中で、`../OpenFisca-Japan` の `docker compose up --build -d` が通り、`openfisca` と `dashboard` のコンテナが起動する。
   - ホストのブラウザーで `http://localhost:30000` と `http://localhost:50000/spec` に届く。コンテナの中からは `http://host.docker.internal:50000/spec` に届く。
   - `../OpenFisca-Japan` の `dashboard/src` を編集すると、起動中のフロントエンドに反映される。
   - 作り直す前からある機能（agent の CLI、git の設定、cron）が今までどおり動く。
