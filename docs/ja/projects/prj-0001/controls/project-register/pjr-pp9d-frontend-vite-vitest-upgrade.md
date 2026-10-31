@@ -156,6 +156,17 @@ project の個票には hook に定める `node tools/specdojo-pre-commit.mjs pr
 - クリーンな `dashboard` での `npm ci` は統合後に orchestrator が確認する。依存宣言と lockfile の一致は確認済み。依存に関する保護された設定の追加変更案はない。
 - runner は sandbox 外で `node tools/specdojo-pre-commit.mjs register-build` と、その時点で設定された親検証を実行する。reporter / runner が本節と executor evidence を result に反映し、ライフサイクルの状態遷移を行う。
 
+### orchestrator の確認と保護された設定の反映（2026-10-31、specdojo-orchestrator）
+
+- 1 回目の実行は、executor の実行中に `openfisca-japan` の Git の local config が書き換えられ（13:27:14）、`agent-git-state-write` で止まった。書き換えたものは特定できなかった。再開の前後で local config を比べ、2 回目以降は変わっていないことを確かめた。
+- naoji の承認のもと、`399b726` で `.github/workflows/develop.yml` と `jekyll-gh-pages.yml` の `node-version` を 18 から `26.4.0` に上げた。この commit は、`dashboard` の外のファイルだけなので、husky の pre-commit（`dashboard` の `npm run pretty`）を通さずに作った。
+- `feature/frontend-test-upgrade`（`399b726`）を一時的な worktree に取り出し、`npm ci` から次を確かめた。
+  - `npm run test`（967 件）・`build`・`lint`・`pretty:check` が通り、`configLoader` の警告は消えた。
+  - `GITHUB_PAGES=true` の build で、アセットのパスはすべて `/OpenFisca-Japan/assets/…` で、Vite 2.9（`60ed52d`）の出力と同じだった。違いは小さなファイルを埋め込むかどうかだけで、`site.webmanifest` はファイルとして出力され、`safari-pinned-tab.svg` は data URI に埋め込まれた。HTML の GTM の ID の置き換えは 2 か所とも効いた。
+  - `npm run test:e2e` は、build のあと連続 2 回とも 5 件が通った（preview は `webServer` が起動）。
+  - 開発サーバー（`vite --port 30010`）が起動し、ブラウザーでトップを開いたまま `topPage.tsx` のボタンの文字を書き換えると、ページを読み直さずに表示が変わった（Vite のログは `hmr update`）。書き換えは元に戻した。
+- 上流の変更に登録簿の ID やリンクはない（commit メッセージの `Refs:` 行を除く）。`vite.config.ts` への参照は残っていない。
+
 ## 5. 関連ドキュメント
 
 - 方針: [[prj-0001:pjr-z7fq-frontend-test-strategy|PJR-Z7FQ フロントエンドのテストの方針を決める]]
