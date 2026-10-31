@@ -14,6 +14,9 @@
     "ghcr.io/rocker-org/devcontainer-features/apt-packages:1": {
       "packages": "gh,ripgrep,fd-find,fzf,yq,shellcheck,shfmt,tmux,cron,emacs-nox,vim-nox",
       "upgradePackages": false
+    },
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
+      "moby": false
     }
   },
   "mounts": [
@@ -33,7 +36,8 @@
     "OPENCODE_DISABLE_AUTO_UPDATE": "1"
   },
   "remoteEnv": {
-    "PATH": "/home/node/.local/bin:${containerEnv:PATH}"
+    "PATH": "/home/node/.local/bin:${containerEnv:PATH}",
+    "LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}/../OpenFisca-Japan"
   },
   "postCreateCommand": "bash .devcontainer/post-create.sh",
   "customizations": {
@@ -81,7 +85,5 @@
     }
   },
   "postAttachCommand": "sudo service cron start",
-  "runArgs": [
-    "--security-opt=seccomp=unconfined"
-  ]
+  "runArgs": ["--security-opt=seccomp=unconfined"]
 }
