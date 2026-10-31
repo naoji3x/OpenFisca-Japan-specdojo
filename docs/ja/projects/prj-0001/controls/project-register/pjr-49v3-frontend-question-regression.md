@@ -111,6 +111,13 @@ specdojo:
 - `personNum` には、正の人数の入力後、同じ「はい」のまま入力を空にすると Recoil の有効状態が直後には true のまま残り、改めて「はい」を押すと false になる既存挙動がある。今回の回帰テストでその遷移を明示した。原因は有効状態を再計算する effect の依存に `formValidated` がないこと。本タスクでは実装変更せず、別項目で入力直後に再計算する修正と期待値の更新を検討する。
 - runner は sandbox 外で `register-build` hook を確認する。result の記入と状態遷移は reporter / runner に委ねる。
 
+### orchestrator の確認（2026-10-31、specdojo-orchestrator）
+
+- `openfisca-japan` の `feature/frontend-test-upgrade`（`3636260`）を一時的な worktree に取り出し、`dashboard` で `npm ci`（4 秒）、`npm run test`（5 ファイル・940 件）、`npm run build`、`npm run lint`、`npm run pretty:check` がすべて成功することを確かめた。
+- 差分は完了条件の範囲に収まり、既存の 4 つのテストのファイルと保護された設定は変わっていない。commit メッセージに `Refs: prj-0001:PJR-49V3` がある。
+- `docs/dev_note.md` の分担の表に、上流の文書では働かない登録簿のリンク（`[[prj-0001:…]]`）が入っていたため、説明の文に置き換えた（`9933fbc`）。原因は、この個票の完了条件をリンクの形で書いたことである。
+- 申し送りの `personNum` の既存の不具合は、別の issue として起票した。
+
 ## 5. 関連ドキュメント
 
 - 方針: [[prj-0001:pjr-z7fq-frontend-test-strategy|PJR-Z7FQ フロントエンドのテストの方針を決める]]
