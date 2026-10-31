@@ -1,0 +1,329 @@
+{
+  "schema_version": 1,
+  "task_id": "PJR-DFWV",
+  "run_id": "20261031T140625097Z-e9c2a4b7",
+  "stage": {
+    "role": "executor",
+    "actor": "sol-executor",
+    "status": "succeeded",
+    "started_at": "2026-10-31T14:07:15.364Z",
+    "completed_at": "2026-10-31T14:19:06.306Z",
+    "exit_code": 0,
+    "attempts": 1
+  },
+  "changes": [
+    {
+      "path": "docs/ja/projects/prj-0001/controls/project-register/events/pjr-dfwv.yaml",
+      "status": "MM"
+    },
+    {
+      "path": "docs/ja/projects/prj-0001/controls/project-register/pjr-dfwv-frontend-storybook-component-tests.md",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/.gitignore",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/.prettierignore",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/errors/errors.test.tsx",
+      "status": "D"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/questions/template/questionTemplateTestUtils.tsx",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/questions/template/questionTemplates.test.tsx",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/result/result.test.tsx",
+      "status": "D"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/mocks/resultTestUtils.tsx",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/tsconfig.json",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/vite.config.mts",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:docs/dev_note.md",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/.storybook/main.ts",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/.storybook/preview-head.html",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/.storybook/preview.ts",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/.storybook/public/mockServiceWorker.js",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/errors/errors.stories.tsx",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/questions/template/ageQuestionTemplate.browser.test.tsx",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/questions/template/questionTemplates.stories.tsx",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/result/result.stories.tsx",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/vitest.browser.config.mts",
+      "status": "??"
+    }
+  ],
+  "attempt_changes": [
+    {
+      "path": "docs/ja/projects/prj-0001/controls/project-register/pjr-dfwv-frontend-storybook-component-tests.md",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/.gitignore",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/.prettierignore",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/errors/errors.test.tsx",
+      "status": "D"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/questions/template/questionTemplateTestUtils.tsx",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/questions/template/questionTemplates.test.tsx",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/result/result.test.tsx",
+      "status": "D"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/mocks/resultTestUtils.tsx",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/tsconfig.json",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/vite.config.mts",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:docs/dev_note.md",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/.storybook/main.ts",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/.storybook/preview-head.html",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/.storybook/preview.ts",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/.storybook/public/mockServiceWorker.js",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/errors/errors.stories.tsx",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/questions/template/ageQuestionTemplate.browser.test.tsx",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/questions/template/questionTemplates.stories.tsx",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/result/result.stories.tsx",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/vitest.browser.config.mts",
+      "status": "??"
+    }
+  ],
+  "diff_summary": {
+    "files_changed": 21,
+    "summary": ".../pjr-dfwv-frontend-storybook-component-tests.md | 104 +++++++++++++++++++--\n 1 file changed, 97 insertions(+), 7 deletions(-)\n[openfisca-japan]\ndashboard/.gitignore                               |   3 +\n dashboard/.prettierignore                          |   3 +\n dashboard/src/components/errors/errors.test.tsx    |  67 -----\n .../template/questionTemplateTestUtils.tsx         |  26 +-\n .../questions/template/questionTemplates.test.tsx  | 303 +--------------------\n dashboard/src/components/result/result.test.tsx    | 125 ---------\n dashboard/src/mocks/resultTestUtils.tsx            |  44 +--\n dashboard/tsconfig.json                            |   2 +-\n dashboard/vite.config.mts                          |  13 +-\n docs/dev_note.md                                   |  57 +++-\n 10 files changed, 109 insertions(+), 534 deletions(-)"
+  },
+  "validations": [
+    {
+      "source": "executor",
+      "command": "node -",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboard。11 パッケージの依存宣言・lockfile・導入版と、MSW worker の一致を assert で確認。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run test",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboard。unit 6 ファイル・937 件成功。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run build",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboard。TypeScript と Vite build 成功。既存の chunk サイズ警告のみ。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run lint",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboard。ESLint 成功。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run pretty",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboard。pre-commit 相当の整形成功。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run pretty:check",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboard。整形検査成功。"
+    },
+    {
+      "source": "executor",
+      "command": "npx prettier --write ../docs/dev_note.md",
+      "status": "passed",
+      "summary": "フロントエンド節を整形。対象外の整形差分は除去。"
+    },
+    {
+      "source": "executor",
+      "command": "npx tsc --noEmit --skipLibCheck --module ESNext --moduleResolution Bundler --jsx react-jsx --target ESNext --allowSyntheticDefaultImports --resolveJsonModule .storybook/main.ts .storybook/preview.ts vitest.browser.config.mts vite.config.mts",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboard。Storybook・Vitest・Vite 設定の型検査成功。"
+    },
+    {
+      "source": "executor",
+      "command": "node --input-type=module -",
+      "status": "passed",
+      "summary": "Storybook の CSF parser が 3 ファイル・34 stories を検出。"
+    },
+    {
+      "source": "executor",
+      "command": "npx vitest run --config vitest.browser.config.mts",
+      "status": "requires_human",
+      "summary": "OS のネットワーク情報取得が権限制限で停止。story・Browser Mode・a11y はホストで実行する。"
+    },
+    {
+      "source": "executor",
+      "command": "STORYBOOK_DISABLE_TELEMETRY=1 npx storybook build --output-dir tmp/storybook-static",
+      "status": "requires_human",
+      "summary": "同じ OS 権限制限で起動前に停止。ホストで再実行する。"
+    },
+    {
+      "source": "executor",
+      "command": "node tools/specdojo-pre-commit.mjs prettier docs/ja/projects/prj-0001/controls/project-register/pjr-dfwv-frontend-storybook-component-tests.md",
+      "status": "passed",
+      "summary": "project 個票の整形成功。"
+    },
+    {
+      "source": "executor",
+      "command": "node tools/specdojo-pre-commit.mjs markdownlint docs/ja/projects/prj-0001/controls/project-register/pjr-dfwv-frontend-storybook-component-tests.md",
+      "status": "passed",
+      "summary": "project 個票の Markdown 検査成功。"
+    },
+    {
+      "source": "executor",
+      "command": "node tools/specdojo-pre-commit.mjs register-build",
+      "status": "requires_human",
+      "summary": "`spawnSync git EPERM`。親 runner がホストで実行する。"
+    },
+    {
+      "source": "executor",
+      "command": "git diff --check",
+      "status": "passed",
+      "summary": "両リポジトリで成功。"
+    },
+    {
+      "source": "executor",
+      "command": "npm test",
+      "status": "not_applicable",
+      "summary": "project のテストは非適用。",
+      "reason": "project の test script は npm init の仮置き。product の test は別途実行済み。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run test:unit",
+      "status": "not_applicable",
+      "summary": "独立した script は未定義。",
+      "reason": "両リポジトリに現在 test:unit script はない。product の unit は npm run test で検証済み。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run typecheck",
+      "status": "not_applicable",
+      "summary": "独立した script は未定義。",
+      "reason": "両リポジトリに typecheck script はない。product は build と設定用 tsc で検証済み。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run validate:schema:file",
+      "status": "not_applicable",
+      "summary": "schema 検査は非適用。",
+      "reason": "対応 script がなく、executor による YAML 変更もない。"
+    },
+    {
+      "source": "executor",
+      "command": "specdojo catalog validate",
+      "status": "not_applicable",
+      "summary": "catalog 検査は非適用。",
+      "reason": "対象 project に `catalog_path` が設定されていない。"
+    }
+  ],
+  "final_message": "Storybook・MSW・a11y 設定、34 stories、Browser Mode 1 件、Test Projects、開発文書を追加。個票に移行基準・検証結果・保護設定の差分案を記録。個票 2.1 節の例外に従って完了。result は未編集。",
+  "completion_status": "complete",
+  "handoff": [
+    "統合後、naoji の承認のもとで `openfisca-japan:dashboard/package.json` の scripts に追記する案: \"test:unit\": \"vitest run --project unit\", \"test:stories\": \"vitest run --config vitest.browser.config.mts --project storybook\", \"test:browser\": \"vitest run --config vitest.browser.config.mts --project browser\", \"test:ui\": \"vitest run --config vitest.browser.config.mts\", \"storybook\": \"storybook dev -p 6006\", \"build-storybook\": \"storybook build\"。依存・lockfile は変更不要。",
+    "統合後、承認のもとで `openfisca-japan:.github/workflows/test_frontend.yml` の Chromium インストール後に、working-directory を ./dashboard とする「Storybook and Browser Mode」（npm run test:ui）と「Build Storybook」（npm run build-storybook）の 2 段を追加する。正確な差分は個票の対応結果に記載済み。",
+    "ホストで 34 stories と Browser Mode 1 件、Storybook build・開発表示を検証する。sandbox では Storybook import 時の `os.networkInterfaces()` が `uv_interface_addresses` errno 1 で停止した。a11y は未計測。story 名・axe rule ID・重大度・対象要素を個票と result に追記し、違反は別項目へ分ける。保護設定の反映・検証後に close を判断する。",
+    "runner はホストで register-build と設定された親検証を実施する。reporter / runner は個票の対応結果と本 evidence を result に反映する。"
+  ],
+  "log_refs": [
+    {
+      "kind": "agent-output-excerpt",
+      "path": "docs/ja/projects/prj-0001/execution/exec/evidence/PJR-DFWV/20261031T140625097Z-e9c2a4b7/executor.log",
+      "bytes": 6499,
+      "truncated": false
+    }
+  ]
+}
