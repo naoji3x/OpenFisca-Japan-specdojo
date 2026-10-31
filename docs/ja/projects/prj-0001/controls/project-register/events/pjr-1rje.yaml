@@ -41,3 +41,32 @@
     - field: depends_on
       from: ""
       to: '["PJR-49V3","PJR-BZGG"]'
+- v: 1
+  id: reg_64abcd39e7054ba0a07e16c411ee09f0
+  ts: "2026-10-31T12:46:03Z"
+  action: start
+  actor: sol-executor
+  from_status: open
+  to_status: in-progress
+  reason: work started
+  changes:
+    - field: status
+      from: open
+      to: in-progress
+  previous_event_id: reg_c139f43158ee4636aa20b4a3abe06cb6
+- v: 1
+  id: reg_d9504645dca2465dad994e103b3ee3c9
+  ts: "2026-10-31T12:53:57Z"
+  action: wait
+  actor: sol-executor
+  from_status: in-progress
+  to_status: waiting
+  reason: "executor reported incomplete: Playwright の 3 ファイル・5 テスト、設定、Vitest の収集分離、Cypress ファイル削除、開発手順の更新を実施。967 テスト・build・lint・整形・E2E の型検査は成功。保護された package・lockfile・CI の反映とホスト側の E2E 検証が残る。"
+  changes:
+    - field: status
+      from: in-progress
+      to: waiting
+    - field: block_reason
+      from: "-"
+      to: "executor reported incomplete: Playwright の 3 ファイル・5 テスト、設定、Vitest の収集分離、Cypress ファイル削除、開発手順の更新を実施。967 テスト・build・lint・整形・E2E の型検査は成功。保護された package・lockfile・CI の反映とホスト側の E2E 検証が残る。"
+  previous_event_id: reg_64abcd39e7054ba0a07e16c411ee09f0

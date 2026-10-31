@@ -7,12 +7,13 @@ specdojo:
   part_of:
     - prj-0001:pjr-index
   item_type: todo
-  item_status: open
+  item_status: waiting
   priority: high
   difficulty: medium
   owner: DEV
   registered_at: "2026-10-31T04:05:52Z"
   due_on: "2026-11-30"
+  block_reason: "executor reported incomplete: Playwright の 3 ファイル・5 テスト、設定、Vitest の収集分離、Cypress ファイル削除、開発手順の更新を実施。967 テスト・build・lint・整形・E2E の型検査は成功。保護された package・lockfile・CI の反映とホスト側の E2E 検証が残る。"
   derived_from:
     - PJR-Z7FQ
   depends_on:
