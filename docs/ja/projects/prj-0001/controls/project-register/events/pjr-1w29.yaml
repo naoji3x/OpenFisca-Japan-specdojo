@@ -41,3 +41,48 @@
     - field: depends_on
       from: ""
       to: '["PJR-KS3C"]'
+- v: 1
+  id: reg_ff3a2b1ce9164051be7973b70270c081
+  ts: "2026-10-31T12:54:15Z"
+  action: start
+  actor: sol-executor
+  from_status: open
+  to_status: in-progress
+  reason: work started
+  changes:
+    - field: status
+      from: open
+      to: in-progress
+  previous_event_id: reg_59e0ee4a9d4649dd8b69f2e8bad29675
+- v: 1
+  id: reg_935dbf6837214ab599dca476b9d81094
+  ts: "2026-10-31T13:02:39Z"
+  action: review
+  actor: sol-executor
+  from_status: in-progress
+  to_status: review
+  reason: ready for review
+  changes:
+    - field: status
+      from: in-progress
+      to: review
+  previous_event_id: reg_ff3a2b1ce9164051be7973b70270c081
+- v: 1
+  id: reg_6bcea286b5fb4a5e95ea87520bd1996f
+  ts: "2026-10-31T13:03:56Z"
+  action: close
+  actor: specdojo-orchestrator
+  from_status: review
+  to_status: done
+  reason: 完了条件を差分・個票・result で確かめ、統合されたブランチで make docs・check-docs・check-style・test と生成スクリプトのテストが通ることを確かめた
+  changes:
+    - field: status
+      from: review
+      to: done
+    - field: completed
+      from: "-"
+      to: "2026-10-31"
+    - field: conclusion
+      from: "-"
+      to: make_docs.py で率を百分率、年齢・日数・人数・学年を単位付きで表示し、単位のない数値パラメータを警告するようにした（openfisca-japan の 896ba88）
+  previous_event_id: reg_935dbf6837214ab599dca476b9d81094

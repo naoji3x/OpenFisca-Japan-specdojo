@@ -51,6 +51,12 @@ E2E の道具を Cypress から Playwright に移し、主要な導線のスモ�
 - executor はネットワークに出られない。サンドボックスの制約で、ブラウザーの起動や `webServer`（preview の起動）ができず E2E を流せない場合は、その検証を `requires_human` として記録し、ほかの検査（`npm run test`・`build`・`lint`・`pretty:check`）が通れば完了としてよい。E2E は統合のあとに orchestrator が連続 2 回流す。
 - `dashboard/package.json`（Cypress・cypress-axe・axe-core の削除、E2E のスクリプトの追加）と `.github/workflows/test_frontend.yml` は保護された設定である。executor は書き換えず、変更案（差分）を「4. 対応結果」と報告の `handoff` に書いて止まる。`cypress.config.js`・`dashboard/cypress/` の削除、`dashboard/e2e/` と `dashboard/playwright.config.ts` の追加は、保護された設定ではないので executor が行う。
 
+### 2.2. 再開時の指示（2026-10-31、specdojo-orchestrator）
+
+- 1 回目の実行で、executor は保護された設定（`dashboard/package.json`・`.github/workflows/test_frontend.yml`）の変更案を「4. 対応結果」と `handoff` に書き、E2E を流せずに `incomplete` で止まった。どちらも 2.1 の指示どおりである。
+- この 2 つを未完了の理由にしない。保護された設定の変更案は、統合のあとに orchestrator が承認のもとで当てる（naoji が 2026-10-31 に承認）。E2E は、orchestrator が 2026-10-31 に product の worktree で `npm run build` のあと `npx playwright test` を連続 2 回流し、2 回とも 5 件が通った。
+- 既存の成果と、記録済みの変更案を変えずに完了を報告する。
+
 ## 3. 作業内容
 
 前提: [[prj-0001:pjr-49v3-frontend-question-regression|PJR-49V3]] と [[prj-0001:pjr-bzgg-frontend-result-error-regression|PJR-BZGG]] が完了していることを確かめてから着手する。
