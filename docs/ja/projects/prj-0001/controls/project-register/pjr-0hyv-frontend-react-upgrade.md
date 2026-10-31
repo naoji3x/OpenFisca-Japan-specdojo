@@ -133,6 +133,15 @@ project 側では、個票に対して `node tools/specdojo-pre-commit.mjs prett
 - Recoil の React 内部 API への依存を解消する置き換えは [[prj-0001:pjr-b1zq-frontend-recoil-to-jotai|PJR-B1ZQ]]、React 19 と型定義の移行は [[prj-0001:pjr-6b0q-frontend-react19-upgrade|PJR-6B0Q]] で扱う。Chakra UI 2 と framer-motion 10 にも 19 への制約があるため、[[prj-0001:pjr-bsxa-frontend-chakra-ui-upgrade|PJR-BSXA]] の成果と合わせて検証する。
 - 保護された設定の追加変更案はない。個票のステータス・登録簿の行・Git の設定・commit は変更していない。pipeline の executor として result は編集せず、本節の内容と検証結果を reporter・runner へ引き継ぐ。
 
+### orchestrator の確認（2026-10-31、specdojo-orchestrator）
+
+- `feature/frontend-test-upgrade`（`8e4b6ca`）を一時的な worktree に取り出し、`npm ci` から次を確かめた。
+  - `npm run test`（937 件）・`build`・`lint`・`pretty:check`・`test:ui`（35 件）・`build-storybook` が通った。テストの出力に、React の `Warning:` と React Router の future flag の警告は出ていない。
+  - `npm run test:e2e` は、build のあと連続 2 回とも 5 件が通った。
+- executor は、React Router 6.30 の警告に合わせて `v7_startTransition` と `v7_relativeSplatPath` を有効にした（`App.tsx` と、テスト用の `MemoryRouter`）。`*` を使う route は「ページが見つかりません」の画面（`/*`）だけで、コードに相対リンク（`./`・`../`）はないため、`v7_relativeSplatPath` による動きの変化はない。
+- React 19 への阻害要因（Recoil）と別の作業の案は、[[prj-0001:pjr-b1zq-frontend-recoil-to-jotai|PJR-B1ZQ]] と [[prj-0001:pjr-6b0q-frontend-react19-upgrade|PJR-6B0Q]] に分けた（naoji の判断、案 A）。
+- Git の local config は、実行の前後で変わっていない。上流の変更に登録簿の ID やリンクはない（commit メッセージの `Refs:` 行を除く）。
+
 ## 5. 関連ドキュメント
 
 - 方針: [[prj-0001:pjr-z7fq-frontend-test-strategy|PJR-Z7FQ フロントエンドのテストの方針を決める]]
