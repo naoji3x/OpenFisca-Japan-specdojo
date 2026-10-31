@@ -2,17 +2,19 @@
 specdojo:
   id: prj-0001:pjr-1rje-frontend-playwright-e2e
   type: project
-  status: draft
+  status: ready
   rulebook: specdojo:pjr-rulebook
   part_of:
     - prj-0001:pjr-index
   item_type: todo
-  item_status: review
+  item_status: done
   priority: high
   difficulty: medium
   owner: DEV
   registered_at: "2026-10-31T04:05:52Z"
   due_on: "2026-11-30"
+  completed_at: "2026-10-31T13:12:54Z"
+  conclusion: E2E を Playwright に移して主要な導線のスモーク 5 件に絞り、Cypress を外して CI を Playwright に替えた（openfisca-japan の 8213f5b・076a27f・60ed52d）
   derived_from:
     - PJR-Z7FQ
   depends_on:

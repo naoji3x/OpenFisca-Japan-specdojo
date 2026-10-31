@@ -131,3 +131,22 @@
       from: in-progress
       to: review
   previous_event_id: reg_2a2e750e235a49d3a65e624964e9df08
+- v: 1
+  id: reg_4813afc66dd945d9893aa9f223ff0e12
+  ts: "2026-10-31T13:12:54Z"
+  action: close
+  actor: specdojo-orchestrator
+  from_status: review
+  to_status: done
+  reason: 完了条件を確かめ、保護された設定を承認のもとで当て、npm ci から検査が通り E2E が連続 2 回通ることを確かめた
+  changes:
+    - field: status
+      from: review
+      to: done
+    - field: completed
+      from: "-"
+      to: "2026-10-31"
+    - field: conclusion
+      from: "-"
+      to: E2E を Playwright に移して主要な導線のスモーク 5 件に絞り、Cypress を外して CI を Playwright に替えた（openfisca-japan の 8213f5b・076a27f・60ed52d）
+  previous_event_id: reg_098321ece62c4dc398b8ac3f71a3c88c
