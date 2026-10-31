@@ -41,3 +41,32 @@
     - field: depends_on
       from: ""
       to: '["PJR-49V3","PJR-BZGG","PJR-1RJE"]'
+- v: 1
+  id: reg_f3827dbe98a24396852d2905e4f61b15
+  ts: "2026-10-31T13:23:57Z"
+  action: start
+  actor: sol-executor
+  from_status: open
+  to_status: in-progress
+  reason: work started
+  changes:
+    - field: status
+      from: open
+      to: in-progress
+  previous_event_id: reg_cf75fd5eb1964c77b2de2f1df777e28f
+- v: 1
+  id: reg_d9286267bf42445398583a4765683c1d
+  ts: "2026-10-31T13:29:34Z"
+  action: wait
+  actor: sol-executor
+  from_status: in-progress
+  to_status: waiting
+  reason: "agent exited with non-zero code: agent-git-state-write: Git state changes detected; fields=openfisca-japan:local-config; agent must leave commits and repository configuration changes to the parent run…"
+  changes:
+    - field: status
+      from: in-progress
+      to: waiting
+    - field: block_reason
+      from: "-"
+      to: "agent exited with non-zero code: agent-git-state-write: Git state changes detected; fields=openfisca-japan:local-config; agent must leave commits and repository configuration changes to the parent run…"
+  previous_event_id: reg_f3827dbe98a24396852d2905e4f61b15

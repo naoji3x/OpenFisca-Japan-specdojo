@@ -7,12 +7,13 @@ specdojo:
   part_of:
     - prj-0001:pjr-index
   item_type: todo
-  item_status: open
+  item_status: waiting
   priority: high
   difficulty: hard
   owner: DEV
   registered_at: "2026-10-31T05:43:45Z"
   due_on: "2026-11-30"
+  block_reason: "agent exited with non-zero code: agent-git-state-write: Git state changes detected; fields=openfisca-japan:local-config; agent must leave commits and repository configuration changes to the parent run…"
   derived_from:
     - PJR-Z7FQ
   depends_on:
