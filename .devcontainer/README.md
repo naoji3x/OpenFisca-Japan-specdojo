@@ -17,7 +17,7 @@ docker compose down            # 止める
 | バックエンドの API（`openfisca`） | `http://localhost:50000/spec` | `http://host.docker.internal:50000/spec` |
 | Swagger UI（`swagger-ui`）        | `http://localhost:8080`       | `http://host.docker.internal:8080`       |
 
-`docker-compose.yml` は、`${LOCAL_WORKSPACE_FOLDER}` のソースを bind mount します。ソケットを共有する方式では、bind mount のパスをホストの Docker デーモンがホストのパスとして解決します。そのため、`remoteEnv` の `LOCAL_WORKSPACE_FOLDER` に、ホストの `../OpenFisca-Japan` のパスを渡しています。
+`docker-compose.yml` は、`${LOCAL_WORKSPACE_FOLDER}` のソースを bind mount します。ソケットを共有する方式では、bind mount のパスをホストの Docker デーモンがホストのパスとして解決します。そのため、`containerEnv` の `LOCAL_WORKSPACE_FOLDER` に、ホストの `../OpenFisca-Japan` のパスを渡しています。`remoteEnv` ではなく `containerEnv` にしているのは、`remoteEnv` が VS Code の起動するプロセスにしか渡らず、`docker exec` で入る tmux（`remote-host/specdojo-tmux.sh.sample`）には届かないためです。
 
 ## 注意
 
