@@ -56,3 +56,19 @@ specdojo:
 ## 4. 進め方
 
 `.eslintrc.js` による従来の ESLint 設定を廃止し、`eslint.config.mjs` による Flat Config へ移行した。TypeScript および関連プラグインの互換性を考慮した設定の更新を行い、変更後、`npm run test`、`npm run build`、`npm run lint` により設定の妥当性を検証した。
+
+## 5. トレーサビリティ
+
+runner がプロダクトリポジトリの処理後に記録した状態と、統合先の commit snapshot です。
+プロジェクトリポジトリの統合は、この result を含む merge commit で確認します。
+その merge commit には `Refs: prj-0001:PJR-2CSW` を付けます。
+`branch-only` の行は未統合です。exec branch を保持し、push と PR 作成はプロダクト側で行います。
+PR が `not applicable` の行では、runner は PR を作成していません。
+
+<!-- markdownlint-disable MD013 -->
+
+| trace key           | repository        | integration branch              | exec branch                                  | state  | PR             | commit snapshot                            | recorded at              |
+| ------------------- | ----------------- | ------------------------------- | -------------------------------------------- | ------ | -------------- | ------------------------------------------ | ------------------------ |
+| `prj-0001:PJR-2CSW` | `openfisca-japan` | `feature/frontend-test-upgrade` | `feature/frontend-typescript-eslint-upgrade` | merged | not applicable | `7287eb313b1fa6ef444d1897a5e0676910bcb202` | 2026-10-31T22:01:11.841Z |
+
+<!-- markdownlint-enable MD013 -->
