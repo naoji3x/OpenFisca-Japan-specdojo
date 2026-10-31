@@ -1,0 +1,43 @@
+# yaml-language-server: $schema=../../../../../../specdojo/schemas/v1/register-events.schema.yaml
+- v: 1
+  id: reg_e94116e7bc894f2497457228aa7e3082
+  ts: "2026-10-31T05:43:49Z"
+  action: add
+  actor: specdojo-orchestrator
+  from_status: null
+  to_status: open
+  reason: 依存の更新のため、ローカルの下書きを PJR-Z7FQ の方針に合わせて起票
+  changes:
+    - field: status
+      from: ""
+      to: open
+    - field: title
+      from: ""
+      to: TypeScript・ESLint と関連プラグインを整合させて更新する
+    - field: description
+      from: ""
+      to: Vite 更新後の構成を基準に TypeScript・ESLint・typescript-eslint・React 用プラグインを互換性のあるサポート対象へ更新し、既存の検査対象を維持する
+    - field: type
+      from: ""
+      to: todo
+    - field: priority
+      from: ""
+      to: medium
+    - field: difficulty
+      from: ""
+      to: hard
+    - field: owner
+      from: ""
+      to: DEV
+    - field: registered
+      from: ""
+      to: "2026-10-31"
+    - field: due
+      from: ""
+      to: "2026-11-30"
+    - field: derived_from
+      from: ""
+      to: '["PJR-Z7FQ"]'
+    - field: depends_on
+      from: ""
+      to: '["PJR-PP9D","PJR-DFWV"]'
