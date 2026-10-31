@@ -13,7 +13,7 @@ specdojo:
   owner: DEV
   registered_at: "2026-10-31T04:05:37Z"
   due_on: "2026-11-30"
-  block_reason: "executor reported incomplete: 描画テスト基盤、8テンプレートのテスト、テスト方針の記録を追加。指定検査は成功したが、npm ciの完了を確認できず再実行が必要。"
+  block_reason: "executor reported incomplete: 描画テスト基盤、質問テンプレート8種類のテスト、テスト方針の記録を整え、指定された4検査はすべて成功。npm ci は再試行でも無出力のまま60秒を超え完了確認できず、依存のクリーンインストールが未確認のため未完了。"
   derived_from:
     - PJR-Z7FQ
 ---
@@ -79,11 +79,13 @@ specdojo:
 
 ### 検証
 
-- `dashboard` で `npm ci` は2回試行したが、ネットワーク取得が無出力で30秒を超えたため完了できなかった。インストール済み依存を使った以下の検査は実行できた。
+- `dashboard` で `npm ci` は前回2回と再開時1回の計3回試行したが、ネットワーク取得が無出力で60秒を超えたため再開時も完了できず中断した。依存のクリーンインストール完了は未確認。インストール済み依存を使った以下の検査は実行できた。
 - `npm run test`: 成功。5ファイル、913テストが成功（既存4ファイルを含む）。
 - `npm run build`: 成功。Viteから既存のバンドルサイズ警告が出た。
 - `npm run lint`: 成功。
 - `npm run pretty:check`: 成功。
+- 再開時に同じ4検査を再実行し、すべて成功した（テスト5ファイル・913件、build・lint・pretty:check）。
+- 前回、project リポジトリの `register-build` hook は sandbox 内で staged file の読み取りに `EPERM` が発生した。`pjr-index.md` は変更していないため、runner 側で通常の hook 実行を確認する。
 - テスト時のReact Refresh preambleエラーはVitest module runnerでHTML preambleが読み込まれないために起きた。`vite.config.ts` の `setupFiles` から `src/testSetup.ts` を読み込み、React Refreshフラグを設定して回避した。全画面テストで確認済み。
 
 ## 5. 関連ドキュメント
