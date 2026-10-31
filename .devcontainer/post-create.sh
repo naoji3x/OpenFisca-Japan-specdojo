@@ -143,3 +143,45 @@ if ! curl -fsSL https://antigravity.google/cli/install.sh | bash; then
 fi
 
 npm install
+
+# OpenFisca-Japan の開発に使う Python 3.11 の仮想環境を用意する。
+# OpenFisca-Core 41 は numpy <1.25・pendulum <3 を要し、ベースのイメージの Python 3.13 では入らない。
+# uv のビルド済みの Python 3.11 で ../OpenFisca-Japan/.venv を作り、make install（editable install）を流す。
+if ! command -v uv >/dev/null 2>&1; then
+  if ! curl -fsSL https://astral.sh/uv/install.sh | env UV_NO_MODIFY_PATH=1 sh; then
+    echo "Warning: uv installer failed." >&2
+  fi
+fi
+
+OPENFISCA_JAPAN_DIR="${WORKSPACE_PARENT}/OpenFisca-Japan"
+if command -v uv >/dev/null 2>&1 && [ -f "${OPENFISCA_JAPAN_DIR}/setup.py" ]; then
+  uv python install 3.11
+  if [ ! -x "${OPENFISCA_JAPAN_DIR}/.venv/bin/python" ]; then
+    uv venv --python 3.11 --seed "${OPENFISCA_JAPAN_DIR}/.venv"
+  fi
+  if ! PATH="${OPENFISCA_JAPAN_DIR}/.venv/bin:${PATH}" make -C "${OPENFISCA_JAPAN_DIR}" install; then
+    echo "Warning: make install for OpenFisca-Japan failed." >&2
+  fi
+fi
+
+# tmux は docker exec で入るため remoteEnv が届かない。対話のシェルが読む ~/.bashrc で仮想環境を PATH の先頭に置く。
+BASHRC_BEGIN="# >>> OpenFisca-Japan venv (specdojo post-create) >>>"
+if ! grep -qxF "${BASHRC_BEGIN}" "${HOME}/.bashrc" 2>/dev/null; then
+  cat >>"${HOME}/.bashrc" <<EOF
+${BASHRC_BEGIN}
+if [ -d "${OPENFISCA_JAPAN_DIR}/.venv/bin" ]; then
+  export PATH="${OPENFISCA_JAPAN_DIR}/.venv/bin:\${PATH}"
+fi
+# <<< OpenFisca-Japan venv (specdojo post-create) <<<
+EOF
+fi
+
+# OpenFisca-Japan の dashboard の E2E と Storybook のテストに使う Playwright の Chromium と、その OS のライブラリを入れる。
+# dashboard/package.json の @playwright/test を上げたときは、ブラウザーの版を合わせるためこの値も上げる。
+PLAYWRIGHT_VERSION="1.64.1"
+if ! sudo -E env "PATH=${PATH}" npx -y "playwright@${PLAYWRIGHT_VERSION}" install-deps chromium; then
+  echo "Warning: Failed to install OS dependencies for Playwright Chromium." >&2
+fi
+if ! npx -y "playwright@${PLAYWRIGHT_VERSION}" install chromium; then
+  echo "Warning: Failed to install Playwright Chromium." >&2
+fi
