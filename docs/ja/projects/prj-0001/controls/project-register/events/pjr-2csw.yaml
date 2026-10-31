@@ -54,3 +54,19 @@
       from: open
       to: in-progress
   previous_event_id: reg_e94116e7bc894f2497457228aa7e3082
+- v: 1
+  id: reg_db41a0c9e28f46ddbb841a05fc49bef9
+  ts: "2026-10-31T21:52:34Z"
+  action: wait
+  actor: sol-executor
+  from_status: in-progress
+  to_status: waiting
+  reason: "executor reported incomplete: flat config・TypeScript 6 への移行と必要な修正を実施。unit 937件・build・lint・整形は成功。ESLint 9 の公式保守終了によりサポート要件が未充足のため、理由を標準エラーへ出力し終了コード1で報告する。"
+  changes:
+    - field: status
+      from: in-progress
+      to: waiting
+    - field: block_reason
+      from: "-"
+      to: "executor reported incomplete: flat config・TypeScript 6 への移行と必要な修正を実施。unit 937件・build・lint・整形は成功。ESLint 9 の公式保守終了によりサポート要件が未充足のため、理由を標準エラーへ出力し終了コード1で報告する。"
+  previous_event_id: reg_bef085902e9e4dcca2827b3fe4d5c8d0
