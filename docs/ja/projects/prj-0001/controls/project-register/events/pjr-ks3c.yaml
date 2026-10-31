@@ -35,3 +35,22 @@
     - field: due
       from: ""
       to: "2026-11-30"
+- v: 1
+  id: reg_75c81d2f9df54827b6af1ce559153d05
+  ts: "2026-10-31T12:45:38Z"
+  action: close
+  actor: specdojo-orchestrator
+  from_status: open
+  to_status: done
+  reason: 完了条件をすべて確かめた。YAML の修正は naoji、生成物・検査・hot-reload の確認は specdojo-orchestrator が行った
+  changes:
+    - field: status
+      from: open
+      to: done
+    - field: completed
+      from: "-"
+      to: "2026-10-31"
+    - field: conclusion
+      from: "-"
+      to: 34 件のパラメータの単位を直し、制度ドキュメントの生成物を作り直した（openfisca-japan の feature/parameter-unit-metadata、f2fe036・1804180・785ff74・d47e36c）
+  previous_event_id: reg_0854b04bd0a44462997e4e239fb8ef8d

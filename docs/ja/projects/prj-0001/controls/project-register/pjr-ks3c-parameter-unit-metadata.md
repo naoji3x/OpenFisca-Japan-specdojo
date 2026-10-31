@@ -2,17 +2,19 @@
 specdojo:
   id: prj-0001:pjr-ks3c-parameter-unit-metadata
   type: project
-  status: draft
+  status: ready
   rulebook: specdojo:pjr-rulebook
   part_of:
     - prj-0001:pjr-index
   item_type: todo
-  item_status: open
+  item_status: done
   priority: high
   difficulty: easy
   owner: BA
   registered_at: "2026-10-31T03:00:17Z"
   due_on: "2026-11-30"
+  completed_at: "2026-10-31T12:45:38Z"
+  conclusion: 34 件のパラメータの単位を直し、制度ドキュメントの生成物を作り直した（openfisca-japan の feature/parameter-unit-metadata、f2fe036・1804180・785ff74・d47e36c）
 ---
 
 # PJR-KS3C パラメータの YAML の単位の誤りを直す
