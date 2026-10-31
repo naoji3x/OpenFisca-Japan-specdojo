@@ -42,7 +42,7 @@ Vite と Vitest の更新後に Storybook と `@storybook/addon-vitest` を導�
 
 ## 3. 作業内容
 
-前提: ローカルで下書きした PJR-PP9D（Vite・Reactプラグイン・Vitest の更新）が完了していることを確かめてから着手する。PJR-PP9D を起票するときに、この項目の `depends_on` に加える。
+前提: [[prj-0001:pjr-pp9d-frontend-vite-vitest-upgrade|PJR-PP9D]]（Vite・Reactプラグイン・Vitest の更新）が完了していることを確かめてから着手する。
 
 | No  | 作業                                                                            | 担当 | 状態 | メモ                                   |
 | --- | ------------------------------------------------------------------------------- | ---- | ---- | -------------------------------------- |
@@ -59,5 +59,6 @@ Vite と Vitest の更新後に Storybook と `@storybook/addon-vitest` を導�
 
 - 方針: [[prj-0001:pjr-z7fq-frontend-test-strategy|PJR-Z7FQ フロントエンドのテストの方針を決める]]
 - 対象リポジトリ: `openfisca-japan`（`../OpenFisca-Japan`）、対象ディレクトリ: `dashboard/`、`.github/workflows/`
-- 先行の項目: [[prj-0001:pjr-49v3-frontend-question-regression|PJR-49V3]]、[[prj-0001:pjr-bzgg-frontend-result-error-regression|PJR-BZGG]]、ローカルで下書きした PJR-PP9D
+- 先行の項目: [[prj-0001:pjr-49v3-frontend-question-regression|PJR-49V3]]、[[prj-0001:pjr-bzgg-frontend-result-error-regression|PJR-BZGG]]、[[prj-0001:pjr-pp9d-frontend-vite-vitest-upgrade|PJR-PP9D]]
+- 後続の項目: [[prj-0001:pjr-2csw-frontend-typescript-eslint-upgrade|PJR-2CSW]]
 - Storybook の Vitest addon: <https://storybook.js.org/docs/writing-tests/integrations/vitest-addon>

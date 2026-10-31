@@ -62,3 +62,4 @@ E2E の道具を Cypress から Playwright に移し、主要な導線のスモ�
 - 対象リポジトリ: `openfisca-japan`（`../OpenFisca-Japan`）、対象ディレクトリ: `dashboard/`、`.github/workflows/`
 - 先行の項目: [[prj-0001:pjr-49v3-frontend-question-regression|PJR-49V3]]、[[prj-0001:pjr-bzgg-frontend-result-error-regression|PJR-BZGG]]
 - 置き換える下書き: ローカルの PJR-HDQ7、PJR-EHRG
+- 後続の項目: [[prj-0001:pjr-pp9d-frontend-vite-vitest-upgrade|PJR-PP9D]]、[[prj-0001:pjr-0hyv-frontend-react-upgrade|PJR-0HYV]]
