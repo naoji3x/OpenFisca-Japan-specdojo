@@ -7,12 +7,13 @@ specdojo:
   part_of:
     - prj-0001:pjr-index
   item_type: todo
-  item_status: in-progress
+  item_status: waiting
   priority: high
   difficulty: medium
   owner: DEV
   registered_at: "2026-10-31T04:05:52Z"
   due_on: "2026-11-30"
+  block_reason: "executor reported incomplete: Playwright の 3 ファイル・5 テスト、設定、Vitest の収集分離、Cypress ファイル削除、開発手順の更新を実施。967 テスト・build・lint・整形・E2E の型検査は成功。保護された package・lockfile・CI の反映とホスト側の E2E 検証が残る。"
   derived_from:
     - PJR-Z7FQ
   depends_on:
@@ -54,16 +55,99 @@ E2E の道具を Cypress から Playwright に移し、主要な導線のスモ�
 
 前提: [[prj-0001:pjr-49v3-frontend-question-regression|PJR-49V3]] と [[prj-0001:pjr-bzgg-frontend-result-error-regression|PJR-BZGG]] が完了していることを確かめてから着手する。
 
-| No  | 作業                                                                     | 担当 | 状態 | メモ                                              |
-| --- | ------------------------------------------------------------------------ | ---- | ---- | ------------------------------------------------- |
-| 1   | 今の Cypress のシナリオと計算 API の呼び出しを調べ、固定の応答を用意する | DEV  | open | -                                                 |
-| 2   | Playwright を導入し、3 シナリオの移行と、見積もり 2 本のスモークを書く   | DEV  | open | -                                                 |
-| 3   | Cypress と関連の依存・設定を外し、CI と `docs/dev_note.md` を書き換える  | DEV  | open | CI と `package.json` は保護された設定の扱いに従う |
-| 4   | E2E を連続 2 回流し、検証を流す                                          | DEV  | open | -                                                 |
+| No  | 作業                                                                     | 担当 | 状態 | メモ                                                                 |
+| --- | ------------------------------------------------------------------------ | ---- | ---- | -------------------------------------------------------------------- |
+| 1   | 今の Cypress のシナリオと計算 API の呼び出しを調べ、固定の応答を用意する | DEV  | done | 既存 JSON の貸付のみ・給付と貸付の応答を再利用                       |
+| 2   | Playwright を導入し、3 シナリオの移行と、見積もり 2 本のスモークを書く   | DEV  | done | 導入済みの依存で 3 ファイル・5 テストを実装                          |
+| 3   | Cypress と関連の依存・設定を外し、CI と `docs/dev_note.md` を書き換える  | DEV  | open | 設定・シナリオの削除と文書更新済み。依存・script・CI は承認後に反映  |
+| 4   | E2E を連続 2 回流し、検証を流す                                          | DEV  | open | 967 件・build・lint・整形は成功。E2E は preview の起動権限で実行不可 |
 
 ## 4. 対応結果
 
--
+### 実施内容と変更ファイル
+
+- 個票の完了条件を基準とし、先行の [[prj-0001:pjr-49v3-frontend-question-regression|PJR-49V3]] と [[prj-0001:pjr-bzgg-frontend-result-error-regression|PJR-BZGG]] が `done` であることを確認した。`@playwright/test` 1.64.1 と Chromium は導入済みであり、依存の追加や `npm ci`、ブラウザーのインストールは行っていない。
+- `openfisca-japan:dashboard/playwright.config.ts` を追加。Chromium のみ、`webServer` が `npm run preview -- --strictPort` を起動・終了する構成とした。build は事前に実行する。既存サーバーは再利用せず、自動 retry は行わない。失敗時の trace と実行成果物は既に Git の除外対象である `openfisca-japan:tmp/playwright/test-results/` に出力する。
+- `openfisca-japan:dashboard/e2e/Homepage.spec.ts` を追加。既存の `Homepage.cy.js` と同じ見出し・かんたん・くわしくの入口を 3 テストで確認する。
+- `openfisca-japan:dashboard/e2e/SimpleCalculation.spec.ts` を追加。既存の `SimpleCalculation.cy.js` の同意・URL・「あなたについて」・モード表示の確認を残し、東京都渋谷区、年収 0、配偶者・子どもなしで送信し、貸付の生活支援費「~15 万円/月」と緊急小口資金「~20 万円」まで確認する。
+- `openfisca-japan:dashboard/e2e/DetailedCalculation.spec.ts` を追加。既存の `DetailedCalculation.cy.js` の確認を残し、東京都渋谷区、本人 36 歳、年収・預貯金 0、仕事・病気等・配偶者なし、子ども 1 人（2 歳）、親なしで送信する。上記の貸付に加え、児童手当「1.5 万円/月」と児童扶養手当「1~4.5 万円/月」を確認する。
+- 2 本の見積もりは `page.route` で POST `/calculate` に既存の `src/mocks/calculate/loan-only.response.json` と `both.response.json` を返す。実際の入力・送信を通し、POST の Content-Type・収入・居住地・親子の配列・計算依頼の `null` も検査する。戻る操作・API 失敗・コンポーネントテストは追加していない。
+- `openfisca-japan:dashboard/e2e/helpers.ts` に操作と検査の共通処理を分離した。既存の `calculateFixtures.ts` の日付 `2026-01-15` と `page.clock.setFixedTime` を使い、タイムゾーンを `Asia/Tokyo` に固定する。タイマーは止めずに日付だけを固定する。
+- `openfisca-japan:dashboard/e2e/tsconfig.json` を追加し、アプリの TypeScript 設定を継承して E2E と Playwright 設定を型検査・型情報付き lint の対象にした。`openfisca-japan:dashboard/vite.config.ts` の Vitest の収集対象を `src/**/*.{test,spec}.{ts,tsx}` に限定し、Playwright の spec を収集させない。
+- `openfisca-japan:dashboard/cypress.config.js`、`dashboard/cypress/e2e/Homepage.cy.js`、`dashboard/cypress/e2e/SimpleCalculation.cy.js`、`dashboard/cypress/e2e/DetailedCalculation.cy.js`、`dashboard/cypress/support/e2e.js` を削除した。
+- `openfisca-japan:docs/dev_note.md` のフロントエンド節を更新。ディレクトリ名、Vitest と E2E の実行手順、ブラウザーの準備、build と preview、固定応答、連続 2 回の実行、trace の場所を記載した。追加した節だけを範囲指定で整形し、既存部分の書式を維持した。
+- 個票の作業内容と対応結果を更新した。登録簿の行・個票のステータス・result・CHANGELOG は変更していない。上流に登録簿の ID やリンクを追加していない。
+
+### 保護された設定の変更案（未反映）
+
+2.1 節の指示に従い、以下は案のみである。スクリプト名は `test:e2e` とする。Cypress の削除済みファイルを参照する script と CI が残るため、この移行は未完了であり、承認後に以下を反映・検証するまで close しない。
+
+`openfisca-japan:dashboard/package.json`:
+
+```diff
+@@ scripts
+-    "cy:open": "./node_modules/.bin/cypress open",
+-    "cy:run": "./node_modules/.bin/cypress run",
++    "test:e2e": "playwright test",
+@@ dependencies
+-    "axe-core": "^4.7.2",
+-    "cypress-axe": "^1.4.0",
+@@ devDependencies
+-    "cypress": "^12.17.4",
+```
+
+導入済みの `@playwright/test` は維持する。承認後に、同じ `dashboard` で `npm install --package-lock-only --ignore-scripts` を実行して `openfisca-japan:dashboard/package-lock.json` を同期し、Cypress 関連の依存が除かれ、`npm ci` が成功することをホスト側で確認する。executor は package と lockfile を変更していない。
+
+`openfisca-japan:.github/workflows/test_frontend.yml`:
+
+```diff
+-      - name: Cypress run
+-        uses: cypress-io/github-action@v6
+-        with:
+-          build: npm run build
+-          start: npm run preview
+-          working-directory: ./dashboard
++      - name: Install Playwright Chromium
++        run: npx playwright install --with-deps chromium
++        working-directory: ./dashboard
++      - name: Build
++        run: npm run build
++        working-directory: ./dashboard
++      - name: Playwright smoke
++        run: npm run test:e2e
++        working-directory: ./dashboard
+```
+
+### 検証
+
+実行環境: 2026-10-31、Linux の task worktree、Node.js v22.23.3、npm 10.9.9、Playwright 1.64.1、Vitest 3.2.4、Vite 2.9.13。runner が導入済みの依存を使用した。
+
+| 実行場所                    | コマンド                                                                                                                                  | 結果                                                                                |
+| --------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| `openfisca-japan:dashboard` | `npm run test`                                                                                                                            | 成功。既存 8 ファイル・967 件。Playwright の spec は収集されない                    |
+| `openfisca-japan:dashboard` | `npm run build`                                                                                                                           | 成功。既存の 500 KiB 超のバンドル警告のみ                                           |
+| `openfisca-japan:dashboard` | `npm run lint`                                                                                                                            | 成功                                                                                |
+| `openfisca-japan:dashboard` | `npm run pretty:check`                                                                                                                    | 成功                                                                                |
+| `openfisca-japan:dashboard` | `npm run pretty`                                                                                                                          | 成功。product の pre-commit 相当。範囲外の内容差分なし                              |
+| `openfisca-japan:dashboard` | `npx prettier --write playwright.config.ts e2e/*.ts vite.config.ts`                                                                       | 成功                                                                                |
+| `openfisca-japan:dashboard` | `npx playwright test --list`                                                                                                              | 成功。Chromium の 3 ファイル・5 テスト                                              |
+| `openfisca-japan:dashboard` | `npx tsc --project e2e/tsconfig.json`                                                                                                     | 成功。E2E と Playwright 設定の型検査                                                |
+| `openfisca-japan:dashboard` | `npx eslint --no-ignore --parser-options '{"project":"e2e/tsconfig.json"}' playwright.config.ts e2e --ext .ts`                            | 成功。E2E と Playwright 設定の追加 lint                                             |
+| `openfisca-japan:dashboard` | `npx playwright test`                                                                                                                     | `requires_human`。実行を試みたが preview の起動で失敗し、ブラウザーのテストは未実行 |
+| `openfisca-japan:dashboard` | `npm run preview -- --host 127.0.0.1 --strictPort`                                                                                        | 起動失敗の診断。`listen EPERM: operation not permitted 0.0.0.0:30000` を確認        |
+| project                     | `node tools/specdojo-pre-commit.mjs register-build`                                                                                       | `requires_human`。`spawnSync git EPERM` のためホスト側で確認が必要                  |
+| project                     | `node tools/specdojo-pre-commit.mjs prettier docs/ja/projects/prj-0001/controls/project-register/pjr-1rje-frontend-playwright-e2e.md`     | 成功                                                                                |
+| project                     | `node tools/specdojo-pre-commit.mjs markdownlint docs/ja/projects/prj-0001/controls/project-register/pjr-1rje-frontend-playwright-e2e.md` | 成功                                                                                |
+
+E2E を追加した際の最初の追加 lint（`npx eslint playwright.config.ts e2e --ext .ts`）は、アプリ用 `tsconfig.json` が `src` だけを対象とするため失敗した。E2E 専用の `tsconfig.json` と上表の project 指定で解消した。最初に実行した CLI 引数による型検査（`npx tsc --noEmit --skipLibCheck --strict --esModuleInterop --resolveJsonModule --module commonjs --target es2020 playwright.config.ts e2e/*.ts`）も成功した。
+
+`docs/dev_note.md` は product の Prettier で変更節を `--range-start` / `--range-end` 指定して整形した。個票は project の hook に定められた Prettier と markdownlint に成功した。project に `catalog_path`、schema 検証・typecheck・`test:unit` script はなく、`test` は初期化時の仮置きのため非適用。product の Markdown 用 lint 依存は未導入で非適用。executor による YAML の変更はなく schema 検証は非適用。`specdojo index build` は runner に委ねる。
+
+### 申し送り
+
+- 承認後、上記の package・lockfile・CI の差分を反映する。文書の `npm run test:e2e` はこの script の追加を前提としている。反映後、`dashboard` の `npm ci`、`npm run test`、`npm run build`、`npm run lint`、`npm run pretty:check` と、`npm run test:e2e` の連続 2 回をホスト側で確認する。
+- preview の起動は sandbox の `listen EPERM` で実行不可だった。2.1 節に従い E2E は `requires_human` とする。テストの列挙・型検査・追加 lint は通ったが、実ブラウザーでの成否は未確認である。
+- runner は sandbox 外で `node tools/specdojo-pre-commit.mjs register-build` と、その時点の親検証を実行する。reporter / runner が result の記入と状態遷移を行う。保護された設定の反映が残るため、executor の報告は `incomplete` とする。
 
 ## 5. 関連ドキュメント
 
