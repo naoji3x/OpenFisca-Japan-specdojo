@@ -13,7 +13,7 @@ specdojo:
   owner: DEV
   registered_at: "2026-10-31T05:43:45Z"
   due_on: "2026-11-30"
-  block_reason: "agent exited with non-zero code: agent-git-state-write: Git state changes detected; fields=openfisca-japan:local-config; agent must leave commits and repository configuration changes to the parent run…"
+  block_reason: "executor reported incomplete: 既存の設定移行差分（vite.config.mts・tsconfig.node.json）を確認し、967件のテスト、通常・Pagesビルド、HTML変換、lint、整形検査が成功。個票に検証結果と保護設定の変更案を記録した。Pages配布用workflow 2件のNode更新が未反映のため未完了。HMR・preview表示・E2E・クリ…"
   derived_from:
     - PJR-Z7FQ
   depends_on:
@@ -63,15 +63,70 @@ specdojo:
 
 前提: [[prj-0001:pjr-49v3-frontend-question-regression|PJR-49V3]]、[[prj-0001:pjr-bzgg-frontend-result-error-regression|PJR-BZGG]]、[[prj-0001:pjr-1rje-frontend-playwright-e2e|PJR-1RJE]] が完了していることを確かめてから着手する。
 
-| No  | 作業                                                                           | 担当 | 状態 | メモ                                   |
-| --- | ------------------------------------------------------------------------------ | ---- | ---- | -------------------------------------- |
-| 1   | 回帰テストの完了と、更新前の検査の結果を確かめる                               | DEV  | open | -                                      |
-| 2   | 公式の移行ガイドに沿って Vite と関連のツールを段階的に更新し、必要な設定を移す | DEV  | open | 依存の更新は保護された設定の扱いに従う |
-| 3   | クリーンなインストール、開発・本番の動作、すべての回帰テストを確かめる         | DEV  | open | -                                      |
+| No  | 作業                                                                           | 担当 | 状態 | メモ                                                                                  |
+| --- | ------------------------------------------------------------------------------ | ---- | ---- | ------------------------------------------------------------------------------------- |
+| 1   | 回帰テストの完了と、更新前の検査の結果を確かめる                               | DEV  | done | 先行 3 項目が完了。更新直後の検査結果は 2.1 節の orchestrator の記録を確認            |
+| 2   | 公式の移行ガイドに沿って Vite と関連のツールを段階的に更新し、必要な設定を移す | DEV  | done | 導入済みの依存を維持し、旧オプションの削除・ESM 設定への改名・base の正規化を実施     |
+| 3   | クリーンなインストール、開発・本番の動作、すべての回帰テストを確かめる         | DEV  | done | sandbox 内の検査は成功。2.1 節に従い npm ci・開発/HMR・preview/E2E はホストへ申し送り |
 
 ## 4. 対応結果
 
--
+### 前提・更新先・移行順序
+
+- 2026-10-31 に、先行の [[prj-0001:pjr-49v3-frontend-question-regression|PJR-49V3]]、[[prj-0001:pjr-bzgg-frontend-result-error-regression|PJR-BZGG]]、[[prj-0001:pjr-1rje-frontend-playwright-e2e|PJR-1RJE]] の個票が `done` であることと、各対応結果を確認した。更新直後の 967 件・build・lint・整形・E2E 5 件の成功は 2.1 節の orchestrator の記録を前提とし、この executor では設定変更後に以下の検査を実施した。
+- [Vite のサポート情報](https://vite.dev/releases)では 8.3 が通常修正の対象で、Vite 2 は対象外。[React プラグインの公式設定例](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md)の `react()` に合わせる。[Vitest 5 の移行ガイド](https://vitest.dev/guide/migration)も確認した。
+- [Storybook 10.6 の React/Vite 要件](https://storybook.js.org/docs/get-started/frameworks/react-vite)は Vite 5 以上。後続の Storybook 導入を見据え、2.1 節で導入済みの Vite 8.3.5・React プラグイン 6.1.2・Vitest 5.0.5・Node 型 22.20.5 を維持した。依存を再選定・追加する必要はない。
+
+| パッケージ             | 宣言と lockfile のルート宣言 | lockfile と導入済みの版 | 導入済みの公式パッケージの要件と選定理由                                                            |
+| ---------------------- | ---------------------------- | ----------------------- | --------------------------------------------------------------------------------------------------- |
+| `vite`                 | `^8.3.5`                     | 8.3.5                   | Node `^20.19.0 \|\| >=22.12.0`。サポート対象の 8.3 系を使用                                         |
+| `@vitejs/plugin-react` | `^6.1.2`                     | 6.1.2                   | Node は Vite と同じ。Vite の peer は `^8.0.0` で一致                                                |
+| `vitest`               | `^5.0.5`                     | 5.0.5                   | Node `^22.12.0 \|\| ^24.0.0 \|\| >=26.0.0`。Vite の peer は `^6.4.0 \|\| ^7.0.0 \|\| ^8.0.0` で一致 |
+| `@types/node`          | `^22.20.5`                   | 22.20.5                 | Vite の peer `^20.19.0 \|\| >=22.12.0` と Vitest の peer `^22.0.0 \|\| >=24.0.0` を満たす           |
+
+- Node の実行環境は v22.23.3 で、上記すべての要件を満たす。Vite 単体の Node 20.19 という下限は Vitest 5 には適用できない。値は `node_modules` 内の各公式パッケージの `package.json` を読み、`dashboard/package.json`・lockfile のルート宣言・解決済み版との一致も検査した。optional peer の追加は不要。
+- 移行順序は、回帰テストと Playwright の整備、実行 Node と型定義の要件確認、Vite 8・プラグイン 6・Vitest 5 の依存更新（導入済みの `a30f1f0`）、旧設定の整理、回帰テストと 2 種類の build、ホストでの開発/HMR・preview/E2E の確認とした。executor は既導入の依存を更新せず、後半の設定整理と検証を担当した。
+
+### 実施内容と変更ファイル
+
+- `openfisca-japan:dashboard/vite.config.ts` を `openfisca-japan:dashboard/vite.config.mts` へ改名した。ESM として明示することで、Node の native loader が設定を CommonJS として扱う警告を解消する。`dashboard/package.json` の `type` を変える必要がなく、アプリや既存の CommonJS の ESLint 設定にも影響させない。build の出力で警告の解消を確認した。[Vite の設定ファイルの説明](https://vite.dev/config/)を参照した。
+- React プラグイン 1 系の `fastRefresh` と、その回避策のコメント・不要になった `mode` 引数を削除し、`react()` を使用した。`src/testSetup.ts` は jest-dom と MSW の初期化だけで、古い Fast Refresh の回避策はなかったため変更していない。
+- GitHub Pages 用の `base` を `OpenFisca-Japan` から `/OpenFisca-Japan/` に正規化した。初回の Pages build で出た先頭スラッシュの警告を解消し、出力先のパスは維持した。[公式の base の仕様](https://vite.dev/config/shared-options.html#base)に合わせた。通常の `base` は `/` を維持した。
+- `openfisca-japan:dashboard/tsconfig.node.json` の `include` を改名後の `vite.config.mts` に追従させた。
+- 独自の HTML 変換、Vitest の収集範囲 `src/**/*.{test,spec}.{ts,tsx}`、MSW の setup を維持した。回帰テストの削除・skip・期待値の変更はない。
+- 本個票の作業内容・対応結果を更新した。依存宣言・lockfile・CI・登録簿の行・個票のステータス・result は変更していない。上流に登録簿の ID やリンクは追加していない。
+
+### 検証
+
+実行環境: Linux の task worktree、Node.js v22.23.3、npm 10.9.9、Vite 8.3.5、React プラグイン 6.1.2、Vitest 5.0.5。runner が導入済みの依存を使用した。`npm ci` は 2.1 節に従い executor では実行していない。
+
+| 実行場所                    | コマンド                                                            | 結果                                                                                                                              |
+| --------------------------- | ------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| `openfisca-japan:dashboard` | `node -`（依存宣言・lockfile・導入済み metadata の比較）            | 成功。対象 4 パッケージの宣言・解決済み版が一致。engine と peer の要件を確認                                                      |
+| `openfisca-japan:dashboard` | `npx prettier --write vite.config.mts tsconfig.node.json`           | 成功                                                                                                                              |
+| `openfisca-japan:dashboard` | `npm run test`                                                      | 成功。8 ファイル・967 件すべて通過。既存の画面テストも維持                                                                        |
+| `openfisca-japan:dashboard` | `npm run lint`                                                      | 成功                                                                                                                              |
+| `openfisca-japan:dashboard` | `GITHUB_PAGES=true YADOKARI_GTM_ID=GTM-PP9D-PAGES npm run build`    | 成功。設定読込と base の警告なし。既存の 500 kB 超の chunk 警告のみ                                                               |
+| `openfisca-japan:dashboard` | `node -`（Pages の `dist/index.html` を assert）                    | 成功。GTM の script と noscript の 2 か所が置換済み。src/href のアセット参照 5 か所が `/OpenFisca-Japan/assets/` で、参照先も存在 |
+| `openfisca-japan:dashboard` | `env -u GITHUB_PAGES YADOKARI_GTM_ID=GTM-PP9D-NORMAL npm run build` | 成功。通常の配布物を最後に生成。設定読込の警告なし。既存の chunk 警告のみ                                                         |
+| `openfisca-japan:dashboard` | `node -`（通常の `dist/index.html` を assert）                      | 成功。GTM の 2 か所が置換済み。src/href のアセット参照 5 か所が `/assets/` で、参照先も存在                                       |
+| `openfisca-japan:dashboard` | `npm run pretty`                                                    | 成功。product の pre-commit 相当。範囲外の差分なし                                                                                |
+| `openfisca-japan:dashboard` | `npm run pretty:check`                                              | 成功                                                                                                                              |
+| `openfisca-japan:dashboard` | `npx playwright test --list`                                        | 成功。Chromium、3 ファイル・5 テスト                                                                                              |
+| `openfisca-japan:dashboard` | `npm run dev -- --strictPort`                                       | `requires_human`。`listen EPERM: operation not permitted 0.0.0.0:30000` で起動不可。HMR も未確認                                  |
+| `openfisca-japan:dashboard` | `npm run preview -- --strictPort`                                   | `requires_human`。同じ `listen EPERM` で起動不可                                                                                  |
+| `openfisca-japan:dashboard` | `npm run test:e2e`                                                  | `requires_human`。通常 build 後に実行したが `config.webServer` が起動できず終了。ブラウザーの 5 件は未実行                        |
+| project                     | `node tools/specdojo-pre-commit.mjs register-build`                 | `requires_human`。`spawnSync git EPERM` のためホスト側で実行が必要                                                                |
+
+Pages build は初回の警告を base の正規化で解消してから再実行した。最初の HTML 出力検査は変換対象外の `twitter:image` の content 属性まで src/href と同じ条件で判定して失敗したため、実際のアセット参照である src/href に対象を修正し、両 build で検査を通した。アプリの HTML は変更していない。
+
+project の個票には hook に定める `node tools/specdojo-pre-commit.mjs prettier docs/ja/projects/prj-0001/controls/project-register/pjr-pp9d-frontend-vite-vitest-upgrade.md` と `node tools/specdojo-pre-commit.mjs markdownlint docs/ja/projects/prj-0001/controls/project-register/pjr-pp9d-frontend-vite-vitest-upgrade.md` を実行し、成功した。`catalog_path`、schema 検証・typecheck・`test:unit` script はなく、`test` は初期化時の仮置きのためそれらの検査は非適用。executor による YAML 変更もない。product に `typecheck`・`test:unit` script はないが、本個票指定の `test` と `build`（`tsc` を含む）を実施した。`specdojo index build` は runner に委ねる。
+
+### 申し送り
+
+- 2.1 節の例外に従い、sandbox 内の検査と設定変更を完了し、executor は `complete` とする。開発サーバーの起動・ソース編集時の HMR・preview の表示・通常 build 後の `npm run test:e2e`（5 件）は `listen EPERM` のため、統合後に orchestrator がホストで確認する。画面の表示と React の変更反映まで確認する。
+- クリーンな `dashboard` での `npm ci` は統合後に orchestrator が確認する。依存宣言と lockfile の一致は確認済み。新たな保護された設定の変更案はない。
+- runner は sandbox 外で `node tools/specdojo-pre-commit.mjs register-build` と、その時点で設定された親検証を実行する。reporter / runner が本節と executor evidence を result に反映し、ライフサイクルの状態遷移を行う。
 
 ## 5. 関連ドキュメント
 
