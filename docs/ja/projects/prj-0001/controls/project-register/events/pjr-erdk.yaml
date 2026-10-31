@@ -1,0 +1,43 @@
+# yaml-language-server: $schema=../../../../../../specdojo/schemas/v1/register-events.schema.yaml
+- v: 1
+  id: reg_c116bb158e1a435a990063733faae992
+  ts: "2026-10-31T23:58:04Z"
+  action: add
+  actor: specdojo-orchestrator
+  from_status: null
+  to_status: open
+  reason: PJR-BSXA の調査で Chakra UI 3 は大規模な書き換えになると分かり、naoji の判断（案 A）で分けた
+  changes:
+    - field: status
+      from: ""
+      to: open
+    - field: title
+      from: ""
+      to: Chakra UI 3 に移す
+    - field: description
+      from: ""
+      to: Chakra UI 3 は Ark UI ベースで部品の使い方が大きく変わる（FormControl→Field、Modal→Dialog、Accordion の構成、useToast、@chakra-ui/icons の廃止など）。Chakra UI を使う 35 ファイルを移し、画面の表示と操作を保つ
+    - field: type
+      from: ""
+      to: todo
+    - field: priority
+      from: ""
+      to: medium
+    - field: difficulty
+      from: ""
+      to: hard
+    - field: owner
+      from: ""
+      to: DEV
+    - field: registered
+      from: ""
+      to: "2026-10-31"
+    - field: due
+      from: ""
+      to: "2026-11-30"
+    - field: derived_from
+      from: ""
+      to: '["PJR-BSXA"]'
+    - field: depends_on
+      from: ""
+      to: '["PJR-BSXA"]'
