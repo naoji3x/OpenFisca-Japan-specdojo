@@ -1,0 +1,115 @@
+Playwright のスモーク 5 テストを実装し、Cypress の設定・シナリオと開発手順を移行しました。967 テスト、build、lint、整形は成功しています。
+
+個票の指定により package・CI は変更案を記録しています。反映と、ホスト側での E2E 連続 2 回の確認が残るため、未完了として引き継ぎます。
+
+<specdojo_executor_evidence>
+{
+  "completion_status": "incomplete",
+  "final_message": "Playwright の 3 ファイル・5 テスト、設定、Vitest の収集分離、Cypress ファイル削除、開発手順の更新を実施。967 テスト・build・lint・整形・E2E の型検査は成功。保護された package・lockfile・CI の反映とホスト側の E2E 検証が残る。",
+  "handoff": [
+    "個票の「4. 対応結果」に実施内容・変更ファイル・検証結果・変更案を記録済み。2.1 節に従い保護された設定は未変更。result の記入と状態遷移は reporter / runner が行う。",
+    "承認後、`openfisca-japan:dashboard/package.json` に次の差分を反映する。\n```diff\n@@ scripts\n-    \"cy:open\": \"./node_modules/.bin/cypress open\",\n-    \"cy:run\": \"./node_modules/.bin/cypress run\",\n+    \"test:e2e\": \"playwright test\",\n@@ dependencies\n-    \"axe-core\": \"^4.7.2\",\n-    \"cypress-axe\": \"^1.4.0\",\n@@ devDependencies\n-    \"cypress\": \"^12.17.4\",\n```\n導入済みの `@playwright/test` は維持する。ホスト側で `dashboard` の `npm install --package-lock-only --ignore-scripts` により lockfile を同期し、`npm ci` の成功を確認する。",
+    "承認後、`openfisca-japan:.github/workflows/test_frontend.yml` に次の差分を反映する。\n```diff\n-      - name: Cypress run\n-        uses: cypress-io/github-action@v6\n-        with:\n-          build: npm run build\n-          start: npm run preview\n-          working-directory: ./dashboard\n+      - name: Install Playwright Chromium\n+        run: npx playwright install --with-deps chromium\n+        working-directory: ./dashboard\n+      - name: Build\n+        run: npm run build\n+        working-directory: ./dashboard\n+      - name: Playwright smoke\n+        run: npm run test:e2e\n+        working-directory: ./dashboard\n```",
+    "設定反映後、ホスト側の `dashboard` で test・build・lint・pretty:check と `npm run test:e2e` の連続 2 回を確認する。sandbox では preview が `listen EPERM` で起動できず、実ブラウザーのテストは未実行。削除済みの Cypress ファイルを参照する既存 script・CI が残るため、反映と検証まで close しない。",
+    "runner は sandbox 外で `node tools/specdojo-pre-commit.mjs register-build` と親検証を実行する。sandbox では register-build が `spawnSync git EPERM` で実行できなかった。"
+  ],
+  "validations": [
+    {
+      "command": "npm run test",
+      "status": "passed",
+      "summary": "product の dashboard：8 ファイル・967 件が成功。"
+    },
+    {
+      "command": "npm run build",
+      "status": "passed",
+      "summary": "product の dashboard：成功。既存のバンドルサイズ警告のみ。"
+    },
+    {
+      "command": "npm run lint",
+      "status": "passed",
+      "summary": "product の dashboard：成功。"
+    },
+    {
+      "command": "npm run pretty:check",
+      "status": "passed",
+      "summary": "product の dashboard：最終状態で成功。"
+    },
+    {
+      "command": "npm run pretty",
+      "status": "passed",
+      "summary": "product の pre-commit 相当の整形に成功。範囲外の内容差分なし。"
+    },
+    {
+      "command": "npx playwright test --list",
+      "status": "passed",
+      "summary": "Chromium の 3 ファイル・5 テストを収集。"
+    },
+    {
+      "command": "npx tsc --project e2e/tsconfig.json",
+      "status": "passed",
+      "summary": "E2E と Playwright 設定の型検査に成功。"
+    },
+    {
+      "command": "npx eslint --no-ignore --parser-options '{\"project\":\"e2e/tsconfig.json\"}' playwright.config.ts e2e --ext .ts",
+      "status": "passed",
+      "summary": "E2E と Playwright 設定の型情報付き lint に成功。"
+    },
+    {
+      "command": "npx playwright test",
+      "status": "requires_human",
+      "summary": "実行を試みたが preview の起動が listen EPERM で失敗。ホスト側で連続 2 回の確認が必要。"
+    },
+    {
+      "command": "node tools/specdojo-pre-commit.mjs prettier docs/ja/projects/prj-0001/controls/project-register/pjr-1rje-frontend-playwright-e2e.md",
+      "status": "passed",
+      "summary": "個票の整形に成功。"
+    },
+    {
+      "command": "node tools/specdojo-pre-commit.mjs markdownlint docs/ja/projects/prj-0001/controls/project-register/pjr-1rje-frontend-playwright-e2e.md",
+      "status": "passed",
+      "summary": "個票の Markdown 検査に成功。"
+    },
+    {
+      "command": "node tools/specdojo-pre-commit.mjs register-build",
+      "status": "requires_human",
+      "summary": "spawnSync git EPERM により実行不可。ホスト側の runner に引き継ぐ。"
+    },
+    {
+      "command": "npm run validate:schema:file",
+      "status": "not_applicable",
+      "summary": "schema 検証は非適用。",
+      "reason": "project に script がなく、executor による YAML の変更もない。"
+    },
+    {
+      "command": "npm run typecheck",
+      "status": "not_applicable",
+      "summary": "独立した typecheck script は非適用。",
+      "reason": "project・product ともに script がない。product は build と E2E 専用の tsc で型検査済み。"
+    },
+    {
+      "command": "npm run test:unit",
+      "status": "not_applicable",
+      "summary": "test:unit script は非適用。",
+      "reason": "project・product ともに script がない。product の指定された npm run test は実行済み。"
+    },
+    {
+      "command": "npm test",
+      "status": "not_applicable",
+      "summary": "project の test は非適用。",
+      "reason": "project の test script は npm init の仮置き。"
+    },
+    {
+      "command": "npx specdojo catalog validate --project prj-0001",
+      "status": "not_applicable",
+      "summary": "catalog 検証は非適用。",
+      "reason": "対象 project に catalog_path が設定されていない。"
+    },
+    {
+      "command": "npm --prefix ../openfisca-japan/dashboard exec -- markdownlint ../docs/dev_note.md",
+      "status": "not_applicable",
+      "summary": "product の Markdown lint は非適用。",
+      "reason": "product の package.json に Markdown lint の依存がない。"
+    }
+  ]
+}
+</specdojo_executor_evidence>
