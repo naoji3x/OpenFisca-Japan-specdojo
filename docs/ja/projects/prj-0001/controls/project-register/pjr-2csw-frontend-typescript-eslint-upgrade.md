@@ -7,12 +7,13 @@ specdojo:
   part_of:
     - prj-0001:pjr-index
   item_type: todo
-  item_status: open
+  item_status: waiting
   priority: medium
   difficulty: hard
   owner: DEV
   registered_at: "2026-10-31T05:43:49Z"
   due_on: "2026-11-30"
+  block_reason: "executor reported incomplete: flat config・TypeScript 6 への移行と必要な修正を実施。unit 937件・build・lint・整形は成功。ESLint 9 の公式保守終了によりサポート要件が未充足のため、理由を標準エラーへ出力し終了コード1で報告する。"
   derived_from:
     - PJR-Z7FQ
   depends_on:
