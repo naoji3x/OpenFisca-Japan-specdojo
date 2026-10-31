@@ -41,3 +41,29 @@
     - field: depends_on
       from: ""
       to: '["PJR-2CSW","PJR-1RJE"]'
+- v: 1
+  id: reg_7cd325ad37b04dc8802f838544d55121
+  ts: "2026-10-31T23:39:12Z"
+  action: start
+  actor: sol-executor
+  from_status: open
+  to_status: in-progress
+  reason: work started
+  changes:
+    - field: status
+      from: open
+      to: in-progress
+  previous_event_id: reg_d8ab34c0e88c4c368d1dd6077f33a027
+- v: 1
+  id: reg_ffbd032f0c6e41c7a3b168daae365ddd
+  ts: "2026-10-31T23:46:54Z"
+  action: review
+  actor: sol-executor
+  from_status: in-progress
+  to_status: review
+  reason: ready for review
+  changes:
+    - field: status
+      from: in-progress
+      to: review
+  previous_event_id: reg_7cd325ad37b04dc8802f838544d55121
