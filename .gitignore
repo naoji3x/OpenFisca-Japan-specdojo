@@ -8,3 +8,4 @@ docs/**/execution/exec/.locks/
 /.vitepress/cache/
 /.vitepress/mermaid/
 /.vitepress/kata-staging/
+/local/
