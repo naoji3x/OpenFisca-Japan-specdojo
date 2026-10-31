@@ -118,3 +118,16 @@
       from: "executor reported incomplete: 既存の設定移行差分（vite.config.mts・tsconfig.node.json）を確認し、967件のテスト、通常・Pagesビルド、HTML変換、lint、整形検査が成功。個票に検証結果と保護設定の変更案を記録した。Pages配布用workflow 2件のNode更新が未反映のため未完了。HMR・preview表示・E2E・クリ…"
       to: "-"
   previous_event_id: reg_aa0ccdae02fd4a4e97ec5db14bacf009
+- v: 1
+  id: reg_a91011c2e4694fd09039d2931ff1baaf
+  ts: "2026-10-31T13:56:15Z"
+  action: review
+  actor: sol-executor
+  from_status: in-progress
+  to_status: review
+  reason: ready for review
+  changes:
+    - field: status
+      from: in-progress
+      to: review
+  previous_event_id: reg_e4f0dc0e769445adb3cd66f9c81b03f3

@@ -44,3 +44,19 @@ specdojo:
 ## 4. 進め方
 
 Vite 2 系から移行し、`@vitejs/plugin-react` と Vitest を整合させるための設定変更を行いました。具体的には、`dashboard/vite.config.ts` を削除して、新しい設定を記述した `dashboard/vite.config.mts` を作成しました。あわせて `dashboard/tsconfig.node.json` を更新しました。作業完了後、個票 `docs/ja/projects/prj-0001/controls/project-register/pjr-pp9d-frontend-vite-vitest-upgrade.md` に実施内容と、`test_frontend.yml` の要件に合わせた Node.js バージョンの変更に関する申し送りを記録しました。
+
+## 5. トレーサビリティ
+
+runner がプロダクトリポジトリの処理後に記録した状態と、統合先の commit snapshot です。
+プロジェクトリポジトリの統合は、この result を含む merge commit で確認します。
+その merge commit には `Refs: prj-0001:PJR-PP9D` を付けます。
+`branch-only` の行は未統合です。exec branch を保持し、push と PR 作成はプロダクト側で行います。
+PR が `not applicable` の行では、runner は PR を作成していません。
+
+<!-- markdownlint-disable MD013 -->
+
+| trace key           | repository        | integration branch              | exec branch                            | state  | PR             | commit snapshot                            | recorded at              |
+| ------------------- | ----------------- | ------------------------------- | -------------------------------------- | ------ | -------------- | ------------------------------------------ | ------------------------ |
+| `prj-0001:PJR-PP9D` | `openfisca-japan` | `feature/frontend-test-upgrade` | `feature/frontend-vite-vitest-upgrade` | merged | not applicable | `caa4d965c8f9442e1571b7be0238d84484c16018` | 2026-10-31T13:56:16.116Z |
+
+<!-- markdownlint-enable MD013 -->
