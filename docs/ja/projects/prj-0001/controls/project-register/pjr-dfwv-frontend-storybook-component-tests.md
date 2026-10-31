@@ -224,9 +224,16 @@ project の個票は hook に定める Prettier・markdownlint が成功し、�
 | `link-name`       | serious  | リンクに読み上げられる名前がない           | 6                                                                 | トップへ戻るリンク（`a[href="/"]`）                                           |
 | `label`           | critical | フォームの要素にラベルがない               | 2（`questions-templates--person-count`・`restored-person-count`） | 人数の入力欄                                                                  |
 
-#### 承認待ちの保護された設定
+#### 保護された設定の反映（2026-10-31）
 
-executor の変更案（上記）の `dashboard/package.json` のスクリプト 6 件と、`.github/workflows/test_frontend.yml` の 2 段（`npm run test:ui`・`npm run build-storybook`）は、naoji の承認を待っている。反映と、反映後の検査が終わるまで close しない。
+naoji の承認のもと、executor の変更案を `feature/frontend-test-upgrade` に当てた。
+
+- `73993ff`: `dashboard/package.json` に `test:unit`・`test:stories`・`test:browser`・`test:ui`・`storybook`・`build-storybook` を足した。ロックファイルは変わらない。
+- `3f5eaaa`: `.github/workflows/test_frontend.yml` の Chromium の導入のあとに、`npm run test:ui` と `npm run build-storybook` の段を足した。
+
+一時的な worktree で `npm ci` から、足したスクリプトをすべて流した。`test`（937 件）・`test:unit`（937 件）・`test:stories`（34 件）・`test:browser`（1 件）・`test:ui`（35 件）・`build-storybook`・`build`・`lint`・`pretty:check` が通り、`test:e2e` は連続 2 回とも 5 件が通った。`storybook`（開発サーバー）は起動して `index.json` に 200 を返した。
+
+a11y の違反の修正は、[[prj-0001:pjr-4sm2-a11y-form-link-names|PJR-4SM2]] と [[prj-0001:pjr-bn8w-a11y-contrast-landmark|PJR-BN8W]] に分けた。
 
 ## 5. 関連ドキュメント
 
