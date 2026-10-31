@@ -1,0 +1,30 @@
+{
+  "name": "openfisca-japan-specdojo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "orch:opus": "specdojo orchestrator launch --provider claude -- --agent specdojo-orchestrator --model opus --settings .specdojo/claude/settings.orchestrator.json",
+    "orch:sonnet": "specdojo orchestrator launch --provider claude -- --agent specdojo-orchestrator --model sonnet --settings .specdojo/claude/settings.orchestrator.json",
+    "orch:sol": "specdojo orchestrator launch --provider codex -- -m gpt-6.1-sol \"$(cat .specdojo/codex/orchestrator.md)\"",
+    "orch:luna": "specdojo orchestrator launch --provider codex -- -m gpt-6-luna \"$(cat .specdojo/codex/orchestrator.md)\"",
+    "orch:opencode": "specdojo orchestrator launch --provider opencode -- --agent specdojo-orchestrator",
+    "orch:flash": "specdojo orchestrator launch --provider antigravity -- --add-dir \"$(pwd)\" --model gemini-3.8-flash-high -i \"$(cat .specdojo/antigravity/orchestrator.md)\"",
+    "orch:copilot": "specdojo orchestrator launch --provider copilot -- --agent specdojo-orchestrator",
+    "prepare": "node tools/install-lefthook.mjs",
+    "pre-commit": "lefthook run pre-commit"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "specdojo": "^0.5.0",
+    "lefthook": "^2.1.9",
+    "prettier": "^3.8.4",
+    "markdownlint-cli": "^0.49.1",
+    "@slidev/cli": "^53.0.0",
+    "prettier-plugin-slidev": "^1.0.5"
+  }
+}

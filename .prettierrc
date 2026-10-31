@@ -1,0 +1,16 @@
+{
+  "overrides": [
+    {
+      "files": [
+        "docs/ja/specdojo/samples/**/*-slidev-sample.md",
+        "docs/ja/specdojo/templates/**/*-slidev-template.md"
+      ],
+      "options": {
+        "parser": "slidev",
+        "plugins": [
+          "prettier-plugin-slidev"
+        ]
+      }
+    }
+  ]
+}

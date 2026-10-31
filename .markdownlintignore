@@ -1,0 +1,5 @@
+.claude/agents/
+.github/agents/
+.opencode/agents/
+docs/ja/specdojo/samples/**/*-slidev-sample.md
+docs/ja/specdojo/templates/**/*-slidev-template.md

@@ -1,0 +1,87 @@
+{
+  "name": "specdojo-agent-env",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:22",
+  "remoteUser": "node",
+  "init": true,
+  "workspaceMount": "source=${localWorkspaceFolder}/..,target=/workspaces/openfisca-japan-workspace,type=bind,consistency=cached",
+  "workspaceFolder": "/workspaces/openfisca-japan-workspace/${localWorkspaceFolderBasename}",
+  "shutdownAction": "none",
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": false,
+      "upgradePackages": false
+    },
+    "ghcr.io/rocker-org/devcontainer-features/apt-packages:1": {
+      "packages": "gh,ripgrep,fd-find,fzf,yq,shellcheck,shfmt,tmux,cron,emacs-nox,vim-nox",
+      "upgradePackages": false
+    }
+  },
+  "mounts": [
+    "source=openfisca-japan-specdojo-specdojo-git,target=/home/node/.config/git,type=volume",
+    "source=openfisca-japan-specdojo-specdojo-gh,target=/home/node/.config/gh,type=volume",
+    "source=openfisca-japan-specdojo-specdojo-claude,target=/home/node/.claude,type=volume",
+    "source=openfisca-japan-specdojo-specdojo-codex,target=/home/node/.codex,type=volume",
+    "source=openfisca-japan-specdojo-specdojo-opencode,target=/home/node/.config/opencode,type=volume",
+    "source=openfisca-japan-specdojo-specdojo-opencode-data,target=/home/node/.local/share/opencode,type=volume",
+    "source=openfisca-japan-specdojo-specdojo-antigravity,target=/home/node/.config/antigravity,type=volume"
+  ],
+  "containerEnv": {
+    "GIT_CONFIG_GLOBAL": "/home/node/.config/git/config",
+    "OLLAMA_BASE_URL": "http://host.docker.internal:11434",
+    "LOCAL_OPENAI_BASE_URL": "http://host.docker.internal:11434/v1",
+    "CLAUDE_CONFIG_DIR": "/home/node/.claude",
+    "OPENCODE_DISABLE_AUTO_UPDATE": "1"
+  },
+  "remoteEnv": {
+    "PATH": "/home/node/.local/bin:${containerEnv:PATH}"
+  },
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "mhutchie.git-graph",
+        "davidanson.vscode-markdownlint",
+        "redhat.vscode-yaml",
+        "esbenp.prettier-vscode",
+        "unifiedjs.vscode-remark",
+        "yzhang.markdown-all-in-one",
+        "streetsidesoftware.code-spell-checker",
+        "editorconfig.editorconfig",
+        "usernamehw.errorlens",
+        "tamasfe.even-better-toml",
+        "anthropic.claude-code",
+        "openai.chatgpt",
+        "github.copilot",
+        "github.copilot-chat",
+        "antfu.slidev"
+      ],
+      "settings": {
+        "[markdown]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode",
+          "editor.formatOnSave": true
+        },
+        "[yaml]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode",
+          "editor.formatOnSave": true
+        },
+        "yaml.schemas": {
+          "./docs/specdojo/schemas/v1/agent-members.schema.yaml": ".specdojo/agent-members.yaml",
+          "./docs/specdojo/schemas/v1/exec-defaults.schema.yaml": ".specdojo/exec-defaults.yaml",
+          "./docs/specdojo/schemas/v1/job.schema.yaml": "docs/**/jobs/*.yaml",
+          "./docs/specdojo/schemas/v1/pm-members.schema.yaml": "docs/**/pm-members.yaml",
+          "./docs/specdojo/schemas/v1/pm-review-viewpoints.schema.yaml": "docs/**/pm-review-viewpoints.yaml",
+          "./docs/specdojo/schemas/v1/pm-roles.schema.yaml": "docs/**/pm-roles.yaml",
+          "./docs/specdojo/schemas/v1/routine.schema.yaml": "docs/**/routines/*.yaml",
+          "./docs/specdojo/schemas/v1/sch-defaults.schema.yaml": "docs/**/sch-defaults.yaml",
+          "./docs/specdojo/schemas/v1/sch-milestones.schema.yaml": "docs/**/sch-milestones.yaml",
+          "./docs/specdojo/schemas/v1/sch-strategy.schema.yaml": "docs/**/sch-strategy-*.yaml",
+          "./docs/specdojo/schemas/v1/sch-track.schema.yaml": "docs/**/sch-track-*.yaml"
+        }
+      }
+    }
+  },
+  "postAttachCommand": "sudo service cron start",
+  "runArgs": [
+    "--security-opt=seccomp=unconfined"
+  ]
+}

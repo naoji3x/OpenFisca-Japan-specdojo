@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "current_project": "prj-0001",
+  "agent_members_path": ".specdojo/agent-members.yaml",
+  "projects": {
+    "prj-0001": {
+      "base_path": "docs/ja/projects/prj-0001",
+      "members_path": "030-project-management/pm-members.yaml",
+      "project_register_path": "controls/project-register",
+      "project_context": [
+        "prj-overview"
+      ],
+      "run": {
+        "exec_defaults": ".specdojo/exec-defaults.yaml",
+        "worktree_base": "../OpenFisca-Japan-specdojo-worktrees"
+      }
+    }
+  }
+}

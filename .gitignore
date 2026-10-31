@@ -1,0 +1,10 @@
+# 依存と specdojo の生成物（specdojo config init が追記）
+node_modules/
+.specdojo/doc-index.json
+docs/**/generated/*
+!docs/**/generated/.gitkeep
+docs/**/execution/exec/.locks/
+/.vitepress/dist/
+/.vitepress/cache/
+/.vitepress/mermaid/
+/.vitepress/kata-staging/

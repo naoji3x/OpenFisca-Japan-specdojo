@@ -1,0 +1,120 @@
+run:
+  register_execution: worktree
+  register_post_review: false
+routing:
+  hard:
+    executor_by: claude-expert-executor
+    reporter_by: claude-reporter
+    on_rate_limit: wait
+    fallback_executor_by: codex-expert-executor
+    fallback_reporter_by: codex-reporter
+  medium:
+    executor_by: codex-executor
+    reporter_by: codex-reporter
+    on_rate_limit: fallback
+    fallback_executor_by: opencode-executor
+    fallback_reporter_by: opencode-reporter
+  easy:
+    executor_by: opencode-executor
+    reporter_by: opencode-reporter
+    on_rate_limit: fallback
+    fallback_executor_by: agy-executor
+    fallback_reporter_by: agy-reporter
+rate_limit_detection:
+  exit_codes: []
+  stderr_patterns:
+    - rate limit
+    - "429"
+rate_limit_policy:
+  cooldown_seconds:
+    rate_limit: 900
+  pinned:
+    action: stop
+    max_wait_seconds: 28800
+  on_non_critical:
+    action: skip
+  on_critical:
+    action: try_next
+    retry:
+      max_attempts: 3
+      initial_wait_seconds: 60
+      backoff_multiplier: 3
+      max_wait_seconds: 600
+    on_exhausted: block
+providers:
+  claude:
+    command_template: claude -p --verbose --agent {agent} --model {model} --settings .specdojo/claude/settings.{mode}.json
+    command_params:
+      by_mode:
+        edit:
+          agent: claude-executor
+        review:
+          agent: claude-review-executor
+        report:
+          agent: claude-reporter
+    rate_limit_detection:
+      stderr_patterns:
+        - rate limit
+        - "429"
+        - overloaded
+        - session limit
+  codex:
+    command_template: >-
+      codex exec --ephemeral --sandbox workspace-write -c approval_policy="never" -c
+      sandbox_workspace_write.network_access=false --model {model} -c model_reasoning_effort="{effort}"
+    command_params:
+      by_proficiency:
+        normal:
+          effort: medium
+        expert:
+          effort: high
+    rate_limit_detection:
+      stderr_patterns:
+        - rate limit
+        - "429"
+        - session limit
+        - weekly limit
+        - usage limit
+  opencode:
+    command_template: opencode run --agent {agent} --model {model}
+    command_params:
+      by_mode:
+        edit:
+          agent: opencode-executor
+        review:
+          agent: opencode-review-executor
+        report:
+          agent: opencode-reporter
+    max_concurrency: 1
+    rate_limit_detection:
+      exit_codes: []
+      stderr_patterns:
+        - timeout
+        - out of memory
+        - model is loading
+    connection_error_detection:
+      stderr_patterns:
+        - Cannot connect to API
+        - ECONNREFUSED
+        - connection refused
+  antigravity:
+    command_template: agy --sandbox --add-dir "$(pwd)" --model {model} -p "$(cat)"
+    rate_limit_detection:
+      stderr_patterns:
+        - rate limit
+        - "429"
+        - quota
+        - RESOURCE_EXHAUSTED
+  copilot:
+    command_template: >-
+      copilot -p "$(cat)" --no-color --no-ask-user --model auto --no-remote --no-remote-export --disable-builtin-mcps
+      --allow-tool write --allow-tool 'shell(git status)' --allow-tool 'shell(git diff)' --allow-tool 'shell(git log)'
+      --allow-tool 'shell(git show)' --allow-tool 'shell(npm run)' --allow-tool 'shell(npm test)' --allow-tool
+      'shell(specdojo:*)' --deny-tool 'shell(git add)' --deny-tool 'shell(git commit)' --deny-tool 'shell(git push)'
+      --deny-tool 'shell(git reset)'
+    rate_limit_detection:
+      stderr_patterns:
+        - rate limit
+        - "429"
+        - quota
+        - premium request

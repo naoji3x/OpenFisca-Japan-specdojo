@@ -1,0 +1,15 @@
+id: prj-0001:pm-members
+type: project
+status: draft
+title: OpenFisca-Japan メンバー名簿
+rulebook: specdojo:pm-members-rulebook
+version: 1
+project_id: prj-0001
+members:
+  - nickname: naoji
+    display_name: naoji
+    email: null
+    roles: []
+    type: human
+    persona: final-decision-maker
+    scheduler_strategy: critical-first
