@@ -44,6 +44,12 @@ E2E の道具を Cypress から Playwright に移し、主要な導線のスモ�
 - 保護された設定（`package.json`、`.github/workflows/**` など）の変更が必要な場合、executor は変更案を「4. 対応結果」に書き、pipeline では報告の `handoff` にも書く。反映は利用者の承認のもとで行い、反映と検証が終わるまで close しない。
 - CHANGELOG を更新する場合は未公開の版の節に書き、公開済みの版の節は変えない。範囲外の問題は別の項目に分ける。
 
+### 2.1. 実行の前提（2026-10-31、specdojo-orchestrator）
+
+- `@playwright/test` 1.64.1 は `feature/frontend-test-upgrade` に導入済みである（`a07967e`）。Playwright の Chromium の本体（`~/.cache/ms-playwright`）と OS のライブラリも、このコンテナに入れてある。ブラウザーの本体を取ってくる `npx playwright install` は流さない。
+- executor はネットワークに出られない。サンドボックスの制約で、ブラウザーの起動や `webServer`（preview の起動）ができず E2E を流せない場合は、その検証を `requires_human` として記録し、ほかの検査（`npm run test`・`build`・`lint`・`pretty:check`）が通れば完了としてよい。E2E は統合のあとに orchestrator が連続 2 回流す。
+- `dashboard/package.json`（Cypress・cypress-axe・axe-core の削除、E2E のスクリプトの追加）と `.github/workflows/test_frontend.yml` は保護された設定である。executor は書き換えず、変更案（差分）を「4. 対応結果」と報告の `handoff` に書いて止まる。`cypress.config.js`・`dashboard/cypress/` の削除、`dashboard/e2e/` と `dashboard/playwright.config.ts` の追加は、保護された設定ではないので executor が行う。
+
 ## 3. 作業内容
 
 前提: [[prj-0001:pjr-49v3-frontend-question-regression|PJR-49V3]] と [[prj-0001:pjr-bzgg-frontend-result-error-regression|PJR-BZGG]] が完了していることを確かめてから着手する。
