@@ -45,6 +45,27 @@ Vite と Vitest の更新後に Storybook と `@storybook/addon-vitest` を導�
 - 保護された設定（`package.json`、`.github/workflows/**` など）の変更が必要な場合、executor は変更案を「4. 対応結果」に書き、pipeline では報告の `handoff` にも書く。反映は利用者の承認のもとで行い、反映と検証が終わるまで close しない。
 - CHANGELOG を更新する場合は未公開の版の節に書き、公開済みの版の節は変えない。範囲外の問題は別の項目に分ける。
 
+### 2.1. 実行の前提（2026-10-31、specdojo-orchestrator）
+
+- 依存は `feature/frontend-test-upgrade` に導入済みである（`ce4a04d`）。executor は依存を追加・変更しない。`npx storybook init`・`npx storybook add` など、依存や `package.json` を書き換えるコマンドは流さない。設定ファイルは手で作る。
+
+  | パッケージ                                                                               | 版                                  |
+  | ---------------------------------------------------------------------------------------- | ----------------------------------- |
+  | `storybook`・`@storybook/react-vite`・`@storybook/addon-vitest`・`@storybook/addon-a11y` | 10.6.5                              |
+  | `msw-storybook-addon`                                                                    | 3.0.3                               |
+  | `@vitest/browser`・`@vitest/browser-playwright`                                          | 5.0.5（Vitest と同じ）              |
+  | `playwright`                                                                             | 1.64.1（`@playwright/test` と同じ） |
+  | `vitest-browser-react`                                                                   | 2.3.0                               |
+
+- 2026-10-31 時点の要件（Vite 5〜8、Vitest 4〜5、React 18、msw 2）は、Vite 8.3.5・Vitest 5.0.5・React 18・msw 2.15.0 で満たしている。完了条件の 1 項目目の記録には、この表を使ってよい。
+- Playwright の Chromium の本体と OS のライブラリは、このコンテナに入れてある。`npx playwright install` は流さない。
+- Storybook の telemetry は、`.storybook/main.ts` の `core.disableTelemetry: true` で止める（executor はネットワークに出られない）。
+- MSW の Service Worker（`mockServiceWorker.js`）が要る場合は、`node_modules/msw/lib/mockServiceWorker.js` を写して置く。`npx msw init` は `package.json` を書き換えるので流さない。置き場所は executor が決め、Vite と Storybook の静的ファイルの設定に合わせる。
+- Vitest の Test Projects は、`vite.config.mts` か別の設定ファイルに書く。単体テスト（node・jsdom）と、story・Browser Mode のテスト（ブラウザー）を、`npx vitest run --project <名前>` で別々に流せるようにする。
+- `dashboard/package.json` のスクリプト（`storybook`・`build-storybook`・story のテストを流すスクリプトなど）と、`.github/workflows/test_frontend.yml` の story のテストの段は、保護された設定である。executor は書き換えず、変更案（差分）を「4. 対応結果」と `handoff` に書く。変更案は未完了の理由にしない。反映は、統合のあとに orchestrator が naoji の承認のもとで行う。
+- サンドボックスでは、ブラウザーモードのテストと Storybook の開発サーバーが、ポートを開けず（`listen EPERM`）に流せない場合がある。その場合は `requires_human` として記録し、ほかの検査（`npm run test`・`build`・`lint`・`pretty:check`）が通れば完了としてよい。ブラウザーモードのテストと `build-storybook` は、統合のあとに orchestrator が流す。
+- 上流の文書・コードに、登録簿の ID やリンクを書かない。
+
 ## 3. 作業内容
 
 前提: [[prj-0001:pjr-pp9d-frontend-vite-vitest-upgrade|PJR-PP9D]]（Vite・Reactプラグイン・Vitest の更新）が完了していることを確かめてから着手する。
