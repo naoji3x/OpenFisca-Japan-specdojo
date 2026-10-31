@@ -70,3 +70,35 @@
       from: "-"
       to: "agent exited with non-zero code: agent-git-state-write: Git state changes detected; fields=openfisca-japan:local-config; agent must leave commits and repository configuration changes to the parent run…"
   previous_event_id: reg_f3827dbe98a24396852d2905e4f61b15
+- v: 1
+  id: reg_2bd60e89441a43efb1ce322b62036346
+  ts: "2026-10-31T13:31:49Z"
+  action: start
+  actor: sol-executor
+  from_status: waiting
+  to_status: in-progress
+  reason: executor resumed
+  changes:
+    - field: status
+      from: waiting
+      to: in-progress
+    - field: block_reason
+      from: "agent exited with non-zero code: agent-git-state-write: Git state changes detected; fields=openfisca-japan:local-config; agent must leave commits and repository configuration changes to the parent run…"
+      to: "-"
+  previous_event_id: reg_d9286267bf42445398583a4765683c1d
+- v: 1
+  id: reg_aa0ccdae02fd4a4e97ec5db14bacf009
+  ts: "2026-10-31T13:34:57Z"
+  action: wait
+  actor: sol-executor
+  from_status: in-progress
+  to_status: waiting
+  reason: "executor reported incomplete: 既存の設定移行差分（vite.config.mts・tsconfig.node.json）を確認し、967件のテスト、通常・Pagesビルド、HTML変換、lint、整形検査が成功。個票に検証結果と保護設定の変更案を記録した。Pages配布用workflow 2件のNode更新が未反映のため未完了。HMR・preview表示・E2E・クリ…"
+  changes:
+    - field: status
+      from: in-progress
+      to: waiting
+    - field: block_reason
+      from: "-"
+      to: "executor reported incomplete: 既存の設定移行差分（vite.config.mts・tsconfig.node.json）を確認し、967件のテスト、通常・Pagesビルド、HTML変換、lint、整形検査が成功。個票に検証結果と保護設定の変更案を記録した。Pages配布用workflow 2件のNode更新が未反映のため未完了。HMR・preview表示・E2E・クリ…"
+  previous_event_id: reg_2bd60e89441a43efb1ce322b62036346
