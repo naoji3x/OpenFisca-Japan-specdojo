@@ -67,3 +67,35 @@
       from: "-"
       to: "executor reported incomplete: 描画テスト基盤、8テンプレートのテスト、テスト方針の記録を追加。指定検査は成功したが、npm ciの完了を確認できず再実行が必要。"
   previous_event_id: reg_4f52e15e6acd4ba4a8021cf6f83ec826
+- v: 1
+  id: reg_65a9a334a4ef4dd98891a1f671a2606f
+  ts: "2026-10-31T11:18:47Z"
+  action: start
+  actor: luna-executor
+  from_status: waiting
+  to_status: in-progress
+  reason: executor resumed
+  changes:
+    - field: status
+      from: waiting
+      to: in-progress
+    - field: block_reason
+      from: "executor reported incomplete: 描画テスト基盤、8テンプレートのテスト、テスト方針の記録を追加。指定検査は成功したが、npm ciの完了を確認できず再実行が必要。"
+      to: "-"
+  previous_event_id: reg_703f5c90b71b41b4b6d5308909458f19
+- v: 1
+  id: reg_e0d8559993a146a09c338add253264b3
+  ts: "2026-10-31T11:22:27Z"
+  action: wait
+  actor: luna-executor
+  from_status: in-progress
+  to_status: waiting
+  reason: "executor reported incomplete: 描画テスト基盤、質問テンプレート8種類のテスト、テスト方針の記録を整え、指定された4検査はすべて成功。npm ci は再試行でも無出力のまま60秒を超え完了確認できず、依存のクリーンインストールが未確認のため未完了。"
+  changes:
+    - field: status
+      from: in-progress
+      to: waiting
+    - field: block_reason
+      from: "-"
+      to: "executor reported incomplete: 描画テスト基盤、質問テンプレート8種類のテスト、テスト方針の記録を整え、指定された4検査はすべて成功。npm ci は再試行でも無出力のまま60秒を超え完了確認できず、依存のクリーンインストールが未確認のため未完了。"
+  previous_event_id: reg_65a9a334a4ef4dd98891a1f671a2606f
