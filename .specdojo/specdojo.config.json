@@ -18,8 +18,8 @@
         {
           "name": "openfisca-japan",
           "path": "../OpenFisca-Japan",
-          "integration_branch": "develop",
-          "integration_strategy": "branch-only",
+          "integration_branch": "feature/frontend-test-upgrade",
+          "integration_strategy": "ff",
           "branch_template": "feature/{topic}",
           "commit_subject_template": "{type}({scope}): {title}",
           "setup": {
