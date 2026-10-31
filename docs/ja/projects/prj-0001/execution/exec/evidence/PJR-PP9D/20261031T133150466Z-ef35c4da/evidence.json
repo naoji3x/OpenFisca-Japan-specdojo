@@ -1,0 +1,202 @@
+{
+  "schema_version": 1,
+  "task_id": "PJR-PP9D",
+  "run_id": "20261031T133150466Z-ef35c4da",
+  "stage": {
+    "role": "executor",
+    "actor": "sol-executor",
+    "status": "succeeded",
+    "started_at": "2026-10-31T13:31:50.466Z",
+    "completed_at": "2026-10-31T13:34:56.870Z",
+    "exit_code": 0,
+    "attempts": 1
+  },
+  "changes": [
+    {
+      "path": "docs/ja/projects/prj-0001/controls/project-register/events/pjr-pp9d.yaml",
+      "status": "M"
+    },
+    {
+      "path": "docs/ja/projects/prj-0001/controls/project-register/pjr-pp9d-frontend-vite-vitest-upgrade.md",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/tsconfig.node.json",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/vite.config.ts",
+      "status": "D"
+    },
+    {
+      "path": "openfisca-japan:dashboard/vite.config.mts",
+      "status": "??"
+    }
+  ],
+  "attempt_changes": [
+    {
+      "path": "docs/ja/projects/prj-0001/controls/project-register/pjr-pp9d-frontend-vite-vitest-upgrade.md",
+      "status": "M"
+    }
+  ],
+  "diff_summary": {
+    "files_changed": 5,
+    "summary": ".../controls/project-register/events/pjr-pp9d.yaml | 20 ++++-\n .../pjr-pp9d-frontend-vite-vitest-upgrade.md       | 86 ++++++++++++++++++++--\n 2 files changed, 96 insertions(+), 10 deletions(-)\n[openfisca-japan]\ndashboard/tsconfig.node.json |  2 +-\n dashboard/vite.config.ts     | 27 ---------------------------\n 2 files changed, 1 insertion(+), 28 deletions(-)"
+  },
+  "validations": [
+    {
+      "source": "executor",
+      "command": "node",
+      "status": "passed",
+      "summary": "projectから標準入力スクリプトを実行。dashboardの対象4パッケージについて依存宣言・lockfile・導入済み版の一致、Node v22.23.3とpeer要件の適合をassertで確認。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run test",
+      "status": "passed",
+      "summary": "dashboard：8ファイル・967件すべて成功。テストの削除・skipなし。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run lint",
+      "status": "passed",
+      "summary": "dashboard：成功。"
+    },
+    {
+      "source": "executor",
+      "command": "GITHUB_PAGES=true YADOKARI_GTM_ID=GTM-PP9D-PAGES npm run build",
+      "status": "passed",
+      "summary": "dashboard：Pagesビルド成功。設定読込・base警告なし。既存のchunkサイズ警告のみ。"
+    },
+    {
+      "source": "executor",
+      "command": "env -u GITHUB_PAGES YADOKARI_GTM_ID=GTM-PP9D-NORMAL npm run build",
+      "status": "passed",
+      "summary": "dashboard：通常ビルド成功。設定読込警告なし。既存のchunkサイズ警告のみ。"
+    },
+    {
+      "source": "executor",
+      "command": "node",
+      "status": "passed",
+      "summary": "dashboardで各ビルド直後に標準入力スクリプトを実行。HTMLのGTM置換2か所、アセット参照5か所のbaseと実ファイルの存在を両構成でassert確認。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run pretty",
+      "status": "passed",
+      "summary": "dashboard：pre-commit相当の整形成功。範囲外の差分なし。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run pretty:check",
+      "status": "passed",
+      "summary": "dashboard：全対象の整形検査成功。"
+    },
+    {
+      "source": "executor",
+      "command": "npx playwright test --list",
+      "status": "passed",
+      "summary": "dashboard：Chromiumの3ファイル・5テストを確認。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run dev -- --strictPort",
+      "status": "requires_human",
+      "summary": "dashboard：listen EPERMで起動不可。開発サーバーとHMRはホストで確認が必要。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run preview -- --strictPort",
+      "status": "requires_human",
+      "summary": "dashboard：listen EPERMで起動不可。表示確認はホストで実施。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run test:e2e",
+      "status": "requires_human",
+      "summary": "dashboard：通常ビルド後に実行したがpreviewが起動できず終了。ブラウザーの5件は未実行。"
+    },
+    {
+      "source": "executor",
+      "command": "npm ci",
+      "status": "requires_human",
+      "summary": "個票の指示によりexecutorでは実行しない。ネットワークを利用できるホストでクリーンインストールを確認する。"
+    },
+    {
+      "source": "executor",
+      "command": "node tools/specdojo-pre-commit.mjs prettier docs/ja/projects/prj-0001/controls/project-register/pjr-pp9d-frontend-vite-vitest-upgrade.md",
+      "status": "passed",
+      "summary": "個票の整形成功。"
+    },
+    {
+      "source": "executor",
+      "command": "node tools/specdojo-pre-commit.mjs markdownlint docs/ja/projects/prj-0001/controls/project-register/pjr-pp9d-frontend-vite-vitest-upgrade.md",
+      "status": "passed",
+      "summary": "個票のMarkdown検査成功。"
+    },
+    {
+      "source": "executor",
+      "command": "node tools/specdojo-pre-commit.mjs register-build",
+      "status": "requires_human",
+      "summary": "project：spawnSync git EPERMのためホスト側で実行が必要。"
+    },
+    {
+      "source": "executor",
+      "command": "git diff --check",
+      "status": "passed",
+      "summary": "projectとopenfisca-japanの両方で成功。"
+    },
+    {
+      "source": "executor",
+      "command": "npm test",
+      "status": "not_applicable",
+      "summary": "projectのテストは非適用。",
+      "reason": "projectのtest scriptはnpm initの仮置き。dashboardの実テストは別途実行して成功。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run test:unit",
+      "status": "not_applicable",
+      "summary": "両リポジトリで非適用。",
+      "reason": "projectとdashboardにtest:unit scriptがない。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run typecheck",
+      "status": "not_applicable",
+      "summary": "両リポジトリで非適用。",
+      "reason": "projectとdashboardにtypecheck scriptがない。dashboardのbuildはtscを含み成功。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run validate:schema:file",
+      "status": "not_applicable",
+      "summary": "schema検査は非適用。",
+      "reason": "対応するscriptがなく、今回のexecutorによるYAML変更もない。"
+    },
+    {
+      "source": "executor",
+      "command": "specdojo catalog validate",
+      "status": "not_applicable",
+      "summary": "catalog検査は非適用。",
+      "reason": "対象projectにcatalog_pathの設定がない。"
+    }
+  ],
+  "final_message": "既存の設定移行差分（vite.config.mts・tsconfig.node.json）を確認し、967件のテスト、通常・Pagesビルド、HTML変換、lint、整形検査が成功。個票に検証結果と保護設定の変更案を記録した。Pages配布用workflow 2件のNode更新が未反映のため未完了。HMR・preview表示・E2E・クリーンインストール・Actions配布は未検証。Git設定・commit・resultは変更していない。",
+  "completion_status": "incomplete",
+  "handoff": [
+    "個票の完了条件に従い、保護された設定の変更案を記録した。openfisca-japan:.github/workflows/develop.yml の build job、Setup node の with.node-version を \"18\" から \"26.4.0\" へ変更する。同じく openfisca-japan:.github/workflows/jekyll-gh-pages.yml の値を '18' から '26.4.0' へ変更する。両workflowはdashboardをインストール・ビルドするが、Node 18は導入済みツールのengine要件を満たさない。提案は既存のtest_frontend.ymlと揃えるもの。承認後に exec handoff apply で反映し、--resume で差分と要件を確認する。",
+    "個票2.1節に従い、統合後にorchestratorがホストで開発サーバー起動・ソース編集時のHMR・preview表示・通常ビルド後の npm run test:e2e（5件）を確認する。sandboxではlisten EPERMで起動できなかった。",
+    "ホストでNode 26.4.0のクリーンなdashboardに対してnpm ci、通常・Pagesビルド、test・lint・pretty:check・test:e2eを確認する。依存宣言・lockfile・導入済み版とローカルNode v22.23.3のengine適合は確認済み。追加の依存更新案はない。",
+    "runnerはホストで node tools/specdojo-pre-commit.mjs register-build と設定済みの親検証を実行する。reporter / runnerは個票の対応結果と本報告をresultへ反映する。前回のGit設定変更検知に対し、今回のexecutorはGit設定の復元・変更を行っていない。"
+  ],
+  "block_reason": "executor reported incomplete: 既存の設定移行差分（vite.config.mts・tsconfig.node.json）を確認し、967件のテスト、通常・Pagesビルド、HTML変換、lint、整形検査が成功。個票に検証結果と保護設定の変更案を記録した。Pages配布用workflow 2件のNode更新が未反映のため未完了。HMR・preview表示・E2E・クリーンインストール・Actions配布は未検証。Git設定・commit・resultは変更していない。",
+  "log_refs": [
+    {
+      "kind": "agent-output-excerpt",
+      "path": "docs/ja/projects/prj-0001/execution/exec/evidence/PJR-PP9D/20261031T133150466Z-ef35c4da/executor.log",
+      "bytes": 6836,
+      "truncated": false
+    }
+  ]
+}
