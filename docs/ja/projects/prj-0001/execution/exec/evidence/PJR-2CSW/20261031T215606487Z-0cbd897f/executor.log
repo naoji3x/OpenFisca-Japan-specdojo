@@ -1,0 +1,173 @@
+個票の承認済み例外を反映し、executor 作業を完了しました。単体937件・build・lint・整形は成功。ブラウザー検査はホスト実行へ引き継ぎます。
+
+<specdojo_executor_evidence>
+{
+  "completion_status": "complete",
+  "final_message": "既存の設定移行・コード修正を確認し、ESLint 9 の承認済み例外と後続項目を個票へ記録した。単体937件・build・lint・整形は成功。result は編集していない。",
+  "handoff": [
+    "個票2.2節の naoji の判断に従い、ESLint 9 の保守終了を承認済み例外として適用した。[公式サポート表](https://eslint.org/version-support/)上の EOL は維持して記録し、公式保守対象とは扱っていない。ESLint 10 と @eslint-react への移行は [[prj-0001:pjr-6kv3-frontend-eslint10-eslint-react|PJR-6KV3]] で扱う。追加の依存・保護設定変更は不要。",
+    "統合後、orchestrator は dashboard でクリーンな npm ci、npm run test:ui、npm run build 後の npm run test:e2e を実行する。今回の story／Browser Mode は uv_interface_addresses errno 1、E2E の preview は listen EPERM で起動前に停止したため、成功は主張しない。",
+    "runner はホストで node tools/specdojo-pre-commit.mjs register-build と、その時点の親検証を実行する。sandbox では register-build が spawnSync git EPERM で停止した。",
+    "reporter / runner は個票4節の変更ファイル、互換性、承認済み例外、再開時の検証、XState の個別例外を result に反映する。XState の型アサーションを外すと81件の型エラーとなる検証は前回の記録であり、今回は対象コードを維持した。executor は result、個票のステータス、登録簿の行、Git 設定、commit を変更していない。"
+  ],
+  "validations": [
+    {
+      "command": "npm run test",
+      "status": "passed",
+      "summary": "dashboard: unit 6ファイル・937件が成功。全件を1回実行。"
+    },
+    {
+      "command": "npm run build",
+      "status": "passed",
+      "summary": "dashboard: TypeScript と Vite build が成功。chunk サイズ警告のみ。"
+    },
+    {
+      "command": "npm run lint -- --report-unused-disable-directives",
+      "status": "passed",
+      "summary": "dashboard: lint と未使用の無効化コメント検査が成功。"
+    },
+    {
+      "command": "npm run pretty",
+      "status": "passed",
+      "summary": "dashboard: pre-commit 相当の整形が成功。追加の製品差分なし。"
+    },
+    {
+      "command": "npm run pretty:check",
+      "status": "passed",
+      "summary": "dashboard: 全対象の整形検査が成功。"
+    },
+    {
+      "command": "npx tsc --project tsconfig.node.json --noEmit --tsBuildInfoFile /tmp/pjr-2csw-tsconfig-node.tsbuildinfo",
+      "status": "passed",
+      "summary": "dashboard: Vite 設定の型検査が成功。一時ファイルは削除済み。"
+    },
+    {
+      "command": "npm ls typescript eslint typescript-eslint eslint-plugin-react eslint-config-prettier @eslint/js globals --depth=0",
+      "status": "passed",
+      "summary": "dashboard: 指定された導入済みの版を確認。"
+    },
+    {
+      "command": "node --input-type=module",
+      "status": "passed",
+      "summary": "dashboard: 全直接依存の宣言・lockfile・導入済み版の一致、TypeScript／ESLint の peer 範囲を確認。ESLint API で79ファイルの対象、型情報、React 規則、globals、既存11件の上書きを確認。"
+    },
+    {
+      "command": "npm run test:ui",
+      "status": "requires_human",
+      "summary": "dashboard: Storybook の networkInterfaces が uv_interface_addresses errno 1 で拒否された。ホストで story と Browser Mode を実行する。"
+    },
+    {
+      "command": "npm run test:e2e",
+      "status": "requires_human",
+      "summary": "dashboard: build 成功後に実行したが preview が起動できず停止。ホストで実行する。"
+    },
+    {
+      "command": "npm run preview -- --strictPort",
+      "status": "requires_human",
+      "summary": "dashboard: listen EPERM 0.0.0.0:30000 を確認。ホストでの起動が必要。"
+    },
+    {
+      "command": "npm ci",
+      "status": "requires_human",
+      "summary": "個票の指示に従って executor では実行していない。統合後に orchestrator がクリーンな環境で実行する。"
+    },
+    {
+      "command": "node tools/specdojo-pre-commit.mjs prettier docs/ja/projects/prj-0001/controls/project-register/pjr-2csw-frontend-typescript-eslint-upgrade.md",
+      "status": "passed",
+      "summary": "個票の整形が成功。"
+    },
+    {
+      "command": "node tools/specdojo-pre-commit.mjs markdownlint docs/ja/projects/prj-0001/controls/project-register/pjr-2csw-frontend-typescript-eslint-upgrade.md",
+      "status": "passed",
+      "summary": "個票の Markdown 検査が成功。"
+    },
+    {
+      "command": "node tools/specdojo-pre-commit.mjs register-build",
+      "status": "requires_human",
+      "summary": "spawnSync git EPERM により停止。ホストの runner で実行する。"
+    },
+    {
+      "command": "git diff --check",
+      "status": "passed",
+      "summary": "project・openfisca-japan 両リポジトリで成功。"
+    },
+    {
+      "command": "npx specdojo catalog validate",
+      "status": "not_applicable",
+      "summary": "対象プロジェクトでは非適用。",
+      "reason": "prj-0001 に `catalog_path` が設定されていない。"
+    },
+    {
+      "command": "npm run validate:schema:file",
+      "status": "not_applicable",
+      "summary": "project では非適用。",
+      "reason": "package.json に validate:schema:file script が存在しない。"
+    },
+    {
+      "command": "npm run typecheck",
+      "status": "not_applicable",
+      "summary": "独立した typecheck は非適用。製品の型検査は build と tsc で成功。",
+      "reason": "project と dashboard の package.json に typecheck script が存在しない。"
+    },
+    {
+      "command": "npm run test:unit",
+      "status": "not_applicable",
+      "summary": "project 側の単体検査は非適用。dashboard は個票指定の npm run test を実行済み。",
+      "reason": "project の package.json に test:unit script が存在しない。"
+    },
+    {
+      "command": "npm test",
+      "status": "not_applicable",
+      "summary": "project 側の test は非適用。",
+      "reason": "project の test script は npm init の仮置きである。"
+    }
+  ],
+  "target_coverage": [
+    {
+      "target": "docs/ja/projects/prj-0001/controls/project-register/pjr-2csw-frontend-typescript-eslint-upgrade.md",
+      "status": "changed",
+      "path": "docs/ja/projects/prj-0001/controls/project-register/pjr-2csw-frontend-typescript-eslint-upgrade.md"
+    },
+    {
+      "target": "openfisca-japan:dashboard/.eslintrc.js",
+      "status": "changed",
+      "path": "openfisca-japan:dashboard/.eslintrc.js"
+    },
+    {
+      "target": "openfisca-japan:dashboard/src/components/questions/question.tsx",
+      "status": "changed",
+      "path": "openfisca-japan:dashboard/src/components/questions/question.tsx"
+    },
+    {
+      "target": "openfisca-japan:dashboard/src/components/questions/template/addressQuestionTemplate.tsx",
+      "status": "changed",
+      "path": "openfisca-japan:dashboard/src/components/questions/template/addressQuestionTemplate.tsx"
+    },
+    {
+      "target": "openfisca-japan:dashboard/src/components/questions/template/multipleSelectionQuestionTemplate.tsx",
+      "status": "changed",
+      "path": "openfisca-japan:dashboard/src/components/questions/template/multipleSelectionQuestionTemplate.tsx"
+    },
+    {
+      "target": "openfisca-japan:dashboard/src/state/questionState.ts",
+      "status": "changed",
+      "path": "openfisca-japan:dashboard/src/state/questionState.ts"
+    },
+    {
+      "target": "openfisca-japan:dashboard/tsconfig.json",
+      "status": "changed",
+      "path": "openfisca-japan:dashboard/tsconfig.json"
+    },
+    {
+      "target": "openfisca-japan:dashboard/tsconfig.node.json",
+      "status": "changed",
+      "path": "openfisca-japan:dashboard/tsconfig.node.json"
+    },
+    {
+      "target": "openfisca-japan:dashboard/eslint.config.mjs",
+      "status": "changed",
+      "path": "openfisca-japan:dashboard/eslint.config.mjs"
+    }
+  ]
+}
+</specdojo_executor_evidence>

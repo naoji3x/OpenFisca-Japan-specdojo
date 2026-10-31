@@ -7,13 +7,12 @@ specdojo:
   part_of:
     - prj-0001:pjr-index
   item_type: todo
-  item_status: waiting
+  item_status: in-progress
   priority: medium
   difficulty: hard
   owner: DEV
   registered_at: "2026-10-31T05:43:49Z"
   due_on: "2026-11-30"
-  block_reason: "executor reported incomplete: flat config・TypeScript 6 への移行と必要な修正を実施。unit 937件・build・lint・整形は成功。ESLint 9 の公式保守終了によりサポート要件が未充足のため、理由を標準エラーへ出力し終了コード1で報告する。"
   derived_from:
     - PJR-Z7FQ
   depends_on:
@@ -70,11 +69,11 @@ Vite を更新したあとの構成を基準に、TypeScript・ESLint・typescri
 
 前提: [[prj-0001:pjr-pp9d-frontend-vite-vitest-upgrade|PJR-PP9D]] と [[prj-0001:pjr-dfwv-frontend-storybook-component-tests|PJR-DFWV]] が完了していることを確かめてから着手する。
 
-| No  | 作業                                                                                 | 担当 | 状態    | メモ                                                                        |
-| --- | ------------------------------------------------------------------------------------ | ---- | ------- | --------------------------------------------------------------------------- |
-| 1   | 既存の tsconfig と ESLint・Prettier の設定、Vite 更新後の互換性を確かめる            | DEV  | done    | 公式情報・導入済みの peerDependencies を確認。ESLint 9 の公式保守終了を検出 |
-| 2   | TypeScript と lint 関連の依存・設定を移し、更新に必要な最小限の型・lint の修正を行う | DEV  | done    | 2.1 節の導入済み依存を使用し、flat config・TypeScript 6 へ移行              |
-| 3   | クリーンなインストールと、すべての回帰テスト・品質の検査を流す                       | DEV  | partial | unit・build・lint・整形は成功。ホストでの検証とサポート方針の決定を引き継ぐ |
+| No  | 作業                                                                                 | 担当 | 状態    | メモ                                                                                   |
+| --- | ------------------------------------------------------------------------------------ | ---- | ------- | -------------------------------------------------------------------------------------- |
+| 1   | 既存の tsconfig と ESLint・Prettier の設定、Vite 更新後の互換性を確かめる            | DEV  | done    | 公式情報・導入済みの peerDependencies を確認。ESLint 9 の保守終了は2.2節の承認済み例外 |
+| 2   | TypeScript と lint 関連の依存・設定を移し、更新に必要な最小限の型・lint の修正を行う | DEV  | done    | 2.1 節の導入済み依存を使用し、flat config・TypeScript 6 へ移行                         |
+| 3   | クリーンなインストールと、すべての回帰テスト・品質の検査を流す                       | DEV  | partial | executor の検査は再度成功。npm ci・ブラウザー検査・親検証は2.1節どおりホストへ引き継ぐ |
 
 ## 4. 対応結果
 
@@ -93,7 +92,7 @@ Vite を更新したあとの構成を基準に、TypeScript・ESLint・typescri
 | `eslint-config-prettier` | 10.1.8（宣言 `^10.1.8`）   | peer は ESLint `>=7.0.0`。Prettier と競合する規則の調整を維持                           |
 | `globals`                | 17.13.0（宣言 `^17.13.0`） | Node `>=18`。従来の browser・ES2021 の globals を flat config へ移す                    |
 
-**未充足: ESLint の公式保守。** [ESLint の公式サポート表](https://eslint.org/version-support/) では、9.0.0–9.39.5 は 2026-08-06 に EOL となっており、2026-10-31 時点の保守対象は 10 系である。したがって、この構成は peer の互換性を満たすが、計画の「サポート対象の版」をすべて満たすとは判定できない。2.1 節は依存変更を禁止しているため、executor は依存を変更しなかった。orchestrator は React プラグインの ESLint 10 対応または代替構成を調査して保護設定の変更案を用意するか、ESLint 9 の商用延長保守を含む方針を利用者と決定する必要がある。対応版が存在するとの仮定や、延長保守を契約済みとの仮定は置いていない。この点を残して close しない。
+**承認済み例外: ESLint の公式保守。** [ESLint の公式サポート表](https://eslint.org/version-support/) を再確認し、9.0.0–9.39.5 が 2026-08-06 に EOL となり、2026-10-31 時点の保守対象は 10 系であることを確認した。この構成は peer の互換性を満たすが、ESLint 9 自体が公式の保守対象であるとは扱わない。2.2 節の naoji の判断（2026-10-31、案 A）に従い、eslint-plugin-react の対応範囲の都合により、本項目では ESLint 9 を例外として使用する。ESLint 10 と `@eslint-react/eslint-plugin` への移行は [[prj-0001:pjr-6kv3-frontend-eslint10-eslint-react|PJR-6KV3]] で React 更新後に扱う。保守終了は本項目の未完了理由にしない。商用延長保守を契約済みとの仮定は置かず、依存・保護設定の追加変更も行っていない。
 
 ### 変更ファイルと設定の維持
 
@@ -106,7 +105,7 @@ Vite を更新したあとの構成を基準に、TypeScript・ESLint・typescri
 
 ### 検証
 
-Linux arm64、Node v22.23.3、npm 10.9.9、導入済み依存を使用した。Node は Vite 8.3.5 の `^20.19.0 || >=22.12.0` と今回の lint ツールの要件を満たす。下表の製品側コマンドはすべて `openfisca-japan:dashboard` で実行した。
+Linux arm64、Node v22.23.3、npm 10.9.9、導入済み依存を使用した。Node は Vite 8.3.5 の `^20.19.0 || >=22.12.0` と今回の lint ツールの要件を満たす。再開時にも下表の検査を実行し、依存・設定・既存の差分を確認した。下表の製品側コマンドはすべて `openfisca-japan:dashboard` で実行した。XState のアサーションを外す Compiler API の検証のみ前回の記録であり、対象コードに追加変更がないため再実行していない。
 
 | コマンド                                                                                                             | 結果                                                                                                                                                      |
 | -------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -115,7 +114,7 @@ Linux arm64、Node v22.23.3、npm 10.9.9、導入済み依存を使用した。N
 | `npm run lint -- --report-unused-disable-directives`                                                                 | 成功。通常の lint に未使用例外の検査も追加                                                                                                                |
 | `npm run pretty`                                                                                                     | 成功。製品の pre-commit 相当。依存・保護設定・範囲外の整形差分なし                                                                                        |
 | `npm run pretty:check`                                                                                               | 成功                                                                                                                                                      |
-| `npx tsc --project tsconfig.node.json --noEmit --tsBuildInfoFile ../tmp/tsconfig-node.tsbuildinfo`                   | 成功。Vite 設定の型検査。一時ファイルは削除                                                                                                               |
+| `npx tsc --project tsconfig.node.json --noEmit --tsBuildInfoFile /tmp/pjr-2csw-tsconfig-node.tsbuildinfo`            | 成功。Vite 設定の型検査。一時ファイルは削除                                                                                                               |
 | `npm ls typescript eslint typescript-eslint eslint-plugin-react eslint-config-prettier @eslint/js globals --depth=0` | 成功。上記の導入済みの版を確認                                                                                                                            |
 | `node --input-type=module -`（依存の照合）                                                                           | 成功。全直接依存の宣言・lockfile の root エントリーの一致、固定版が宣言範囲を満たすこと、導入済みの版との一致、TypeScript・ESLint の peer 範囲を照合      |
 | `node --input-type=module -`（ESLint API）                                                                           | 成功。79ファイルの検査対象と設定の維持を確認                                                                                                              |
@@ -129,10 +128,10 @@ project の本個票には hook 指定の `node tools/specdojo-pre-commit.mjs pr
 
 ### 申し送りと完了判定
 
-- executor の設定移行・コード修正と実行可能な製品の品質検査は完了した。ただし、上記の ESLint 9 の公式保守終了によって計画のサポート要件が未充足のため、`completion_status` は `incomplete` とする。ブラウザー検査の `requires_human` とは別の未充足事項である。
-- orchestrator は上記のサポート方針を利用者と決める。依存や保護設定を変更する場合は具体的な変更案の承認・反映後に executor を再開し、型検査と lint を再検証する。現時点で追加の保護設定の編集はない。
+- executor の設定移行・コード修正と実行可能な製品の品質検査は完了した。2.2 節の承認済み例外を適用し、`completion_status` は `complete` とする。ブラウザー検査は2.1節で認められた `requires_human` として引き継ぐ。個票・登録簿のステータス遷移は runner と人間が行う。
+- ESLint 9 の保守終了は上記のとおり受容済みであり、サポート方針の再承認や本項目での依存変更は不要である。ESLint 10 と React lint の入れ替えは [[prj-0001:pjr-6kv3-frontend-eslint10-eslint-react|PJR-6KV3]] に引き継ぐ。既存の製品差分を維持し、再開時の製品コード・依存・保護設定の追加編集はない。
 - 統合後、orchestrator はクリーンな環境で `npm ci`、`npm run test:ui`（先行構成では34 stories・Browser Mode 1件）、`npm run build` 後に `npm run test:e2e`（先行構成では5件）を実行する。今回これらのブラウザー検査の成功は主張しない。runner はホストで register-build とその時点の親検証を流す。
-- reporter / runner は本節の変更ファイル・公式互換性と保守状況の区別・検証結果・単独の XState 例外の理由・残作業を result に反映する。executor は result を作成・編集していない。
+- reporter / runner は本節の変更ファイル・公式互換性と保守状況の区別・ESLint 9 の承認済み例外と後続項目・再開時の検証結果・単独の XState 例外の理由・ホストでの検証を result に反映する。executor は result を作成・編集していない。
 
 ## 5. 関連ドキュメント
 
