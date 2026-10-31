@@ -29,7 +29,11 @@ specdojo:
 - 描画のテストは Vitest と jsdom（または happy-dom）、Testing Library で書く。jsdom と happy-dom のどちらにするかは executor が決め、理由を「4. 対応結果」に記録する。
 - Chakra UI・Recoil・Router など必要な Provider をまとめた描画用のヘルパーと、固定データを、テストのファイルから切り離して置く。[[prj-0001:pjr-dfwv-frontend-storybook-component-tests|PJR-DFWV]] で story からも使うためである。各テストの間で状態が漏れない。
 - 既存の 4 ファイル（`state/` の 3 ファイルと `shareLink.test.ts`）を変えずに通す。
-- テストの層の分担（ロジック・画面・E2E がそれぞれ何を確かめるか）を、PJR-Z7FQ の決定内容に沿って `openfisca-japan:docs/dev_note.md` のフロントエンドの節に書く。
+- テストの層の分担を、PJR-Z7FQ の決定内容に沿って `openfisca-japan:docs/dev_note.md` のフロントエンドの節に表で書く。表には次を含める。
+  - ロジック（状態・変換・入力の検証など）は UI から切り離し、Vitest の node 環境で確かめる。
+  - 画面は、今は Vitest と jsdom で確かめ、[[prj-0001:pjr-dfwv-frontend-storybook-component-tests|PJR-DFWV]] のあとは Storybook の story と Vitest Browser Mode で確かめる。
+  - API の応答は、[[prj-0001:pjr-bzgg-frontend-result-error-regression|PJR-BZGG]] で入れる MSW で HTTP の境界で差し替える。
+  - 導線は、[[prj-0001:pjr-1rje-frontend-playwright-e2e|PJR-1RJE]] の Playwright の E2E で、主要なものだけを確かめる。
 - 今の Vite 2.9・`@vitejs/plugin-react` 1.3 と Vitest 3 の組み合わせで描画のテストが動かない場合、Vite は更新しない（ローカルで下書きした PJR-PP9D の範囲）。阻害要因と回避案を「4. 対応結果」に記録して止まる。
 - 入力処理を 1 か所わざと変えると該当するテストが失敗することを確かめ、変更は戻して結果を記録する。
 - 検証は `dashboard` で `npm ci`、`npm run test`、`npm run build`、`npm run lint`、`npm run pretty:check` を実行する。実行したコマンド・環境・成否を「4. 対応結果」に記録する。

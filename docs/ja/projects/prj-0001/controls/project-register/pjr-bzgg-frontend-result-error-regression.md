@@ -28,7 +28,10 @@ specdojo:
 ## 2. 完了条件
 
 - 給付のみ・貸付のみ・両方・対象なしを固定データで再現し、表示内容と出し分けを確かめる。
-- `openfisca-japan:dashboard/src/hooks/calculate.ts` の `fetch` を模擬し、成功時の結果表示と、失敗時のエラー画面への遷移を確かめる。模擬の方法（MSW か `vi.fn` か）は executor が決め、理由を「4. 対応結果」に記録する。
+- 計算 API（`openfisca-japan:dashboard/src/hooks/calculate.ts` が呼ぶ `/calculate`）は、`fetch` の関数を直接模擬せず、MSW の 2 系で HTTP の境界で差し替える。
+  - 応答の定義は `dashboard/src/mocks/handlers.ts` に、Vitest（node）用の設定は `dashboard/src/mocks/server.ts` に置き、Vitest の setup で登録する。[[prj-0001:pjr-dfwv-frontend-storybook-component-tests|PJR-DFWV]] で story からも同じ handlers を使うためである。
+  - 正常（給付のみ・貸付のみ・両方・対象なし）、500、通信の失敗の応答で、成功時の結果表示と、失敗時のエラー画面への遷移を確かめる。
+- 正常の応答の固定データは、ローカルの API（`docker compose` の `openfisca`）が実際に返した `/calculate` の応答から作り、`dashboard/src/mocks/` の下に JSON で置く。モックと実際の API の食い違いを減らすためである。送った入力と作り直す手順を `openfisca-japan:docs/dev_note.md` に書く。
 - `GenericError`・`FormResponseError`・`NotFoundError` の表示と、今の戻る操作を確かめる。`FormResponseError` は、かんたん見積もり・くわしく見積もり・災害のモードの戻り先を確かめる。
 - 固定データと描画用のヘルパーは PJR-49V3 のものを使い、新しく足す固定データもテストのファイルから切り離して置く。
 - 既存の共有リンクの互換性テストを変えずに通す。
@@ -41,11 +44,11 @@ specdojo:
 
 前提: [[prj-0001:pjr-49v3-frontend-question-regression|PJR-49V3]] が完了していることを確かめてから着手する。
 
-| No  | 作業                                                           | 担当 | 状態 | メモ |
-| --- | -------------------------------------------------------------- | ---- | ---- | ---- |
-| 1   | 今の画面の表示条件と遷移を調べ、固定の応答と期待結果を整理する | DEV  | open | -    |
-| 2   | 結果・エラー画面と計算 API の呼び出しのテストを追加する        | DEV  | open | -    |
-| 3   | 既存のテストを含めて検証を流す                                 | DEV  | open | -    |
+| No  | 作業                                                                                        | 担当 | 状態 | メモ |
+| --- | ------------------------------------------------------------------------------------------- | ---- | ---- | ---- |
+| 1   | 今の画面の表示条件と遷移を調べ、固定の応答と期待結果を整理する                              | DEV  | open | -    |
+| 2   | MSW の handlers と固定データを整え、結果・エラー画面と計算 API の呼び出しのテストを追加する | DEV  | open | -    |
+| 3   | 既存のテストを含めて検証を流す                                                              | DEV  | open | -    |
 
 ## 4. 対応結果
 

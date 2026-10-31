@@ -28,8 +28,9 @@ E2E の道具を Cypress から Playwright に移し、主要な導線のスモ�
 
 ## 2. 完了条件
 
+- Playwright は E2E だけに使い、コンポーネントテストの機能は使わない。画面のテストは PJR-49V3・PJR-BZGG・PJR-DFWV の Vitest と Storybook が受け持つためである。テストは `dashboard/e2e/` に、設定は `dashboard/playwright.config.ts` に置く。
 - `@playwright/test` を導入し、Cypress の 3 シナリオ（`Homepage.cy.js`・`SimpleCalculation.cy.js`・`DetailedCalculation.cy.js`）を、同じ確認内容のまま移す。
-- かんたん見積もりとくわしく見積もりを 1 本ずつ、同意・入力・送信・結果の表示まで流し、結果の具体的な内容を確かめる。計算 API は `page.route` で固定の応答を返し、外部の API の稼働と実データに頼らない。[[prj-0001:pjr-bzgg-frontend-result-error-regression|PJR-BZGG]] の固定データを使える場合は使う。
+- かんたん見積もりとくわしく見積もりを 1 本ずつ、同意・入力・送信・結果の表示まで流し、結果の具体的な内容を確かめる。計算 API は `page.route` で固定の応答を返し、外部の API の稼働と実データに頼らない。[[prj-0001:pjr-bzgg-frontend-result-error-regression|PJR-BZGG]] の `dashboard/src/mocks/` にある固定データ（JSON）を使う。
 - 戻る操作と API の失敗の導線は E2E に入れない。PJR-49V3 と PJR-BZGG で固定済みのためである。
 - ブラウザーは Chromium だけとし、`webServer` の設定で build 済みの preview を起動して流す。
 - E2E 全体を連続 2 回流して成功する。

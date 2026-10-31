@@ -31,7 +31,10 @@ Vite と Vitest の更新後に Storybook と `@storybook/addon-vitest` を導�
 - 着手の時点で、Storybook の最新版が求める Vite・Vitest・Node の版を公式の情報で確かめ、採る版と理由を「4. 対応結果」に記録する。2026-10-31 時点では、Storybook 10.6 の `@storybook/react-vite` は Vite 5 以上、`@storybook/addon-vitest` は Vitest 4 以上と `@vitest/browser-playwright` を要する。
 - Storybook、`@storybook/addon-vitest`、`@storybook/addon-a11y` を導入し、story を Vitest のブラウザーモード（Playwright の Chromium）で流す。
 - [[prj-0001:pjr-49v3-frontend-question-regression|PJR-49V3]] と [[prj-0001:pjr-bzgg-frontend-result-error-regression|PJR-BZGG]] の画面のテストのうち、実際のブラウザーで確かめる価値のあるものを、story と play 関数に移す。どれを移すか、移したあとの jsdom 版を消すか残すかの基準は executor が決め、理由を「4. 対応結果」に記録する。同じ確認を二重に持たない。
-- story は PJR-49V3 の描画用のヘルパーと固定データを使う。
+- story は PJR-49V3 の描画用のヘルパーと固定データを使う。API の応答は `msw-storybook-addon` で、[[prj-0001:pjr-bzgg-frontend-result-error-regression|PJR-BZGG]] の `dashboard/src/mocks/handlers.ts` を使う。
+- story にしない画面のテストで実際のブラウザーが要るものは、Vitest Browser Mode（`vitest-browser-react`）で書けるようにする。jsdom のままにするか Browser Mode に移すかは executor が決め、理由を「4. 対応結果」に記録する。ロジックのテストは node 環境のまま変えない。
+- Vitest の Test Projects で、単体テスト（node・jsdom）と、story・Browser Mode のテスト（ブラウザー）を分け、それぞれを流すスクリプトを用意する。
+- 見た目の回帰テスト（スクリーンショットの比較）はこの項目の範囲の外とする。Chromatic は画面のデータを外部のサービスに送るため使わない。
 - 質問テンプレート・結果・エラー画面の story で a11y の検査を流す。見つかった違反はこの項目では直さず、一覧を「4. 対応結果」に記録して別の項目に分ける。
 - story のテストを CI で流す段を足す。
 - `openfisca-japan:docs/dev_note.md` のフロントエンドの節に、story の書き方と流し方を書く。
