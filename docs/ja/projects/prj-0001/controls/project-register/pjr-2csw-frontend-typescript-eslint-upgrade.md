@@ -133,6 +133,15 @@ project の本個票には hook 指定の `node tools/specdojo-pre-commit.mjs pr
 - 統合後、orchestrator はクリーンな環境で `npm ci`、`npm run test:ui`（先行構成では34 stories・Browser Mode 1件）、`npm run build` 後に `npm run test:e2e`（先行構成では5件）を実行する。今回これらのブラウザー検査の成功は主張しない。runner はホストで register-build とその時点の親検証を流す。
 - reporter / runner は本節の変更ファイル・公式互換性と保守状況の区別・ESLint 9 の承認済み例外と後続項目・再開時の検証結果・単独の XState 例外の理由・ホストでの検証を result に反映する。executor は result を作成・編集していない。
 
+### orchestrator の確認（2026-10-31、specdojo-orchestrator）
+
+- `feature/frontend-test-upgrade`（`7287eb3`）を一時的な worktree に取り出し、`npm ci` から次を確かめた。TypeScript 6.0.3・ESLint 9.39.5 で動いている。
+  - `npm run test`（937 件）・`build`・`lint`（警告なし）・`pretty:check`・`test:ui`（35 件）・`build-storybook` が通った。
+  - `npm run test:e2e` は、build のあと連続 2 回とも 5 件が通った。
+- 差分は `.eslintrc.js` から `eslint.config.mjs` への移行、`tsconfig.json` の `esModuleInterop: true`、`tsconfig.node.json` の `moduleResolution: Bundler`、指摘 4 件のコードの修正、理由付きの個別の無効化 1 件（XState の型の推論に要る型の指定）に収まる。規則をまとめて無効にしていない。
+- 2 回の実行の前後で、Git の local config は変わっていない。上流の変更に登録簿の ID やリンクはない（commit メッセージの `Refs:` 行を除く）。
+- ESLint 9 は、eslint-plugin-react の対応の都合により例外として使う（2.2）。ESLint 10 への移行は [[prj-0001:pjr-6kv3-frontend-eslint10-eslint-react|PJR-6KV3]] で扱う。
+
 ## 5. 関連ドキュメント
 
 - 方針: [[prj-0001:pjr-z7fq-frontend-test-strategy|PJR-Z7FQ フロントエンドのテストの方針を決める]]
