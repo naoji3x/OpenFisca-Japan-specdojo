@@ -46,3 +46,19 @@ specdojo:
 ## 4. 進め方
 
 設定共有の問題を解決するため `openfisca-japan:dashboard/vitest.browser.config.mts` を修正。`npm run test`、`npm run build`、`npm run lint`、および `tsc` による設定ファイルの型検査を実施し、整合性を確認した。その後、個票および `docs/dev_note.md` の更新を行った。sandbox 環境における `os.networkInterfaces()` の制限に起因してブラウザテストが未完了であるため、ホスト環境での実測と CI 設定の反映を申し送る。
+
+## 5. トレーサビリティ
+
+runner がプロダクトリポジトリの処理後に記録した状態と、統合先の commit snapshot です。
+プロジェクトリポジトリの統合は、この result を含む merge commit で確認します。
+その merge commit には `Refs: prj-0001:PJR-DFWV` を付けます。
+`branch-only` の行は未統合です。exec branch を保持し、push と PR 作成はプロダクト側で行います。
+PR が `not applicable` の行では、runner は PR を作成していません。
+
+<!-- markdownlint-disable MD013 -->
+
+| trace key           | repository        | integration branch              | exec branch                                  | state  | PR             | commit snapshot                            | recorded at              |
+| ------------------- | ----------------- | ------------------------------- | -------------------------------------------- | ------ | -------------- | ------------------------------------------ | ------------------------ |
+| `prj-0001:PJR-DFWV` | `openfisca-japan` | `feature/frontend-test-upgrade` | `feature/frontend-storybook-component-tests` | merged | not applicable | `046b2cc819bf4cc79ef0c3deb3f42e060b68b30e` | 2026-10-31T14:29:18.210Z |
+
+<!-- markdownlint-enable MD013 -->
