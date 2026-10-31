@@ -1,0 +1,98 @@
+<specdojo_executor_evidence>
+{
+  "completion_status": "complete",
+  "final_message": "導入済みの React 18.3.1 構成を確認し、Router の future flag を設定。互換性表と検証結果を個票に記録した。937 件の単体テスト・build・lint・整形検査は成功。ブラウザー検査は sandbox 制約によりホストへ引き継ぐ。",
+  "handoff": [
+    "変更ファイル: `openfisca-japan:dashboard/src/App.tsx`、`openfisca-japan:dashboard/src/mocks/resultTestUtils.tsx`、個票 `docs/ja/projects/prj-0001/controls/project-register/pjr-0hyv-frontend-react-upgrade.md`。依存宣言・ロック・保護された設定の追加変更は不要だった。",
+    "個票 2.1 節に従い、統合後に orchestrator がクリーンな `npm ci`、`npm run test:ui`、`npm run build` 後の `npm run test:e2e` をホストで実行する。今回の変更後のブラウザーテストは未実行である。",
+    "ホストで開発画面・story の console を確認し、React 18.3 の非推奨警告と Router の両警告、質問への回答・戻る操作・結果表示・共有リンク復元・QR 表示を確認する。",
+    "Recoil の置き換えは [[prj-0001:pjr-b1zq-frontend-recoil-to-jotai|PJR-B1ZQ]]、React 19 移行は [[prj-0001:pjr-6b0q-frontend-react19-upgrade|PJR-6B0Q]] へ引き継ぐ。Chakra UI・framer-motion の制約も [[prj-0001:pjr-bsxa-frontend-chakra-ui-upgrade|PJR-BSXA]] と合わせて検証する。",
+    "result は executor の指示に従い未編集。個票の対応結果と本報告を reporter・runner が反映する。個票のステータス、登録簿の行、Git 設定・commit は変更していない。"
+  ],
+  "validations": [
+    {
+      "command": "npm run test",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboard。6 ファイル・937 件成功、skip なし。"
+    },
+    {
+      "command": "npm run build",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboard。TypeScript・本番 build 成功。chunk サイズの警告あり。"
+    },
+    {
+      "command": "npm run lint",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboard。指摘なし。"
+    },
+    {
+      "command": "npm run pretty:check",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboard。全対象の整形検査成功。"
+    },
+    {
+      "command": "npx prettier --write src/App.tsx src/mocks/resultTestUtils.tsx",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboard。変更したソースを整形済み。"
+    },
+    {
+      "command": "npm ls react react-dom @types/react @types/react-dom recoil @xstate/react xstate @chakra-ui/react react-router-dom qrcode.react framer-motion",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboard。peer の invalid・missing なし。"
+    },
+    {
+      "command": "node -e \"const a=require('./package.json'),b=require('./package-lock.json');require('node:assert/strict').deepEqual([a.dependencies,a.devDependencies],[b.packages[''].dependencies,b.packages[''].devDependencies]);console.log('manifest and lock declarations match')\"",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboard。依存宣言とロックのルート宣言が一致。"
+    },
+    {
+      "command": "npm run test:ui",
+      "status": "requires_human",
+      "summary": "openfisca-japan:dashboard。設定ロード時に `uv_interface_addresses` の権限エラー。story・Browser Mode は未実行。ホストで再実行する。"
+    },
+    {
+      "command": "npm run test:e2e",
+      "status": "requires_human",
+      "summary": "openfisca-japan:dashboard。build 後に実行したが preview 起動で終了。診断で listen EPERM を確認。ホストで再実行する。"
+    },
+    {
+      "command": "node tools/specdojo-pre-commit.mjs prettier docs/ja/projects/prj-0001/controls/project-register/pjr-0hyv-frontend-react-upgrade.md",
+      "status": "passed",
+      "summary": "project。個票の整形成功。"
+    },
+    {
+      "command": "node tools/specdojo-pre-commit.mjs markdownlint docs/ja/projects/prj-0001/controls/project-register/pjr-0hyv-frontend-react-upgrade.md",
+      "status": "passed",
+      "summary": "project。個票の Markdown 検査成功。"
+    },
+    {
+      "command": "npx specdojo register build --project prj-0001 --dry-run",
+      "status": "passed",
+      "summary": "登録簿の生成確認成功。生成ファイルの書き込みなし。"
+    },
+    {
+      "command": "git diff --check; git -C ../openfisca-japan diff --check",
+      "status": "passed",
+      "summary": "両リポジトリの差分に空白エラーなし。"
+    },
+    {
+      "command": "npm test",
+      "status": "not_applicable",
+      "summary": "project のテストは非適用。",
+      "reason": "project の test script は npm 初期生成の仮 script。製品の単体テストは別途実行済み。"
+    },
+    {
+      "command": "npm run validate:schema:file",
+      "status": "not_applicable",
+      "summary": "schema 検査は非適用。",
+      "reason": "executor による YAML の変更がなく、対象 script も存在しない。"
+    },
+    {
+      "command": "npx specdojo catalog validate --project prj-0001",
+      "status": "not_applicable",
+      "summary": "catalog 検証は非適用。",
+      "reason": "対象 project に `catalog_path` が設定されていない。"
+    }
+  ]
+}
+</specdojo_executor_evidence>
