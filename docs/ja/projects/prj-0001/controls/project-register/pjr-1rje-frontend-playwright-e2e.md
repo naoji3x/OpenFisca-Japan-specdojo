@@ -24,22 +24,41 @@ specdojo:
 
 ## 1. 概要
 
-Cypress の 3 シナリオを Playwright に移し、かんたん・くわしく見積もりを固定応答で結果まで流すスモークに絞る。Cypress と関連依存は外す
+E2E の道具を Cypress から Playwright に移し、主要な導線のスモークに絞る（[[prj-0001:pjr-z7fq-frontend-test-strategy|PJR-Z7FQ]]）。ローカルで下書きした PJR-HDQ7（E2E の拡充）と PJR-EHRG（Cypress の更新）は、この項目に置き換える。
 
 ## 2. 完了条件
 
-- _TODO_: 完了と判断できる具体的な条件を記載する。
+- `@playwright/test` を導入し、Cypress の 3 シナリオ（`Homepage.cy.js`・`SimpleCalculation.cy.js`・`DetailedCalculation.cy.js`）を、同じ確認内容のまま移す。
+- かんたん見積もりとくわしく見積もりを 1 本ずつ、同意・入力・送信・結果の表示まで流し、結果の具体的な内容を確かめる。計算 API は `page.route` で固定の応答を返し、外部の API の稼働と実データに頼らない。[[prj-0001:pjr-bzgg-frontend-result-error-regression|PJR-BZGG]] の固定データを使える場合は使う。
+- 戻る操作と API の失敗の導線は E2E に入れない。PJR-49V3 と PJR-BZGG で固定済みのためである。
+- ブラウザーは Chromium だけとし、`webServer` の設定で build 済みの preview を起動して流す。
+- E2E 全体を連続 2 回流して成功する。
+- `cypress`・`cypress-axe`・`axe-core` の依存、`cypress.config.js`、`dashboard/cypress/`、`cy:open` と `cy:run` のスクリプトを外し、E2E を流すスクリプトを足す。スクリプトの名前は executor が決め、「4. 対応結果」に記録する。
+- CI の `openfisca-japan:.github/workflows/test_frontend.yml` の Cypress の段を、Playwright の段に置き換える。
+- `openfisca-japan:docs/dev_note.md` のフロントエンドの節にある、テストの流し方を書き換える。
+- 検証は `dashboard` で `npm ci`、`npm run test`、`npm run build`、`npm run lint`、`npm run pretty:check` と、追加した E2E のスクリプトを実行する。実行したコマンド・環境・成否を「4. 対応結果」に記録する。
+- exec で実施する場合は、その時点の設定による親の検証も通す。親の検証にフロントエンドの検査が含まれない場合も、この項目で指定した検査は省略しない。
+- 保護された設定（`package.json`、`.github/workflows/**` など）の変更が必要な場合、executor は変更案を「4. 対応結果」に書き、pipeline では報告の `handoff` にも書く。反映は利用者の承認のもとで行い、反映と検証が終わるまで close しない。
+- CHANGELOG を更新する場合は未公開の版の節に書き、公開済みの版の節は変えない。範囲外の問題は別の項目に分ける。
 
 ## 3. 作業内容
 
-| No  | 作業   | 担当   | 状態 | メモ |
-| --- | ------ | ------ | ---- | ---- |
-| 1   | _TODO_ | _TODO_ | open | -    |
+前提: [[prj-0001:pjr-49v3-frontend-question-regression|PJR-49V3]] と [[prj-0001:pjr-bzgg-frontend-result-error-regression|PJR-BZGG]] が完了していることを確かめてから着手する。
+
+| No  | 作業                                                                     | 担当 | 状態 | メモ                                              |
+| --- | ------------------------------------------------------------------------ | ---- | ---- | ------------------------------------------------- |
+| 1   | 今の Cypress のシナリオと計算 API の呼び出しを調べ、固定の応答を用意する | DEV  | open | -                                                 |
+| 2   | Playwright を導入し、3 シナリオの移行と、見積もり 2 本のスモークを書く   | DEV  | open | -                                                 |
+| 3   | Cypress と関連の依存・設定を外し、CI と `docs/dev_note.md` を書き換える  | DEV  | open | CI と `package.json` は保護された設定の扱いに従う |
+| 4   | E2E を連続 2 回流し、検証を流す                                          | DEV  | open | -                                                 |
 
 ## 4. 対応結果
 
-_TODO_: 完了時に、実施内容・成果物・残課題を記載する。未完了の場合は `-` とする。
+-
 
 ## 5. 関連ドキュメント
 
-- _TODO_: 根拠・影響先・追跡先を `[[doc-id]]` 形式で記載する。
+- 方針: [[prj-0001:pjr-z7fq-frontend-test-strategy|PJR-Z7FQ フロントエンドのテストの方針を決める]]
+- 対象リポジトリ: `openfisca-japan`（`../OpenFisca-Japan`）、対象ディレクトリ: `dashboard/`、`.github/workflows/`
+- 先行の項目: [[prj-0001:pjr-49v3-frontend-question-regression|PJR-49V3]]、[[prj-0001:pjr-bzgg-frontend-result-error-regression|PJR-BZGG]]
+- 置き換える下書き: ローカルの PJR-HDQ7、PJR-EHRG
