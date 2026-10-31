@@ -99,3 +99,22 @@
       from: in-progress
       to: review
   previous_event_id: reg_bc2db232e3a243e0a936794a3c3963d3
+- v: 1
+  id: reg_9ea0d7f276b743da8c64274662c147f3
+  ts: "2026-10-31T22:03:21Z"
+  action: close
+  actor: specdojo-orchestrator
+  from_status: review
+  to_status: done
+  reason: 完了条件を確かめ、統合されたブランチで npm ci から全検査と E2E が通ることを確かめた。ESLint 9 の例外は naoji の判断
+  changes:
+    - field: status
+      from: review
+      to: done
+    - field: completed
+      from: "-"
+      to: "2026-10-31"
+    - field: conclusion
+      from: "-"
+      to: TypeScript 6.0.3・ESLint 9.39.5・typescript-eslint 8.72 に上げ、flat config に移した（openfisca-japan の 58af125・7287eb3）。ESLint 9 は例外として使い、10 への移行は PJR-6KV3 に分けた
+  previous_event_id: reg_ecdf2d87829d47a6b516daf98d1a91d9

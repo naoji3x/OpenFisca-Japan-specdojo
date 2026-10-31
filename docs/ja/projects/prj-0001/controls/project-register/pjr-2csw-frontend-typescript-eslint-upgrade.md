@@ -2,17 +2,19 @@
 specdojo:
   id: prj-0001:pjr-2csw-frontend-typescript-eslint-upgrade
   type: project
-  status: draft
+  status: ready
   rulebook: specdojo:pjr-rulebook
   part_of:
     - prj-0001:pjr-index
   item_type: todo
-  item_status: review
+  item_status: done
   priority: medium
   difficulty: hard
   owner: DEV
   registered_at: "2026-10-31T05:43:49Z"
   due_on: "2026-11-30"
+  completed_at: "2026-10-31T22:03:21Z"
+  conclusion: TypeScript 6.0.3・ESLint 9.39.5・typescript-eslint 8.72 に上げ、flat config に移した（openfisca-japan の 58af125・7287eb3）。ESLint 9 は例外として使い、10 への移行は PJR-6KV3 に分けた
   derived_from:
     - PJR-Z7FQ
   depends_on:
