@@ -1,0 +1,137 @@
+描画テスト35件を追加し、既存分を含む940件と build・lint・整形検査が成功しました。ケース表と破壊テスト結果も個票に記録しました。
+
+<specdojo_executor_evidence>
+{
+  "completion_status": "complete",
+  "final_message": "質問テンプレート8種類の描画テスト基盤と35ケースを整備。既存905件を含む940件、build、lint、pretty:checkが成功。開発メモはフロントエンド節への追記に限定し、個票にケース表・破壊テスト・検証結果を記録した。",
+  "handoff": [
+    "project の `node tools/specdojo-pre-commit.mjs register-build` は sandbox 内で `spawnSync git EPERM` が再現した。ホスト側 runner で確認する。result の記入と状態遷移は reporter / runner に委ねる。",
+    "`personNum` は正の人数を入力後、同じ「はい」のまま消去すると有効状態が直後には true のまま残り、「はい」の再クリックで false になる。既存挙動をテストと個票に記録した。別項目で effect の依存に `formValidated` を含める修正と期待値の更新を検討する。"
+  ],
+  "validations": [
+    {
+      "command": "npm run test",
+      "status": "passed",
+      "summary": "openfisca-japan/dashboard：5ファイル・940件成功（既存905件、追加35件）。年齢の上限条件を一時変更すると該当1件が失敗し、実装復元後は全件成功。"
+    },
+    {
+      "command": "npm run build",
+      "status": "passed",
+      "summary": "openfisca-japan/dashboard：TypeScript検査と本番ビルド成功。既存のバンドルサイズ警告あり。"
+    },
+    {
+      "command": "npm run lint",
+      "status": "passed",
+      "summary": "openfisca-japan/dashboard：ESLint成功。"
+    },
+    {
+      "command": "npm run pretty:check",
+      "status": "passed",
+      "summary": "openfisca-japan/dashboard：全対象の整形検査成功。"
+    },
+    {
+      "command": "npm run pretty",
+      "status": "passed",
+      "summary": "openfisca-japan/dashboard：Huskyのpre-commit相当の整形が成功。追加の変更なし。"
+    },
+    {
+      "command": "./dashboard/node_modules/.bin/prettier --write dashboard/vite.config.ts dashboard/src/testSetup.ts dashboard/src/components/questions/template/questionTemplateTestUtils.tsx dashboard/src/components/questions/template/questionTemplates.test.tsx",
+      "status": "passed",
+      "summary": "productの変更した設定・テスト関連ファイルを整形。"
+    },
+    {
+      "command": "./dashboard/node_modules/.bin/prettier --stdin-filepath docs/dev_note.md",
+      "status": "passed",
+      "summary": "新規追加節だけを整形。追加節を除く全文がHEADと一致することも確認。"
+    },
+    {
+      "command": "node tools/specdojo-pre-commit.mjs prettier docs/ja/projects/prj-0001/controls/project-register/pjr-49v3-frontend-question-regression.md",
+      "status": "passed",
+      "summary": "projectの個票を整形。"
+    },
+    {
+      "command": "node tools/specdojo-pre-commit.mjs markdownlint docs/ja/projects/prj-0001/controls/project-register/pjr-49v3-frontend-question-regression.md",
+      "status": "passed",
+      "summary": "projectの個票のMarkdown検査成功。"
+    },
+    {
+      "command": "git diff --check",
+      "status": "passed",
+      "summary": "両リポジトリで成功。既存4テスト、年齢の実装、依存設定、登録簿一覧、resultにexecutorによる変更なし。"
+    },
+    {
+      "command": "node tools/specdojo-pre-commit.mjs register-build",
+      "status": "requires_human",
+      "summary": "sandboxで試行したがstaged file確認時の `spawnSync git EPERM` により実行不可。ホスト側runnerで確認が必要。"
+    },
+    {
+      "command": "specdojo catalog validate",
+      "status": "not_applicable",
+      "summary": "catalog検証は適用外。",
+      "reason": "対象projectに `catalog_path` が設定されていない。"
+    },
+    {
+      "command": "npm run validate:schema:file",
+      "status": "not_applicable",
+      "summary": "schema検証scriptは適用外。",
+      "reason": "projectのpackage.jsonに当該scriptがない。"
+    },
+    {
+      "command": "npm run typecheck",
+      "status": "not_applicable",
+      "summary": "独立したtypecheck scriptは適用外。productはbuild内のtscで検証済み。",
+      "reason": "projectとproduct/dashboardのpackage.jsonに当該scriptがない。"
+    },
+    {
+      "command": "npm run test:unit",
+      "status": "not_applicable",
+      "summary": "pipeline共通の単体テストscriptは適用外。個票指定のproductテストは実行済み。",
+      "reason": "projectとproduct/dashboardのpackage.jsonに当該scriptがない。"
+    },
+    {
+      "command": "npm test",
+      "status": "not_applicable",
+      "summary": "projectのtest scriptは適用外。",
+      "reason": "projectのtest scriptはnpm initの仮置きである。"
+    },
+    {
+      "command": "npx markdownlint docs/dev_note.md",
+      "status": "not_applicable",
+      "summary": "productのMarkdown lintは適用外。",
+      "reason": "productにmarkdownlint関連の依存が導入されていない。"
+    }
+  ],
+  "target_coverage": [
+    {
+      "target": "docs/ja/projects/prj-0001/controls/project-register/pjr-49v3-frontend-question-regression.md",
+      "status": "changed",
+      "path": "docs/ja/projects/prj-0001/controls/project-register/pjr-49v3-frontend-question-regression.md"
+    },
+    {
+      "target": "openfisca-japan:dashboard/vite.config.ts",
+      "status": "changed",
+      "path": "openfisca-japan:dashboard/vite.config.ts"
+    },
+    {
+      "target": "openfisca-japan:docs/dev_note.md",
+      "status": "changed",
+      "path": "openfisca-japan:docs/dev_note.md"
+    },
+    {
+      "target": "openfisca-japan:dashboard/src/components/questions/template/questionTemplateTestUtils.tsx",
+      "status": "changed",
+      "path": "openfisca-japan:dashboard/src/components/questions/template/questionTemplateTestUtils.tsx"
+    },
+    {
+      "target": "openfisca-japan:dashboard/src/components/questions/template/questionTemplates.test.tsx",
+      "status": "changed",
+      "path": "openfisca-japan:dashboard/src/components/questions/template/questionTemplates.test.tsx"
+    },
+    {
+      "target": "openfisca-japan:dashboard/src/testSetup.ts",
+      "status": "changed",
+      "path": "openfisca-japan:dashboard/src/testSetup.ts"
+    }
+  ]
+}
+</specdojo_executor_evidence>

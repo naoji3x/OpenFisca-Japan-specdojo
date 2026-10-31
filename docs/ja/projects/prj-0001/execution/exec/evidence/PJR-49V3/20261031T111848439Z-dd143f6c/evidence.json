@@ -1,0 +1,156 @@
+{
+  "schema_version": 1,
+  "task_id": "PJR-49V3",
+  "run_id": "20261031T111848439Z-dd143f6c",
+  "stage": {
+    "role": "executor",
+    "actor": "luna-executor",
+    "status": "succeeded",
+    "started_at": "2026-10-31T11:18:48.439Z",
+    "completed_at": "2026-10-31T11:22:26.687Z",
+    "exit_code": 0,
+    "attempts": 1
+  },
+  "changes": [
+    {
+      "path": "docs/ja/projects/prj-0001/controls/project-register/events/pjr-49v3.yaml",
+      "status": "M"
+    },
+    {
+      "path": "docs/ja/projects/prj-0001/controls/project-register/pjr-49v3-frontend-question-regression.md",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/vite.config.ts",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:docs/dev_note.md",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/questions/template/questionTemplateTestUtils.tsx",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/questions/template/questionTemplates.test.tsx",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/testSetup.ts",
+      "status": "??"
+    }
+  ],
+  "attempt_changes": [
+    {
+      "path": "docs/ja/projects/prj-0001/controls/project-register/pjr-49v3-frontend-question-regression.md",
+      "status": "M"
+    }
+  ],
+  "diff_summary": {
+    "files_changed": 7,
+    "summary": ".../controls/project-register/events/pjr-49v3.yaml     | 18 +++++++++++++++++-\n .../pjr-49v3-frontend-question-regression.md           |  7 ++++---\n 2 files changed, 21 insertions(+), 4 deletions(-)\n[openfisca-japan]\ndashboard/vite.config.ts |   3 +-\n docs/dev_note.md         | 157 +++++++++++++++++++++++++++--------------------\n 2 files changed, 91 insertions(+), 69 deletions(-)"
+  },
+  "validations": [
+    {
+      "source": "executor",
+      "command": "npm ci",
+      "status": "failed",
+      "summary": "openfisca-japan/dashboard で実行。60秒超出力がなく中断し、終了コード130。クリーンインストール完了を確認できず。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run test",
+      "status": "passed",
+      "summary": "5ファイル、913件成功。既存4ファイルも含む。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run build",
+      "status": "passed",
+      "summary": "成功。既存のバンドルサイズ警告あり。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run lint",
+      "status": "passed",
+      "summary": "成功。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run pretty:check",
+      "status": "passed",
+      "summary": "成功。変更後にも再実行し成功。"
+    },
+    {
+      "source": "executor",
+      "command": "npx prettier --write docs/ja/projects/prj-0001/controls/project-register/pjr-49v3-frontend-question-regression.md",
+      "status": "passed",
+      "summary": "変更なしで整形済み。"
+    },
+    {
+      "source": "executor",
+      "command": "npx markdownlint docs/ja/projects/prj-0001/controls/project-register/pjr-49v3-frontend-question-regression.md",
+      "status": "passed",
+      "summary": "成功。"
+    },
+    {
+      "source": "executor",
+      "command": "./dashboard/node_modules/.bin/prettier --write docs/dev_note.md dashboard/vite.config.ts dashboard/src/components/questions/template/questionTemplateTestUtils.tsx dashboard/src/components/questions/template/questionTemplates.test.tsx dashboard/src/testSetup.ts",
+      "status": "passed",
+      "summary": "変更した product 文書・ソースを整形。続く npm run pretty:check も成功。"
+    }
+  ],
+  "target_coverage": [
+    {
+      "target": "docs/ja/projects/prj-0001/controls/project-register/pjr-49v3-frontend-question-regression.md",
+      "status": "changed",
+      "path": "docs/ja/projects/prj-0001/controls/project-register/pjr-49v3-frontend-question-regression.md",
+      "reason": ""
+    },
+    {
+      "target": "openfisca-japan:dashboard/vite.config.ts",
+      "status": "changed",
+      "path": "dashboard/vite.config.ts",
+      "reason": ""
+    },
+    {
+      "target": "openfisca-japan:docs/dev_note.md",
+      "status": "changed",
+      "path": "docs/dev_note.md",
+      "reason": ""
+    },
+    {
+      "target": "openfisca-japan:dashboard/src/components/questions/template/questionTemplateTestUtils.tsx",
+      "status": "changed",
+      "path": "dashboard/src/components/questions/template/questionTemplateTestUtils.tsx",
+      "reason": ""
+    },
+    {
+      "target": "openfisca-japan:dashboard/src/components/questions/template/questionTemplates.test.tsx",
+      "status": "changed",
+      "path": "dashboard/src/components/questions/template/questionTemplates.test.tsx",
+      "reason": ""
+    },
+    {
+      "target": "openfisca-japan:dashboard/src/testSetup.ts",
+      "status": "changed",
+      "path": "dashboard/src/testSetup.ts",
+      "reason": ""
+    }
+  ],
+  "final_message": "描画テスト基盤、質問テンプレート8種類のテスト、テスト方針の記録を整え、指定された4検査はすべて成功。npm ci は再試行でも無出力のまま60秒を超え完了確認できず、依存のクリーンインストールが未確認のため未完了。",
+  "completion_status": "incomplete",
+  "handoff": [
+    "依存取得可能な runner 環境で openfisca-japan/dashboard にて npm ci を実行し、正常完了を確認する。project リポジトリの register-build hook は前回 sandbox 内で staged file 読み取り時に EPERM が発生。pjr-index.md は変更していないため、runner 側で通常の hook 実行可否を確認する。"
+  ],
+  "block_reason": "executor reported incomplete: 描画テスト基盤、質問テンプレート8種類のテスト、テスト方針の記録を整え、指定された4検査はすべて成功。npm ci は再試行でも無出力のまま60秒を超え完了確認できず、依存のクリーンインストールが未確認のため未完了。",
+  "log_refs": [
+    {
+      "kind": "agent-output-excerpt",
+      "path": "docs/ja/projects/prj-0001/execution/exec/evidence/PJR-49V3/20261031T111848439Z-dd143f6c/executor.log",
+      "bytes": 3744,
+      "truncated": false
+    }
+  ]
+}

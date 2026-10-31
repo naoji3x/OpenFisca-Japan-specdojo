@@ -1,0 +1,236 @@
+{
+  "schema_version": 1,
+  "task_id": "PJR-49V3",
+  "run_id": "20261031T113553973Z-d99a79b9",
+  "stage": {
+    "role": "executor",
+    "actor": "sol-executor",
+    "status": "succeeded",
+    "started_at": "2026-10-31T11:35:53.973Z",
+    "completed_at": "2026-10-31T11:43:28.199Z",
+    "exit_code": 0,
+    "attempts": 1
+  },
+  "changes": [
+    {
+      "path": "docs/ja/projects/prj-0001/controls/project-register/events/pjr-49v3.yaml",
+      "status": "M"
+    },
+    {
+      "path": "docs/ja/projects/prj-0001/controls/project-register/pjr-49v3-frontend-question-regression.md",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/vite.config.ts",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:docs/dev_note.md",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/questions/template/questionTemplateTestUtils.tsx",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/questions/template/questionTemplates.test.tsx",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/testSetup.ts",
+      "status": "??"
+    }
+  ],
+  "attempt_changes": [
+    {
+      "path": "docs/ja/projects/prj-0001/controls/project-register/pjr-49v3-frontend-question-regression.md",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/vite.config.ts",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:docs/dev_note.md",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/questions/template/questionTemplateTestUtils.tsx",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/questions/template/questionTemplates.test.tsx",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/testSetup.ts",
+      "status": "??"
+    }
+  ],
+  "diff_summary": {
+    "files_changed": 7,
+    "summary": ".../controls/project-register/events/pjr-49v3.yaml | 18 ++++-\n .../pjr-49v3-frontend-question-regression.md       | 83 +++++++++++++---------\n 2 files changed, 66 insertions(+), 35 deletions(-)\n[openfisca-japan]\ndashboard/vite.config.ts |  8 +++++---\n docs/dev_note.md         | 12 ++++++++++++\n 2 files changed, 17 insertions(+), 3 deletions(-)"
+  },
+  "validations": [
+    {
+      "source": "executor",
+      "command": "npm run test",
+      "status": "passed",
+      "summary": "openfisca-japan/dashboard：5ファイル・940件成功（既存905件、追加35件）。年齢の上限条件を一時変更すると該当1件が失敗し、実装復元後は全件成功。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run build",
+      "status": "passed",
+      "summary": "openfisca-japan/dashboard：TypeScript検査と本番ビルド成功。既存のバンドルサイズ警告あり。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run lint",
+      "status": "passed",
+      "summary": "openfisca-japan/dashboard：ESLint成功。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run pretty:check",
+      "status": "passed",
+      "summary": "openfisca-japan/dashboard：全対象の整形検査成功。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run pretty",
+      "status": "passed",
+      "summary": "openfisca-japan/dashboard：Huskyのpre-commit相当の整形が成功。追加の変更なし。"
+    },
+    {
+      "source": "executor",
+      "command": "./dashboard/node_modules/.bin/prettier --write dashboard/vite.config.ts dashboard/src/testSetup.ts dashboard/src/components/questions/template/questionTemplateTestUtils.tsx dashboard/src/components/questions/template/questionTemplates.test.tsx",
+      "status": "passed",
+      "summary": "productの変更した設定・テスト関連ファイルを整形。"
+    },
+    {
+      "source": "executor",
+      "command": "./dashboard/node_modules/.bin/prettier --stdin-filepath docs/dev_note.md",
+      "status": "passed",
+      "summary": "新規追加節だけを整形。追加節を除く全文がHEADと一致することも確認。"
+    },
+    {
+      "source": "executor",
+      "command": "node tools/specdojo-pre-commit.mjs prettier docs/ja/projects/prj-0001/controls/project-register/pjr-49v3-frontend-question-regression.md",
+      "status": "passed",
+      "summary": "projectの個票を整形。"
+    },
+    {
+      "source": "executor",
+      "command": "node tools/specdojo-pre-commit.mjs markdownlint docs/ja/projects/prj-0001/controls/project-register/pjr-49v3-frontend-question-regression.md",
+      "status": "passed",
+      "summary": "projectの個票のMarkdown検査成功。"
+    },
+    {
+      "source": "executor",
+      "command": "git diff --check",
+      "status": "passed",
+      "summary": "両リポジトリで成功。既存4テスト、年齢の実装、依存設定、登録簿一覧、resultにexecutorによる変更なし。"
+    },
+    {
+      "source": "executor",
+      "command": "node tools/specdojo-pre-commit.mjs register-build",
+      "status": "requires_human",
+      "summary": "sandboxで試行したがstaged file確認時の `spawnSync git EPERM` により実行不可。ホスト側runnerで確認が必要。"
+    },
+    {
+      "source": "executor",
+      "command": "specdojo catalog validate",
+      "status": "not_applicable",
+      "summary": "catalog検証は適用外。",
+      "reason": "対象projectに `catalog_path` が設定されていない。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run validate:schema:file",
+      "status": "not_applicable",
+      "summary": "schema検証scriptは適用外。",
+      "reason": "projectのpackage.jsonに当該scriptがない。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run typecheck",
+      "status": "not_applicable",
+      "summary": "独立したtypecheck scriptは適用外。productはbuild内のtscで検証済み。",
+      "reason": "projectとproduct/dashboardのpackage.jsonに当該scriptがない。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run test:unit",
+      "status": "not_applicable",
+      "summary": "pipeline共通の単体テストscriptは適用外。個票指定のproductテストは実行済み。",
+      "reason": "projectとproduct/dashboardのpackage.jsonに当該scriptがない。"
+    },
+    {
+      "source": "executor",
+      "command": "npm test",
+      "status": "not_applicable",
+      "summary": "projectのtest scriptは適用外。",
+      "reason": "projectのtest scriptはnpm initの仮置きである。"
+    },
+    {
+      "source": "executor",
+      "command": "npx markdownlint docs/dev_note.md",
+      "status": "not_applicable",
+      "summary": "productのMarkdown lintは適用外。",
+      "reason": "productにmarkdownlint関連の依存が導入されていない。"
+    }
+  ],
+  "target_coverage": [
+    {
+      "target": "docs/ja/projects/prj-0001/controls/project-register/pjr-49v3-frontend-question-regression.md",
+      "status": "changed",
+      "path": "docs/ja/projects/prj-0001/controls/project-register/pjr-49v3-frontend-question-regression.md",
+      "reason": ""
+    },
+    {
+      "target": "openfisca-japan:dashboard/vite.config.ts",
+      "status": "changed",
+      "path": "openfisca-japan:dashboard/vite.config.ts",
+      "reason": ""
+    },
+    {
+      "target": "openfisca-japan:docs/dev_note.md",
+      "status": "changed",
+      "path": "openfisca-japan:docs/dev_note.md",
+      "reason": ""
+    },
+    {
+      "target": "openfisca-japan:dashboard/src/components/questions/template/questionTemplateTestUtils.tsx",
+      "status": "changed",
+      "path": "openfisca-japan:dashboard/src/components/questions/template/questionTemplateTestUtils.tsx",
+      "reason": ""
+    },
+    {
+      "target": "openfisca-japan:dashboard/src/components/questions/template/questionTemplates.test.tsx",
+      "status": "changed",
+      "path": "openfisca-japan:dashboard/src/components/questions/template/questionTemplates.test.tsx",
+      "reason": ""
+    },
+    {
+      "target": "openfisca-japan:dashboard/src/testSetup.ts",
+      "status": "changed",
+      "path": "openfisca-japan:dashboard/src/testSetup.ts",
+      "reason": ""
+    }
+  ],
+  "final_message": "質問テンプレート8種類の描画テスト基盤と35ケースを整備。既存905件を含む940件、build、lint、pretty:checkが成功。開発メモはフロントエンド節への追記に限定し、個票にケース表・破壊テスト・検証結果を記録した。",
+  "completion_status": "complete",
+  "handoff": [
+    "project の `node tools/specdojo-pre-commit.mjs register-build` は sandbox 内で `spawnSync git EPERM` が再現した。ホスト側 runner で確認する。result の記入と状態遷移は reporter / runner に委ねる。",
+    "`personNum` は正の人数を入力後、同じ「はい」のまま消去すると有効状態が直後には true のまま残り、「はい」の再クリックで false になる。既存挙動をテストと個票に記録した。別項目で effect の依存に `formValidated` を含める修正と期待値の更新を検討する。"
+  ],
+  "log_refs": [
+    {
+      "kind": "agent-output-excerpt",
+      "path": "docs/ja/projects/prj-0001/execution/exec/evidence/PJR-49V3/20261031T113553973Z-d99a79b9/executor.log",
+      "bytes": 6582,
+      "truncated": false
+    }
+  ]
+}

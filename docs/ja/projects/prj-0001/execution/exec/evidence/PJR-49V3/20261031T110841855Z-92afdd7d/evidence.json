@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "task_id": "PJR-49V3",
+  "run_id": "20261031T110841855Z-92afdd7d",
+  "stage": {
+    "role": "executor",
+    "actor": "luna-executor",
+    "status": "succeeded",
+    "started_at": "2026-10-31T11:09:41.336Z",
+    "completed_at": "2026-10-31T11:15:00.273Z",
+    "exit_code": 0,
+    "attempts": 1
+  },
+  "changes": [
+    {
+      "path": "docs/ja/projects/prj-0001/controls/project-register/events/pjr-49v3.yaml",
+      "status": "MM"
+    },
+    {
+      "path": "docs/ja/projects/prj-0001/controls/project-register/pjr-49v3-frontend-question-regression.md",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/vite.config.ts",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:docs/dev_note.md",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/questions/template/questionTemplateTestUtils.tsx",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/questions/template/questionTemplates.test.tsx",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/testSetup.ts",
+      "status": "??"
+    }
+  ],
+  "attempt_changes": [
+    {
+      "path": "docs/ja/projects/prj-0001/controls/project-register/pjr-49v3-frontend-question-regression.md",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/vite.config.ts",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:docs/dev_note.md",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/questions/template/questionTemplateTestUtils.tsx",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/questions/template/questionTemplates.test.tsx",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/testSetup.ts",
+      "status": "??"
+    }
+  ],
+  "diff_summary": {
+    "files_changed": 7,
+    "summary": ".../pjr-49v3-frontend-question-regression.md       | 30 +++++++++++++++++++++-\n 1 file changed, 29 insertions(+), 1 deletion(-)\n[openfisca-japan]\ndashboard/vite.config.ts |   3 +-\n docs/dev_note.md         | 157 +++++++++++++++++++++++++++--------------------\n 2 files changed, 91 insertions(+), 69 deletions(-)"
+  },
+  "validations": [
+    {
+      "source": "executor",
+      "command": "npm ci",
+      "status": "requires_human",
+      "summary": "2回試行したが無出力のまま各30秒を超え、完了を確認できなかった。依存取得可能な環境で再実行が必要。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run test",
+      "status": "passed",
+      "summary": "dashboardで5ファイル、913テスト成功。既存4テストファイルを含む。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run build",
+      "status": "passed",
+      "summary": "成功。既存のバンドルサイズ警告あり。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run lint",
+      "status": "passed",
+      "summary": "成功。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run pretty:check",
+      "status": "passed",
+      "summary": "成功。"
+    },
+    {
+      "source": "executor",
+      "command": "npx prettier --write ../docs/dev_note.md",
+      "status": "passed",
+      "summary": "変更した製品リポジトリのMarkdownを整形。"
+    },
+    {
+      "source": "executor",
+      "command": "node tools/specdojo-pre-commit.mjs prettier docs/ja/projects/prj-0001/controls/project-register/pjr-49v3-frontend-question-regression.md",
+      "status": "passed",
+      "summary": "個票を整形。変更なし。"
+    },
+    {
+      "source": "executor",
+      "command": "node tools/specdojo-pre-commit.mjs markdownlint docs/ja/projects/prj-0001/controls/project-register/pjr-49v3-frontend-question-regression.md",
+      "status": "passed",
+      "summary": "個票のmarkdownlint成功。"
+    },
+    {
+      "source": "executor",
+      "command": "node tools/specdojo-pre-commit.mjs register-build",
+      "status": "not_applicable",
+      "summary": "hook内部のstaged file確認はEPERMとなった。pjr-index.mdは変更していないためregister buildの対象外。",
+      "reason": ""
+    },
+    {
+      "source": "executor",
+      "command": "specdojo catalog validate",
+      "status": "not_applicable",
+      "summary": "対象projectにcatalog_pathの設定がない。",
+      "reason": "現在のproject設定にcatalog_pathがなく、catalog validateの適用条件を満たさない。"
+    }
+  ],
+  "final_message": "描画テスト基盤、8テンプレートのテスト、テスト方針の記録を追加。指定検査は成功したが、npm ciの完了を確認できず再実行が必要。",
+  "completion_status": "incomplete",
+  "handoff": [
+    "依存取得可能な環境でopenfisca-japan/dashboardにてnpm ciを再実行し、完了を確認する。",
+    "projectリポジトリのregister-build hookはsandbox内でgit staged fileを読む際にEPERMとなった。pjr-index.mdは変更していないため、runner側で通常のhook実行可否を確認する。"
+  ],
+  "block_reason": "executor reported incomplete: 描画テスト基盤、8テンプレートのテスト、テスト方針の記録を追加。指定検査は成功したが、npm ciの完了を確認できず再実行が必要。",
+  "log_refs": [
+    {
+      "kind": "agent-output-excerpt",
+      "path": "docs/ja/projects/prj-0001/execution/exec/evidence/PJR-49V3/20261031T110841855Z-92afdd7d/executor.log",
+      "bytes": 2982,
+      "truncated": false
+    }
+  ]
+}
