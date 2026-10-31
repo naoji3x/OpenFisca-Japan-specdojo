@@ -67,10 +67,11 @@ openfisca-japan-workspace/
 
 区切りは次を目安にします。
 
-| 区切り                                               | PR に入る項目                    |
-| ---------------------------------------------------- | -------------------------------- |
-| テストの基盤がそろったとき（PJR-1RJE の close の後） | PJR-49V3・BZGG・1RJE             |
-| 依存の更新が終わったとき（PJR-BSXA の close の後）   | PJR-PP9D・DFWV・2CSW・0HYV・BSXA |
+| 区切り                                                                  | PR に入る項目        | 最後の commit | PR 用のブランチ                                     |
+| ----------------------------------------------------------------------- | -------------------- | ------------- | --------------------------------------------------- |
+| 1. テストの基盤がそろったとき（PJR-1RJE の close の後）                 | PJR-49V3・BZGG・1RJE | `60ed52d`     | `feature/frontend-test-foundation`                  |
+| 2. ビルドの道具を上げ、Storybook を入れたとき（PJR-DFWV の close の後） | PJR-PP9D・DFWV       | `3f5eaaa`     | `feature/frontend-vite8-storybook`                  |
+| 3. 依存の更新が終わったとき（PJR-BSXA の close の後）                   | PJR-2CSW・0HYV・BSXA | 未定          | 未定（例: `feature/frontend-react-chakra-upgrade`） |
 
 1. 区切りの項目を close したら、区切りの最後の commit を指す **PR 用のブランチ**を作り、push する。`feature/frontend-test-upgrade` からは PR を出さない（理由は下記）。
 
@@ -94,7 +95,7 @@ openfisca-japan-workspace/
 
 ##### PR 用のブランチについて
 
-PR 用のブランチの名前は、中身が分かるものにする（区切り 1 は `feature/frontend-test-foundation`、区切り 2 は `feature/frontend-deps-upgrade` など）。
+PR 用のブランチの名前は、中身が分かるものにする（上の表の「PR 用のブランチ」の列）。区切りの PR を出したら、表の「最後の commit」と「PR 用のブランチ」を埋める。
 
 - **PR を `feature/frontend-test-upgrade` から出さない理由**: 統合のためのブランチには、区切りの後も次の項目が積まれる。このブランチから PR を出すと、push のたびに次の区切りの commit まで PR に入ってしまう。区切りの commit を指す別のブランチなら、PR の範囲が固定される。
 - **統合のためのブランチの名前を変えない理由**: `.specdojo/specdojo.config.json` の `integration_branch` が `feature/frontend-test-upgrade` を指し、流している run も成功するとこのブランチを早送りする。
