@@ -2,17 +2,19 @@
 specdojo:
   id: prj-0001:pjr-1w29-make-docs-unit-display
   type: project
-  status: draft
+  status: ready
   rulebook: specdojo:pjr-rulebook
   part_of:
     - prj-0001:pjr-index
   item_type: todo
-  item_status: review
+  item_status: done
   priority: high
   difficulty: medium
   owner: DEV
   registered_at: "2026-10-31T03:00:43Z"
   due_on: "2026-11-30"
+  completed_at: "2026-10-31T13:03:56Z"
+  conclusion: make_docs.py で率を百分率、年齢・日数・人数・学年を単位付きで表示し、単位のない数値パラメータを警告するようにした（openfisca-japan の 896ba88）
   derived_from:
     - PJR-KS3C
   depends_on:
