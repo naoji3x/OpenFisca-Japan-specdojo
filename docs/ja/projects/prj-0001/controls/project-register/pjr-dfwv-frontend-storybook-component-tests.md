@@ -203,6 +203,31 @@ project の個票は hook に定める Prettier・markdownlint が成功し、�
 - 2.2 節の許容に従い、今回の executor 修正は完了とする。ホストでは `npx vitest run --config vitest.browser.config.mts` を再実行し、2 project・4 ファイル・35 件の成功と project 名の重複解消を確認する。a11y は今回も未計測であり、違反なしとは判定しない。統合後に orchestrator が story 名・axe rule ID・重大度・対象要素を収集し、本個票・result に追記して別項目へ分ける。
 - 保護設定の scripts・CI 変更案は上記のまま維持し、naoji の承認のもとで統合後に orchestrator が反映・検証する。Storybook の静的 build と表示、register-build、その時点の親検証もホストで確認する。これらの引き継ぎを reporter / runner が result へ記録する。executor は個票の状態・登録簿の行・result・Git 設定・commit を変更していない。
 
+### orchestrator の確認（2026-10-31、specdojo-orchestrator）
+
+- 1 回目の統合（`3654803`）では、ブラウザーのテストの設定が起動の時点で失敗した（2.2）。直し方を個票に書いて流し直し、`046b2cc` で `vitest.browser.config.mts` が project ごとに設定を作る形になった。
+- `feature/frontend-test-upgrade`（`046b2cc`）を一時的な worktree に取り出し、`npm ci` から次を確かめた。Git の local config は、2 回の実行の前後で変わっていない。
+  - `npm run test`（unit、6 ファイル・937 件）・`build`・`lint`・`pretty:check` が通った。
+  - `npx vitest run --config vitest.browser.config.mts`（`storybook` と `browser` の project）で、4 ファイル・35 件が通った。
+  - `npx storybook build` が通った。
+  - `npm run test:e2e` は、build のあと連続 2 回とも 5 件が通った。
+- 上流の変更に登録簿の ID やリンクはない（commit メッセージの `Refs:` 行を除く）。
+
+#### a11y の違反の一覧（2026-10-31、axe-core 4.14.0、Chromium 156）
+
+34 の story すべてで検査が流れ、違反のない story はなかった。`a11y.test: 'todo'` のため、テストは失敗しない。修正は別の項目で扱う。
+
+| axe の rule       | 重大度   | 内容                                       | 該当する story                                                    | 主な対象                                                                      |
+| ----------------- | -------- | ------------------------------------------ | ----------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| `landmark-unique` | moderate | ランドマークの役割と名前の組が重複している | 34（すべて）                                                      | `#chakra-toast-manager-top`（Chakra UI のトーストの入れ物）                   |
+| `color-contrast`  | serious  | 文字と背景のコントラストが基準に届かない   | 21（29 要素）                                                     | `.chakra-button`、外部リンク（`rel="noopener noreferrer"` の `.chakra-link`） |
+| `link-name`       | serious  | リンクに読み上げられる名前がない           | 6                                                                 | トップへ戻るリンク（`a[href="/"]`）                                           |
+| `label`           | critical | フォームの要素にラベルがない               | 2（`questions-templates--person-count`・`restored-person-count`） | 人数の入力欄                                                                  |
+
+#### 承認待ちの保護された設定
+
+executor の変更案（上記）の `dashboard/package.json` のスクリプト 6 件と、`.github/workflows/test_frontend.yml` の 2 段（`npm run test:ui`・`npm run build-storybook`）は、naoji の承認を待っている。反映と、反映後の検査が終わるまで close しない。
+
 ## 5. 関連ドキュメント
 
 - 方針: [[prj-0001:pjr-z7fq-frontend-test-strategy|PJR-Z7FQ フロントエンドのテストの方針を決める]]
