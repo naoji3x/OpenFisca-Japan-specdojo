@@ -50,6 +50,10 @@ a11y の検査で、ボタンと外部リンクのコントラスト不足（col
 | 依存事項 | PJR-BSXA（Chakra UI の更新）                                                                                                                                                                                                                |
 | 完了条件 | 該当する story で `color-contrast` と `landmark-unique` の違反がなくなるか、直せない理由が記録されている。`npm run test`・`test:ui`・`build`・`lint`・`pretty:check`・`test:e2e` が通る。上流の文書とコードに登録簿の ID やリンクを書かない |
 
+### 2026-10-31 の更新（specdojo-orchestrator）
+
+PJR-BSXA の準備で Chakra UI を 2.10.10 に上げると（`ce8def5`）、`landmark-unique`（34 story）は消えた。残るのは `color-contrast`（21 story・29 要素）である。
+
 ## 5. 対応結果
 
 -

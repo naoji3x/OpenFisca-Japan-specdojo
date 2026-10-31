@@ -38,6 +38,37 @@ React を更新したあとの構成で、Chakra UI・icons・Emotion・framer-m
 - 保護された設定（`package.json`、`.github/workflows/**` など）の変更が必要な場合、executor は変更案を「4. 対応結果」に書き、pipeline では報告の `handoff` にも書く。反映は利用者の承認のもとで行い、反映と検証が終わるまで close しない。
 - CHANGELOG を更新する場合は未公開の版の節に書き、公開済みの版の節は変えない。範囲外の問題は別の項目に分ける。
 
+### 2.1. 実行の前提（2026-10-31、specdojo-orchestrator）
+
+- **範囲は Chakra UI 2 の最新までとする（naoji の判断、2026-10-31、案 A）。** Chakra UI 3 は Ark UI ベースで部品の使い方が大きく変わり、Chakra UI を使う 35 ファイルの書き換えになる。完了条件の「画面の大規模な作り直し」に当たるため、[[prj-0001:pjr-erdk-frontend-chakra-ui-v3|PJR-ERDK]] に分けた。
+- 依存の更新は `feature/frontend-test-upgrade` に導入済みである（`ce8def5`）。executor は依存を追加・変更しない。
+
+  | パッケージ                          | 更新前           | 更新後                                                                |
+  | ----------------------------------- | ---------------- | --------------------------------------------------------------------- |
+  | `@chakra-ui/react`                  | 2.7.1            | 2.10.10（2 系の最新）                                                 |
+  | `@chakra-ui/icons`                  | 2.0.19           | 2.2.6                                                                 |
+  | `@emotion/react`・`@emotion/styled` | 11.11.1・11.11.0 | 11.14.0・11.14.1                                                      |
+  | `framer-motion`                     | 10.12.17         | 11.18.2（12.43.0 でも検査は通ったが、Chakra UI 2 で実績のある 11 系） |
+  | `react-icons`                       | 4.10.1           | 5.7.0                                                                 |
+
+- orchestrator は更新のあと、コードを変えずに test（937 件）・build・lint・pretty:check・`test:ui`（35 件）・`test:e2e`（5 件）が通ることを確かめた。
+- **更新の前と後の story の検査と a11y**（orchestrator が 2026-10-31 に測った。axe-core、34 の story）:
+
+  | axe の rule       | 重大度   | 更新前（`8e4b6ca`） | 更新後（`ce8def5`） |
+  | ----------------- | -------- | ------------------- | ------------------- |
+  | `landmark-unique` | moderate | 34 story・34 要素   | **なし**            |
+  | `color-contrast`  | serious  | 21 story・29 要素   | 21 story・29 要素   |
+  | `link-name`       | serious  | 6 story・6 要素     | 6 story・6 要素     |
+  | `label`           | critical | 2 story・2 要素     | 2 story・2 要素     |
+
+  story と Browser Mode のテストは、前後とも 35 件が通った。
+
+- この項目では、次を行う。
+  - Chakra UI 2.10 で非推奨になった API や、出る警告がないかを確かめ、直せるものは直す。
+  - 完了条件の、レスポンシブの表示・キーボードの操作・フォーカスの前後の比べ方は、上の表と、story の play 関数・Browser Mode のテストで行う。足りない点があれば、story か Browser Mode のテストを足して確かめる。サンドボックスでブラウザーのテストを流せない場合は `requires_human` としてよく、統合のあとに orchestrator が流して前後を比べる。
+- `npm ci` は流さない（executor はネットワークに出られない）。保護された設定の変更が必要な場合は、変更案を「4. 対応結果」と `handoff` に書き、未完了の理由にしない。
+- 上流の文書・コードに、登録簿の ID やリンクを書かない。Git の設定と commit には触れない。
+
 ## 3. 作業内容
 
 前提: [[prj-0001:pjr-0hyv-frontend-react-upgrade|PJR-0HYV]] が完了していることを確かめてから着手する。
