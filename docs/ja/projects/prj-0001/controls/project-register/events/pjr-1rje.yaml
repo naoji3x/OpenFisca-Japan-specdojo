@@ -70,3 +70,35 @@
       from: "-"
       to: "executor reported incomplete: Playwright の 3 ファイル・5 テスト、設定、Vitest の収集分離、Cypress ファイル削除、開発手順の更新を実施。967 テスト・build・lint・整形・E2E の型検査は成功。保護された package・lockfile・CI の反映とホスト側の E2E 検証が残る。"
   previous_event_id: reg_64abcd39e7054ba0a07e16c411ee09f0
+- v: 1
+  id: reg_ac96f2ea0d5d4fec8949ada67b96e2d0
+  ts: "2026-10-31T13:06:09Z"
+  action: start
+  actor: sol-executor
+  from_status: waiting
+  to_status: in-progress
+  reason: executor resumed
+  changes:
+    - field: status
+      from: waiting
+      to: in-progress
+    - field: block_reason
+      from: "executor reported incomplete: Playwright の 3 ファイル・5 テスト、設定、Vitest の収集分離、Cypress ファイル削除、開発手順の更新を実施。967 テスト・build・lint・整形・E2E の型検査は成功。保護された package・lockfile・CI の反映とホスト側の E2E 検証が残る。"
+      to: "-"
+  previous_event_id: reg_d9504645dca2465dad994e103b3ee3c9
+- v: 1
+  id: reg_76af56029e4141f187470dcde5e9680f
+  ts: "2026-10-31T13:10:07Z"
+  action: wait
+  actor: sol-executor
+  from_status: in-progress
+  to_status: waiting
+  reason: "integrate failed: project: Result Markdown notation violation before commit: docs/ja/projects/prj-0001/execution/exec/results/pjr-1rje-20261031T124603Z-d162b52f-result.md:49:368 error MD038/no-space-i…"
+  changes:
+    - field: status
+      from: in-progress
+      to: waiting
+    - field: block_reason
+      from: "-"
+      to: "integrate failed: project: Result Markdown notation violation before commit: docs/ja/projects/prj-0001/execution/exec/results/pjr-1rje-20261031T124603Z-d162b52f-result.md:49:368 error MD038/no-space-i…"
+  previous_event_id: reg_ac96f2ea0d5d4fec8949ada67b96e2d0
