@@ -2,17 +2,19 @@
 specdojo:
   id: prj-0001:pjr-bzgg-frontend-result-error-regression
   type: project
-  status: draft
+  status: ready
   rulebook: specdojo:pjr-rulebook
   part_of:
     - prj-0001:pjr-index
   item_type: todo
-  item_status: review
+  item_status: done
   priority: high
   difficulty: medium
   owner: DEV
   registered_at: "2026-10-31T04:05:40Z"
   due_on: "2026-11-30"
+  completed_at: "2026-10-31T12:13:37Z"
+  conclusion: MSW で計算 API を HTTP の境界で差し替え、結果・エラー画面と計算 API の呼び出しのテスト 27 件と固定データを整えた（openfisca-japan の a99c1c9）
   derived_from:
     - PJR-Z7FQ
   depends_on:

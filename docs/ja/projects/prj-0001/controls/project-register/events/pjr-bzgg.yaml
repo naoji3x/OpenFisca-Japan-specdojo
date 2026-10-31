@@ -67,3 +67,22 @@
       from: in-progress
       to: review
   previous_event_id: reg_fb7c4202726f4fa098a1aaa08ad15ab6
+- v: 1
+  id: reg_bd8b37c44a2647eea269b2f560c9e13e
+  ts: "2026-10-31T12:13:37Z"
+  action: close
+  actor: specdojo-orchestrator
+  from_status: review
+  to_status: done
+  reason: 完了条件を差分・個票・result で確かめ、統合されたブランチでクリーンな npm ci から検査が通り、固定データの構造と出し分けが実際の API と同じことを確かめた
+  changes:
+    - field: status
+      from: review
+      to: done
+    - field: completed
+      from: "-"
+      to: "2026-10-31"
+    - field: conclusion
+      from: "-"
+      to: MSW で計算 API を HTTP の境界で差し替え、結果・エラー画面と計算 API の呼び出しのテスト 27 件と固定データを整えた（openfisca-japan の a99c1c9）
+  previous_event_id: reg_6af737fb2d584e2da41100ad099ea243
