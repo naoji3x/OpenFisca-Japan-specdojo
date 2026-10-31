@@ -48,15 +48,67 @@ specdojo:
 
 前提: [[prj-0001:pjr-49v3-frontend-question-regression|PJR-49V3]] が完了していることを確かめてから着手する。
 
-| No  | 作業                                                                                        | 担当 | 状態 | メモ |
-| --- | ------------------------------------------------------------------------------------------- | ---- | ---- | ---- |
-| 1   | 今の画面の表示条件と遷移を調べ、固定の応答と期待結果を整理する                              | DEV  | open | -    |
-| 2   | MSW の handlers と固定データを整え、結果・エラー画面と計算 API の呼び出しのテストを追加する | DEV  | open | -    |
-| 3   | 既存のテストを含めて検証を流す                                                              | DEV  | open | -    |
+| No  | 作業                                                                                        | 担当 | 状態 | メモ                                            |
+| --- | ------------------------------------------------------------------------------------------- | ---- | ---- | ----------------------------------------------- |
+| 1   | 今の画面の表示条件と遷移を調べ、固定の応答と期待結果を整理する                              | DEV  | done | 4 種類の表示とモード別の戻り先を確認            |
+| 2   | MSW の handlers と固定データを整え、結果・エラー画面と計算 API の呼び出しのテストを追加する | DEV  | done | 共通 handlers、JSON 8 ファイル、27 テストを追加 |
+| 3   | 既存のテストを含めて検証を流す                                                              | DEV  | done | 全 967 件と build・lint・pretty:check に成功    |
 
 ## 4. 対応結果
 
--
+### 実施内容
+
+- 個票の完了条件を作業基準とし、先行の [[prj-0001:pjr-49v3-frontend-question-regression|PJR-49V3]] が `done` であることと、描画用ヘルパー・既存 940 件のテスト基盤を確認して着手した。
+- MSW 2.15.0 の `http.post` と `HttpResponse` で `/calculate` を模擬した。`fetch` の直接の模擬は行っていない。共通の `dashboard/src/mocks/handlers.ts` は正常応答 4 種類の factory と HTTP 500・通信失敗の handlers を公開し、node 固有の依存を持たず、後続の story でも利用できる。
+- `dashboard/src/mocks/server.ts` に node 用の server を置き、既存の `src/testSetup.ts` で起動・テストごとの handlers リセット・終了を登録した。未定義の通信はエラーにする。既存のロジックと共有リンクのテストは node 環境のまま、新規の 3 ファイルはファイル単位の jsdom 指定で動く。
+- 先行の `questionTemplateTestUtils.tsx` の Provider ヘルパーを `renderWithProviders` として共用し、既存の `renderQuestion` 呼び出しを維持した。任意の Recoil 初期化を追加し、`src/mocks/resultTestUtils.tsx` で Router と固定日・世帯を設定する。描画ごとに新しい RecoilRoot を作り、終了時に cleanup し、API テストの通信監視・環境変数も毎回解除する。
+- `docs/dev_note.md` のフロントエンド節だけに、handlers と固定データの使い方、`docker compose` と `curl` による同一 POST 本文からの再記録、照合するフィールド、差分時の対応を追記した。追加節だけを Prettier で整形し、既存部分の書式は維持した。
+- 実装の振る舞い、既存のテスト 5 ファイル（共有リンクの互換性テストを含む）、依存、lockfile、`package.json`、CI 設定は変更していない。追加の依存や保護された設定への変更案はない。CHANGELOG は変更していない。
+
+### 固定データの作り方と表示の期待値
+
+`openfisca-japan:dashboard/src/mocks/calculate/` の各ケースに `*.request.json` と `*.response.json` の組を置いた。`calculateFixtures.ts` に固定日・ケース一覧・モードの期待値を分離した。日付は `2026-01-15`、居住地は東京都渋谷区、親は「あなた」、給付ありのケースには子どもを設定した。POST 本文は世帯員・世帯一覧・親子の配列・日付付きの収入と居住地を含み、計算を依頼する 5 フィールドは `null` にする。
+
+応答は実 API の記録ではなく、`hooks/calculate.ts` の JSON 保存と `Benefit`・`Loan`・`EmptyResults` が読む構造に合わせて手作りした。POST 本文を複製し、`世帯一覧.世帯1` の計算フィールドだけを数値にした。給付ありは `児童手当` 15,000 円、`児童扶養手当_最小` 10,000 円・`児童扶養手当_最大` 45,000 円、貸付ありは `生活支援費` 150,000 円・`緊急小口資金` 200,000 円、それぞれ該当なしなら 0 とした。実際の制度の適格性・金額を保証する固定データではない。
+
+| ケース         | 給付の表示                                                     | 貸付の表示                                                                        | 対象なしの案内             |
+| -------------- | -------------------------------------------------------------- | --------------------------------------------------------------------------------- | -------------------------- |
+| `benefit-only` | 給付の見出し、児童手当 1.5 万円/月、児童扶養手当 1~4.5 万円/月 | 見出し・制度ボタンともに非表示                                                    | 非表示                     |
+| `loan-only`    | 見出し・制度ボタンともに非表示                                 | 貸付の見出し・生活福祉資金貸付制度、生活支援費 ~15 万円/月、緊急小口資金 ~20 万円 | 非表示                     |
+| `both`         | `benefit-only` と同じ                                          | `loan-only` と同じ                                                                | 非表示                     |
+| `none`         | 見出し・制度ボタンともに非表示                                 | 見出し・制度ボタンともに非表示                                                    | 理由の案内と応援の文を表示 |
+
+### 追加したテスト
+
+| ファイル（`openfisca-japan:dashboard/` 配下） | 件数 | 確認内容                                                                                                                                                                                                                                                                     |
+| --------------------------------------------- | ---- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `src/hooks/calculate.test.tsx`                | 9    | 正常 4 種類の応答を保存。HTTP 境界で POST の URL・method・Content-Type・本文を検査。明示呼び出し前と世帯なしでは通信しない。500 の status・body を含む例外と通信失敗の例外を確認。再計算でリクエストの `null` を維持し、失敗時は前の成功結果を保持し、次の成功では置き換える |
+| `src/components/result/result.test.tsx`       | 10   | 実際の Result と hook を組み合わせ、正常 4 種類の表示・非表示・万円への換算と範囲・月額と一時金を確認。500・通信失敗それぞれを 3 モードで再現し、エラー画面への遷移と戻るリンクの実クリックを確認                                                                            |
+| `src/components/errors/errors.test.tsx`       | 8    | GenericError・NotFoundError の文言とトップへ戻る操作。FormResponseError の 3 モードの既定の戻り先、くわしくの明示 redirect、かんたん・災害でのモード優先を確認                                                                                                               |
+
+`FormResponseError` の既定の戻り先は、かんたんが `/calculate-simple`、くわしくが `/calculate`、災害が `/calculate-disaster`。一方、現在の `Result` は API 失敗時に `redirect: '/'` を渡すため、くわしくの API 失敗後はトップ `/` に戻る。これを別のケースとして固定した。
+
+### 検証
+
+実行環境: 2026-10-31、Linux の task worktree、Node.js v22.23.3、npm 10.9.9、Vitest 3.2.4、Vite 2.9.13、MSW 2.15.0、jsdom 30.1.3。runner が導入済みの依存だけを使い、`npm ci` は実行していない。
+
+| 実行場所                    | コマンド                                                                                                                                           | 結果                                                                                        |
+| --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| `openfisca-japan:dashboard` | `npm run test`                                                                                                                                     | 成功。8 ファイル・967 件（既存 940 件と追加 27 件）。既存の共有リンクの 15 件も変更せず成功 |
+| `openfisca-japan:dashboard` | `npm run build`                                                                                                                                    | 成功。既存の 500 KiB 超のバンドルサイズ警告のみ                                             |
+| `openfisca-japan:dashboard` | `npm run lint`                                                                                                                                     | 成功                                                                                        |
+| `openfisca-japan:dashboard` | `npm run pretty:check`                                                                                                                             | 成功                                                                                        |
+| `openfisca-japan:dashboard` | `npm run pretty`                                                                                                                                   | pre-commit 相当の整形に成功                                                                 |
+| project                     | `node tools/specdojo-pre-commit.mjs prettier docs/ja/projects/prj-0001/controls/project-register/pjr-bzgg-frontend-result-error-regression.md`     | 成功                                                                                        |
+| project                     | `node tools/specdojo-pre-commit.mjs markdownlint docs/ja/projects/prj-0001/controls/project-register/pjr-bzgg-frontend-result-error-regression.md` | 成功                                                                                        |
+| project                     | `node tools/specdojo-pre-commit.mjs register-build`                                                                                                | sandbox の `spawnSync git EPERM` により実行不可。ホスト側の runner に申し送る               |
+
+project に `catalog_path`、schema 検証 script、typecheck script、`test:unit` script はなく、`test` は初期化時の仮置きのため非適用。product に typecheck・`test:unit` の独立した script はなく、指定の build と test で検査した。product の Markdown 用 lint 依存は未導入で非適用。YAML の変更はなく schema 検証は非適用。`specdojo index build` と result の編集は runner / reporter に委ねた。
+
+### 申し送り
+
+- 統合後、orchestrator は `docs/dev_note.md` の手順で、4 件の `*.request.json` と同じ本文をローカルの `docker compose` の `openfisca` の `/calculate` に送り、実際の応答を `tmp/calculate-recordings/` に記録する。結果画面が読む世帯・日付・金額・居住地・配列の形を固定応答と比較し、違いがあれば API の版と差分を記録して別項目で対応する。executor はネットワークとローカル API に接続できないため、今回の固定応答は実 API と未照合である。
+- runner は sandbox 外で `node tools/specdojo-pre-commit.mjs register-build` を確認する。result の記入・登録簿と個票の状態遷移は reporter / runner が行う。
 
 ## 5. 関連ドキュメント
 

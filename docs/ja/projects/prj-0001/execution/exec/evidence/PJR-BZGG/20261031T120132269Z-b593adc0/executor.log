@@ -1,0 +1,95 @@
+27 件の回帰テストを追加し、全 967 件と build・lint・整形検査が成功しました。MSW、固定 JSON、共通描画ヘルパー、開発メモ、個票を更新しました。実 API との照合と sandbox 外の hook 確認を申し送ります。
+
+<specdojo_executor_evidence>
+{
+  "completion_status": "complete",
+  "final_message": "API・結果・エラー画面の回帰テスト27件を追加。変更ファイルは openfisca-japan:dashboard/src/hooks/calculate.test.tsx、dashboard/src/components/result/result.test.tsx、dashboard/src/components/errors/errors.test.tsx、dashboard/src/mocks/ 配下のhandlers・server・固定データ・描画ヘルパー、dashboard/src/testSetup.ts、dashboard/src/components/questions/template/questionTemplateTestUtils.tsx、docs/dev_note.md、およびprojectの対象個票。全967件と指定の検査に成功。resultとステータス項目は変更していない。",
+  "handoff": [
+    "統合後、orchestrator は `openfisca-japan:docs/dev_note.md` の手順で4件の固定リクエストをローカルAPIへ送り、実応答を記録して画面が読むフィールドと照合する。固定応答は手作りで実APIとは未照合。違いがあればAPIの版と差分を記録し、別項目で対応する。",
+    "runner は sandbox 外で `node tools/specdojo-pre-commit.mjs register-build` を確認する。executor 内では `spawnSync git EPERM` により実行できなかった。resultの記入と状態遷移はreporter / runnerが行う。"
+  ],
+  "validations": [
+    {
+      "command": "npm run test",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboardで8ファイル・967件成功。追加27件。共有リンク互換性テストを含む既存940件は変更せず成功。"
+    },
+    {
+      "command": "npm run build",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboardで成功。既存のバンドルサイズ警告のみ。"
+    },
+    {
+      "command": "npm run lint",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboardで成功。"
+    },
+    {
+      "command": "npm run pretty:check",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboardで成功。"
+    },
+    {
+      "command": "npm run pretty",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboardのpre-commit相当の整形に成功。"
+    },
+    {
+      "command": "node tools/specdojo-pre-commit.mjs prettier docs/ja/projects/prj-0001/controls/project-register/pjr-bzgg-frontend-result-error-regression.md",
+      "status": "passed",
+      "summary": "対象個票の整形に成功。"
+    },
+    {
+      "command": "node tools/specdojo-pre-commit.mjs markdownlint docs/ja/projects/prj-0001/controls/project-register/pjr-bzgg-frontend-result-error-regression.md",
+      "status": "passed",
+      "summary": "対象個票のMarkdown検査に成功。"
+    },
+    {
+      "command": "node tools/specdojo-pre-commit.mjs register-build",
+      "status": "requires_human",
+      "summary": "sandbox内でspawnSync git EPERM。ホスト側runnerでの実行が必要。"
+    },
+    {
+      "command": "specdojo catalog validate --project prj-0001",
+      "status": "not_applicable",
+      "summary": "カタログ検査は非適用。",
+      "reason": "対象projectに `catalog_path` が設定されていない。"
+    },
+    {
+      "command": "npm run validate:schema:file",
+      "status": "not_applicable",
+      "summary": "schema検査は非適用。",
+      "reason": "該当scriptがなく、executorによるYAML変更もない。"
+    },
+    {
+      "command": "npm run typecheck",
+      "status": "not_applicable",
+      "summary": "独立したtypecheckは非適用。dashboardのbuildでtscに成功。",
+      "reason": "projectとdashboardにtypecheck scriptがない。"
+    },
+    {
+      "command": "npm run test:unit",
+      "status": "not_applicable",
+      "summary": "専用の単体テストscriptは非適用。指定されたdashboardのtestを実行済み。",
+      "reason": "projectとdashboardに `test:unit` scriptがない。"
+    },
+    {
+      "command": "npm test",
+      "status": "not_applicable",
+      "summary": "projectのtestは非適用。",
+      "reason": "projectのtest scriptはnpm初期化時の仮置き。"
+    },
+    {
+      "command": "npx markdownlint ../docs/dev_note.md",
+      "status": "not_applicable",
+      "summary": "productのMarkdown lintは非適用。",
+      "reason": "dashboardにMarkdown lintの依存がない。開発メモの追加節は導入済みPrettierで整形済み。"
+    },
+    {
+      "command": "git diff --check",
+      "status": "passed",
+      "summary": "projectとopenfisca-japanの両方で成功。"
+    }
+  ]
+}
+</specdojo_executor_evidence>
