@@ -38,6 +38,29 @@ React・React DOM・型定義を更新し、Recoil・XState・Chakra UI・Router
 - 保護された設定（`package.json`、`.github/workflows/**` など）の変更が必要な場合、executor は変更案を「4. 対応結果」に書き、pipeline では報告の `handoff` にも書く。反映は利用者の承認のもとで行い、反映と検証が終わるまで close しない。
 - CHANGELOG を更新する場合は未公開の版の節に書き、公開済みの版の節は変えない。範囲外の問題は別の項目に分ける。
 
+### 2.1. 実行の前提（2026-10-31、specdojo-orchestrator）
+
+- **範囲は React 18 とする（naoji の判断、2026-10-31、案 A）。** orchestrator が試すと、React 19.3.1 では Recoil 0.7.7 が `react.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.ReactCurrentDispatcher` の参照で落ち、単体テスト 23 件と E2E 5 件が失敗した。Recoil は 2024-02 を最後に更新がない。完了条件の「メジャーの移行に状態管理の置き換えが必須」に当たるため、置き換えは [[prj-0001:pjr-b1zq-frontend-recoil-to-jotai|PJR-B1ZQ]]、React 19 は [[prj-0001:pjr-6b0q-frontend-react19-upgrade|PJR-6B0Q]] に分けた。この項目ではメジャーの移行をせず、React 18 の範囲の更新で完了とする。
+- 依存の更新は `feature/frontend-test-upgrade` に導入済みである（`7c6f2bf`）。executor は依存を追加・変更しない。
+
+  | パッケージ                         | 更新前（ロック） | 更新後                                        |
+  | ---------------------------------- | ---------------- | --------------------------------------------- |
+  | `react`・`react-dom`               | 18.2.0           | 18.3.1                                        |
+  | `@types/react`・`@types/react-dom` | 18.0.14・18.0.5  | 18.3.31・18.3.7                               |
+  | `react-router-dom`                 | 6.13.0           | 6.30.6（7 系は別の移行が要るため 6 系の最新） |
+  | `@xstate/react`                    | 6.0.0            | 6.1.0                                         |
+  | `qrcode.react`                     | 3.1.0            | 4.2.0                                         |
+
+- orchestrator は更新のあと、コードを変えずに test（937 件）・build・lint・pretty:check・`test:ui`（35 件）・`test:e2e`（5 件）が通ることを確かめた。Chakra UI・Emotion・framer-motion は PJR-BSXA で扱うため、この項目では変えない。
+- この項目では、次を行う。
+  - 完了条件の互換性の表を作る（React・React DOM・型定義・Recoil・XState・Chakra UI・React Router・qrcode.react・framer-motion の、React 18.3 と React 19 への対応）。React 19 への阻害要因（Recoil）と、別の作業の案（[[prj-0001:pjr-b1zq-frontend-recoil-to-jotai|PJR-B1ZQ]]・[[prj-0001:pjr-6b0q-frontend-react19-upgrade|PJR-6B0Q]]）を記録する。
+  - React 18.3 が出す非推奨の警告（React 19 で消える API）と、React Router 6.30 の future flag の警告を、テストや開発時の出力から集め、この項目の範囲で直せるものは直す。直さないものは理由を記録する。
+  - qrcode.react 4 の API の変更（既定の export の廃止など）に、今のコードが合っているかを確かめる。
+- 依存の宣言とロックファイルが一致する（クリーンな環境での `npm ci` の成功は、統合のあとに orchestrator が確かめる）。`npm run test`・`test:ui`・`build`・`lint`・`pretty:check`・`test:e2e` が通る。サンドボックスで流せない検査は `requires_human` としてよく、統合のあとに orchestrator が流す。
+- `npm ci` は worktree を作るときに runner が流すため、executor は流さない（executor はネットワークに出られない）。依存の更新は、流す前に orchestrator が入れる。
+- 保護された設定（`package.json`、`.github/workflows/**` など）の変更が必要な場合、executor は変更案を「4. 対応結果」に書き、pipeline では報告の `handoff` にも書く。変更案は未完了の理由にしない。反映は利用者の承認のもとで行う。
+- 上流の文書・コード・コメントに、登録簿の ID やリンクを書かない。Git の設定と commit には触れない。
+
 ## 3. 作業内容
 
 前提: [[prj-0001:pjr-2csw-frontend-typescript-eslint-upgrade|PJR-2CSW]] と [[prj-0001:pjr-1rje-frontend-playwright-e2e|PJR-1RJE]] が完了していることを確かめてから着手する。
