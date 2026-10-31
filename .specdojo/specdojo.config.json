@@ -13,7 +13,13 @@
       "run": {
         "exec_defaults": ".specdojo/exec-defaults.yaml",
         "worktree_base": "../OpenFisca-Japan-specdojo-worktrees"
-      }
+      },
+      "repos": [
+        {
+          "name": "openfisca-japan",
+          "path": "../OpenFisca-Japan"
+        }
+      ]
     }
   }
 }
