@@ -131,3 +131,22 @@
       from: in-progress
       to: review
   previous_event_id: reg_e4f0dc0e769445adb3cd66f9c81b03f3
+- v: 1
+  id: reg_f5977dc71e0240fab11cf161ac0b507a
+  ts: "2026-10-31T13:58:26Z"
+  action: close
+  actor: specdojo-orchestrator
+  from_status: review
+  to_status: done
+  reason: 完了条件を確かめ、npm ci から検査が通り、Pages 向けの build が従来と同じパスで、E2E が連続 2 回通り、HMR が効くことを確かめた
+  changes:
+    - field: status
+      from: review
+      to: done
+    - field: completed
+      from: "-"
+      to: "2026-10-31"
+    - field: conclusion
+      from: "-"
+      to: Vite 8・React プラグイン 6・Vitest 5 に上げ、設定を移し、デプロイ用の workflow の Node を 26.4.0 にした（openfisca-japan の a30f1f0・caa4d96・399b726）
+  previous_event_id: reg_a91011c2e4694fd09039d2931ff1baaf

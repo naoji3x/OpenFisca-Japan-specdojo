@@ -2,17 +2,19 @@
 specdojo:
   id: prj-0001:pjr-pp9d-frontend-vite-vitest-upgrade
   type: project
-  status: draft
+  status: ready
   rulebook: specdojo:pjr-rulebook
   part_of:
     - prj-0001:pjr-index
   item_type: todo
-  item_status: review
+  item_status: done
   priority: high
   difficulty: hard
   owner: DEV
   registered_at: "2026-10-31T05:43:45Z"
   due_on: "2026-11-30"
+  completed_at: "2026-10-31T13:58:26Z"
+  conclusion: Vite 8・React プラグイン 6・Vitest 5 に上げ、設定を移し、デプロイ用の workflow の Node を 26.4.0 にした（openfisca-japan の a30f1f0・caa4d96・399b726）
   derived_from:
     - PJR-Z7FQ
   depends_on:
