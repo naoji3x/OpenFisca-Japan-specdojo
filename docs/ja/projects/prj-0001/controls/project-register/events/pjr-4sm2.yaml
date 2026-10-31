@@ -1,0 +1,40 @@
+# yaml-language-server: $schema=../../../../../../specdojo/schemas/v1/register-events.schema.yaml
+- v: 1
+  id: reg_e8975b1f60b14abe91962a0dfb03743f
+  ts: "2026-10-31T21:31:53Z"
+  action: add
+  actor: specdojo-orchestrator
+  from_status: null
+  to_status: open
+  reason: PJR-DFWV の a11y の検査で見つかった違反の修正を、naoji の承認のもと推奨どおり起票
+  changes:
+    - field: status
+      from: ""
+      to: open
+    - field: title
+      from: ""
+      to: 人数の入力欄のラベルとトップへ戻るリンクの名前を付ける（a11y）
+    - field: description
+      from: ""
+      to: a11y の検査で、人数の入力欄にラベルがない（label・critical、2 story）ことと、トップへ戻るリンクに名前がない（link-name・serious、6 story）ことが見つかった。dashboard のコードで直す
+    - field: type
+      from: ""
+      to: issue
+    - field: priority
+      from: ""
+      to: high
+    - field: difficulty
+      from: ""
+      to: easy
+    - field: owner
+      from: ""
+      to: DEV
+    - field: registered
+      from: ""
+      to: "2026-10-31"
+    - field: due
+      from: ""
+      to: "2026-11-30"
+    - field: derived_from
+      from: ""
+      to: '["PJR-DFWV"]'
