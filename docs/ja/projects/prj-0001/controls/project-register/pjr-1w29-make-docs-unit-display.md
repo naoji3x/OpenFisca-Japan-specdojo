@@ -37,6 +37,14 @@ specdojo:
 - `format_number` の単体テストを追加する。今は `tools/make_docs` にテストがないため、置き場所と実行方法は executor が決め、理由を「4. 対応結果」に記録する。
 - `make docs`・`make check-docs`・`make check-style`・`make test` が通る。
 
+### 2.1. 実行の前提（2026-10-31、specdojo-orchestrator）
+
+- product の統合先は `feature/parameter-unit-metadata`（PJR-KS3C の修正の上）である。PJR-KS3C の YAML の修正と `docs/_data` の作り直しは、すでにこのブランチにある。
+- Python 3.11 の仮想環境（`../OpenFisca-Japan/.venv`）は PATH にあり、OpenFisca-Japan は editable install されている。依存は追加しない。
+- editable install は `../OpenFisca-Japan` の作業ツリー（今は `develop`）を指す。Python の検査は、product の worktree の root で `PYTHONPATH="$PWD"` を付けて流す（例: `PYTHONPATH="$PWD" make docs`、`PYTHONPATH="$PWD" make test`）。流す前に `PYTHONPATH="$PWD" python -c "import openfisca_japan; print(openfisca_japan.__file__)"` で worktree のコードが読まれていることを確かめ、結果を「4. 対応結果」に書く。
+- `make check-style` が通るよう、仮想環境の setuptools を 81 未満、pycodestyle を 2.7 系にしてある（flake8 3.9 と flake8-commas のため）。`make format-style` は autopep8 と pycodestyle の版が合わないため流さない。
+- executor はネットワークに出られない。
+
 ## 3. 作業内容
 
 | No  | 作業                                                                                       | 担当 | 状態 | メモ              |
