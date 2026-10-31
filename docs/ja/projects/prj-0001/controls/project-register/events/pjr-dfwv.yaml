@@ -51,3 +51,29 @@
       from: "-"
       to: '["PJR-PP9D"]'
   previous_event_id: reg_c274b77d20d44560b12facbe4e62459d
+- v: 1
+  id: reg_7dced45c7a1f4b0987a725aa82cafb33
+  ts: "2026-10-31T14:06:25Z"
+  action: start
+  actor: sol-executor
+  from_status: open
+  to_status: in-progress
+  reason: work started
+  changes:
+    - field: status
+      from: open
+      to: in-progress
+  previous_event_id: reg_4093163f7221484aa7419b1d0e128ced
+- v: 1
+  id: reg_43e1bfe2a43146df9b0748cca2e453e7
+  ts: "2026-10-31T14:21:16Z"
+  action: review
+  actor: sol-executor
+  from_status: in-progress
+  to_status: review
+  reason: ready for review
+  changes:
+    - field: status
+      from: in-progress
+      to: review
+  previous_event_id: reg_7dced45c7a1f4b0987a725aa82cafb33
