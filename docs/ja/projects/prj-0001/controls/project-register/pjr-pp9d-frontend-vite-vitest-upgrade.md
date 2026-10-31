@@ -40,6 +40,24 @@ specdojo:
 - 保護された設定（`package.json`、`.github/workflows/**` など）の変更が必要な場合、executor は変更案を「4. 対応結果」に書き、pipeline では報告の `handoff` にも書く。反映は利用者の承認のもとで行い、反映と検証が終わるまで close しない。
 - CHANGELOG を更新する場合は未公開の版の節に書き、公開済みの版の節は変えない。範囲外の問題は別の項目に分ける。
 
+### 2.1. 実行の前提（2026-10-31、specdojo-orchestrator）
+
+- 依存の更新は `feature/frontend-test-upgrade` に導入済みである（`a30f1f0`）。executor は依存を追加・変更しない。
+
+  | パッケージ             | 更新前  | 更新後  | 選んだ理由                                                                                                |
+  | ---------------------- | ------- | ------- | --------------------------------------------------------------------------------------------------------- |
+  | `vite`                 | 2.9.13  | 8.3.5   | 最新。Storybook 10.6 の `@storybook/react-vite` の peer（Vite 5〜8）を満たす。Node 20.19 以上・22.12 以上 |
+  | `@vitejs/plugin-react` | 1.3.2   | 6.1.2   | 最新。Vite 8 を peer に求める                                                                             |
+  | `vitest`               | 3.2.4   | 5.0.5   | 最新。`@storybook/addon-vitest`（Vitest 4〜5）を満たす。Vite 6.4〜8 を peer に求める                      |
+  | `@types/node`          | 18.13.0 | 22.20.5 | Vite 8 と Vitest 5 の peer（20.19 以上・22 以上）を満たすため                                             |
+
+- orchestrator は更新のあと、コードを変えずに `npm run test`（967 件）・`build`・`lint`・`pretty:check`・`test:e2e`（5 件）が通ることを確かめた。この項目では、次を行う。
+  - 更新で不要になった回避策を外す。`vite.config.ts` の `react({ fastRefresh: mode !== 'test' })` の `fastRefresh` は、プラグインの 1 系の設定で 6 系にはない。外したうえで、Vitest の描画のテストが通ることを確かめる。`src/testSetup.ts` に古い回避策が残っていれば同じく扱う。
+  - build のときに出る `configLoader: 'native'` の警告（`vite.config.ts` が CommonJS として読まれる）への対処を決める。`dashboard/package.json` の `"type"` は保護された設定なので変えない。`vite.config.mts` への改名で対処するか、対処しないかを executor が決め、理由を「4. 対応結果」に書く。
+  - 完了条件の HTML の環境変数の置き換えと、`GITHUB_PAGES` の `base` は、`npm run build` の出力（`dist/index.html` とアセットのパス）で確かめる。
+- executor はネットワークに出られず、サンドボックスでは開発サーバーと preview を起動できない（`listen EPERM`）。開発サーバーの起動・HMR・preview・`test:e2e` を流せない場合は `requires_human` として記録し、ほかの検査が通れば完了としてよい。これらは統合のあとに orchestrator が確かめる。
+- 上流の文書・コードに、登録簿の ID やリンクを書かない。
+
 ## 3. 作業内容
 
 前提: [[prj-0001:pjr-49v3-frontend-question-regression|PJR-49V3]]、[[prj-0001:pjr-bzgg-frontend-result-error-regression|PJR-BZGG]]、[[prj-0001:pjr-1rje-frontend-playwright-e2e|PJR-1RJE]] が完了していることを確かめてから着手する。
