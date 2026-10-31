@@ -71,6 +71,13 @@ specdojo:
   - `PYTHONPATH="$PWD" make test`: 1,829件成功。
 - 未解決事項なし。個票のステータス項目と登録簿の行、result は変更していない。
 
+### orchestrator の確認（2026-10-31、specdojo-orchestrator）
+
+- `openfisca-japan` の `feature/parameter-unit-metadata`（`896ba88`）を一時的な worktree に取り出し、`PYTHONPATH` で worktree のコードを読ませて流した。`make docs` は生成物に差を出さず、単位のない数値のパラメータの警告も出なかった。`make check-docs`・`make check-style`・`make test`（1829 件）と、`tools/make_docs/test_make_docs.py`（6 件）が通った。
+- 生成物の表示を確かめた。`0.183` → `18.3%`、`0.0055` → `0.55%`、`0.1` → `10%`、年齢は `18 歳`、日数は `30 日`、学年は `12 学年`、人数は `3 人`、金額は `28,840 円`。浮動小数点の誤差は出ていない。
+- 上流の変更に登録簿の ID やリンクはない（commit メッセージの `Refs:` 行を除く）。
+- 注意: `test_make_docs.py` は `make test`（`openfisca test`）にも CI にも含まれず、手で流す必要がある。executor は、`Makefile` を変えない判断と、流し方（`python -m unittest discover -s tools/make_docs`）を記録している。CI に入れるかは別に判断する。
+
 ## 5. 関連ドキュメント
 
 - 先行の項目: PJR-KS3C（パラメータの YAML の単位の誤りを直す）
