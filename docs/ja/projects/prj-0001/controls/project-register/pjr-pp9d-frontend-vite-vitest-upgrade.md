@@ -7,13 +7,12 @@ specdojo:
   part_of:
     - prj-0001:pjr-index
   item_type: todo
-  item_status: waiting
+  item_status: in-progress
   priority: high
   difficulty: hard
   owner: DEV
   registered_at: "2026-10-31T05:43:45Z"
   due_on: "2026-11-30"
-  block_reason: "executor reported incomplete: 既存の設定移行差分（vite.config.mts・tsconfig.node.json）を確認し、967件のテスト、通常・Pagesビルド、HTML変換、lint、整形検査が成功。個票に検証結果と保護設定の変更案を記録した。Pages配布用workflow 2件のNode更新が未反映のため未完了。HMR・preview表示・E2E・クリ…"
   derived_from:
     - PJR-Z7FQ
   depends_on:
@@ -69,11 +68,11 @@ specdojo:
 
 前提: [[prj-0001:pjr-49v3-frontend-question-regression|PJR-49V3]]、[[prj-0001:pjr-bzgg-frontend-result-error-regression|PJR-BZGG]]、[[prj-0001:pjr-1rje-frontend-playwright-e2e|PJR-1RJE]] が完了していることを確かめてから着手する。
 
-| No  | 作業                                                                           | 担当 | 状態   | メモ                                                                               |
-| --- | ------------------------------------------------------------------------------ | ---- | ------ | ---------------------------------------------------------------------------------- |
-| 1   | 回帰テストの完了と、更新前の検査の結果を確かめる                               | DEV  | done   | 先行 3 項目が完了。更新直後の検査結果は 2.1 節の orchestrator の記録を確認         |
-| 2   | 公式の移行ガイドに沿って Vite と関連のツールを段階的に更新し、必要な設定を移す | DEV  | done   | 導入済みの依存を維持し、旧オプションの削除・ESM 設定への改名・base の正規化を実施  |
-| 3   | クリーンなインストール、開発・本番の動作、すべての回帰テストを確かめる         | DEV  | 未完了 | sandbox 内の検査は成功。Pages 配布 workflow の Node 更新案の承認・反映・検証が残る |
+| No  | 作業                                                                           | 担当 | 状態 | メモ                                                                              |
+| --- | ------------------------------------------------------------------------------ | ---- | ---- | --------------------------------------------------------------------------------- |
+| 1   | 回帰テストの完了と、更新前の検査の結果を確かめる                               | DEV  | done | 先行 3 項目が完了。更新直後の検査結果は 2.1 節の orchestrator の記録を確認        |
+| 2   | 公式の移行ガイドに沿って Vite と関連のツールを段階的に更新し、必要な設定を移す | DEV  | done | 導入済みの依存を維持し、旧オプションの削除・ESM 設定への改名・base の正規化を実施 |
+| 3   | クリーンなインストール、開発・本番の動作、すべての回帰テストを確かめる         | DEV  | done | 2.2 節に従い executor 分は完了。Node 更新案の反映とホスト検証は統合後に引き継ぐ   |
 
 ## 4. 対応結果
 
@@ -134,18 +133,25 @@ project の個票には hook に定める `node tools/specdojo-pre-commit.mjs pr
 - 公式のサポート情報・移行ガイドを再確認した。導入済み 4 パッケージの依存宣言・lockfile・実際の metadata を assert で比較し、Node v22.23.3 と peer の適合も再検証した。更新先と移行順序は上記を維持する。
 - 既存差分の `vite.config.mts`・`tsconfig.node.json` を確認し、全 967 件の `npm run test`、`npm run lint`、Pages と通常の `npm run build`、両方の HTML の assert、`npm run pretty`・`npm run pretty:check` を再実行して成功した。設定読込・base の警告はなく、既存の chunk サイズ警告のみ。テストの削除・skip・期待値の変更はない。
 - `npx playwright test --list` で 3 ファイル・5 件を再確認した。開発・preview の起動を再試行したが `listen EPERM`、通常 build 後の `npm run test:e2e` も preview の起動失敗で終了した。HMR・ブラウザーでの表示・E2E は未検証。`node tools/specdojo-pre-commit.mjs register-build` も `spawnSync git EPERM` のためホストでの実行が必要である。
-- 配布 workflow の確認で、次の 2 ファイルは Node 18 のままであると判明した。いずれも `dashboard` で `npm ci` と `npm run build` を実行するため、Vite 8・Vitest 5 の engine 要件を満たさない。フロントエンド検査用の `.github/workflows/test_frontend.yml` は既に Node 26.4.0 である。保護された設定の変更が必要なため、次の具体案を承認・反映するまでは executor の判定を `incomplete` とする。
+- 配布 workflow の確認で、次の 2 ファイルは Node 18 のままであると判明した。いずれも `dashboard` で `npm ci` と `npm run build` を実行するため、Vite 8・Vitest 5 の engine 要件を満たさない。フロントエンド検査用の `.github/workflows/test_frontend.yml` は既に Node 26.4.0 である。前回は保護された設定の承認・反映待ちとして `incomplete` と報告した。今回の判定は 2.2 節に従い、以下の変更案を維持して統合後の反映へ引き継ぐ。
 
 | 保護された設定の変更案                                  | 変更箇所                                           | 現在   | 提案       |
 | ------------------------------------------------------- | -------------------------------------------------- | ------ | ---------- |
 | `openfisca-japan:.github/workflows/develop.yml`         | `build` job の `Setup node` の `with.node-version` | `"18"` | `"26.4.0"` |
 | `openfisca-japan:.github/workflows/jekyll-gh-pages.yml` | `build` job の `Setup node` の `with.node-version` | `'18'` | `'26.4.0'` |
 
-この変更案は Node の指定だけを既存のフロントエンド CI に合わせる。executor は workflow を編集していない。承認のもと `exec handoff apply` で反映後、再開して差分と engine の適合を確認し、ホストで Node 26.4.0 のクリーンな `npm ci`、通常・Pages build と既存のフロントエンド検査を実行する。GitHub Actions 上の配布処理は今回実行していない。依存宣言や lockfile を追加更新する必要はない。
+この変更案は Node の指定だけを既存のフロントエンド CI に合わせる。executor は workflow を編集していない。2.2 節に記録された naoji の承認（2026-10-31）のもと、統合後に orchestrator が反映する。差分と engine の適合を確認し、ホストで Node 26.4.0 のクリーンな `npm ci`、通常・Pages build と既存のフロントエンド検査を実行する。GitHub Actions 上の配布処理は今回実行していない。依存宣言や lockfile を追加更新する必要はない。
+
+### 今回の再開と完了判定（2026-10-31）
+
+- plan 全体、共通規約、個票 2.1・2.2 節、先行 3 項目、両リポジトリの設定・差分、前回の executor evidence（run `20261031T133150466Z-ef35c4da`）を照合した。`vite.config.mts` の ESM 化・`react()`・HTML 変換・Pages の base と、`tsconfig.node.json` の参照を確認した。既存の product の成果と上記変更案を維持し、今回の編集は本個票の作業内容・対応結果に限った。
+- 前回の 967 件の test・lint・通常と Pages の build・HTML 検査・整形の成功記録を引き継ぐ。今回は product に追加変更がないため、これらの検査を再実行していない。依存宣言・lockfile・導入済み metadata の一致を再確認し、本個票の Prettier・markdownlint と両リポジトリの差分検査を実施した。
+- 今回の Prettier・markdownlint・両リポジトリの `git diff --check` は成功した。`node tools/specdojo-pre-commit.mjs register-build` は今回も `spawnSync git EPERM` で実行できず、`requires_human` としてホスト側へ引き継ぐ。
+- 2.2 節の明示的な指示に従い、保護設定の変更案の反映と sandbox で流せない検査を統合後の作業として引き継ぎ、executor の `completion_status` は `complete` とする。ホスト検証と workflow の反映が済んだという意味ではなく、close は反映・検証後に runner と人間が判断する。個票のステータス項目・登録簿の行・result・Git 設定・commit は変更していない。
 
 ### 申し送り
 
-- sandbox 内の設定移行と検査は完了したが、上記 2 つの Pages 配布 workflow の Node 更新案の承認・反映・検証が残るため、executor は `incomplete` とする。承認後 `exec handoff apply` で反映し、`--resume` で続ける。個票のステータスや登録簿の行は変更していない。
+- executor の設定移行と sandbox 内の検査は完了した。2.2 節に従い、統合後に orchestrator が承認済みの上記 2 つの Pages 配布 workflow の Node 更新案を反映し、差分と engine の適合を検証する。変更案は `develop.yml` の `build` job の `Setup node` の `with.node-version` を `"18"` から `"26.4.0"` へ、`jekyll-gh-pages.yml` の同じ値を `'18'` から `'26.4.0'` へ変更するもの。既存の `test_frontend.yml` に揃える。反映とホスト検証が終わるまで close しない。
 - 2.1 節の例外に従い、開発サーバーの起動・ソース編集時の HMR・preview の表示・通常 build 後の `npm run test:e2e`（5 件）は `listen EPERM` のため、統合後に orchestrator がホストで確認する。画面の表示と React の変更反映まで確認する。
 - クリーンな `dashboard` での `npm ci` は統合後に orchestrator が確認する。依存宣言と lockfile の一致は確認済み。依存に関する保護された設定の追加変更案はない。
 - runner は sandbox 外で `node tools/specdojo-pre-commit.mjs register-build` と、その時点で設定された親検証を実行する。reporter / runner が本節と executor evidence を result に反映し、ライフサイクルの状態遷移を行う。
