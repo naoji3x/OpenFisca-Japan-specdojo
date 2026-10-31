@@ -115,3 +115,16 @@
       from: "executor reported incomplete: 描画テスト基盤、質問テンプレート8種類のテスト、テスト方針の記録を整え、指定された4検査はすべて成功。npm ci は再試行でも無出力のまま60秒を超え完了確認できず、依存のクリーンインストールが未確認のため未完了。"
       to: "-"
   previous_event_id: reg_e0d8559993a146a09c338add253264b3
+- v: 1
+  id: reg_145bce80ec0e4d5dbd0c2e1c1b6cf9f9
+  ts: "2026-10-31T11:45:08Z"
+  action: review
+  actor: sol-executor
+  from_status: in-progress
+  to_status: review
+  reason: ready for review
+  changes:
+    - field: status
+      from: in-progress
+      to: review
+  previous_event_id: reg_83a5e00bafa34dbdb12c93c499392d3f
