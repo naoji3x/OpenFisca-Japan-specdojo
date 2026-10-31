@@ -48,7 +48,7 @@ specdojo:
 | 1   | 2 つのコンテナの設定を比べ、移すものを決める                              | specdojo-orchestrator | done | 2026-10-31 に比べた              |
 | 2   | `feature/prj-0001/devcontainer-docker-compose` で `.devcontainer/` を直す | specdojo-orchestrator | done | 利用者の承認のもとで commit する |
 | 3   | devcontainer を作り直し、完了条件の確認を行う                             | naoji                 | done | ホストでの確認                   |
-| 4   | 確認の結果を「4. 対応結果」に記録する                                     | naoji                 | done | -                                |
+| 4   | 確認の結果を「4. 対応結果」に記録する                                     | specdojo-orchestrator | done | -                                |
 
 ### 3.1. 2 つのコンテナの違い
 
