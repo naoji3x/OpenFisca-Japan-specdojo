@@ -30,8 +30,9 @@ React を更新したあとの構成で、Chakra UI・icons・Emotion・framer-m
 - 着手の時点の公式の情報から、Chakra UI と関連の UI 依存の互換性と移行の量を確かめ、採る版とメジャーの移行の可否・理由を「4. 対応結果」に記録する。
 - 更新の範囲を反映し、依存の宣言とロックファイルを一致させる。画面の大規模な作り直しや UI ライブラリの置き換えが必要なら、この項目では行わず別の判断に引き継ぐ。
 - 質問入力・結果・エラーの各画面について、レスポンシブの表示・キーボードの操作・フォーカスを、更新の前と後で比べて結果を記録する。比べるときは、[[prj-0001:pjr-dfwv-frontend-storybook-component-tests|PJR-DFWV]] の story のテストと a11y の検査を更新の前後で流し、story で確かめられない点だけを画面で確かめる。a11y の検査の違反が更新で増えた場合は、直すか理由を記録する。
-- クリーンな環境で `npm ci` が成功し、単体テスト・story のテスト・E2E を、削除・skip せずにすべて通す。
-- 検証は `dashboard` で `npm ci`、`npm run test`、`npm run build`、`npm run lint`、`npm run pretty:check` と、[[prj-0001:pjr-dfwv-frontend-storybook-component-tests|PJR-DFWV]] で追加した story のテスト、[[prj-0001:pjr-1rje-frontend-playwright-e2e|PJR-1RJE]] で追加した E2E のスクリプトを実行する。E2E は build 済みの preview に対して流す。実行したコマンド・環境・成否を「4. 対応結果」に記録する。
+- 依存の宣言とロックファイルが一致し（クリーンな環境での `npm ci` の成功は、統合のあとに orchestrator が確かめる）、単体テスト・story のテスト・E2E を、削除・skip せずにすべて通す。
+- 検証は `dashboard` で `npm run test`、`npm run build`、`npm run lint`、`npm run pretty:check` と、[[prj-0001:pjr-dfwv-frontend-storybook-component-tests|PJR-DFWV]] で追加した story のテスト、[[prj-0001:pjr-1rje-frontend-playwright-e2e|PJR-1RJE]] で追加した E2E のスクリプトを実行する。E2E は build 済みの preview に対して流す。実行したコマンド・環境・成否を「4. 対応結果」に記録する。
+- `npm ci` は worktree を作るときに runner が流すため、executor は流さない（executor はネットワークに出られない）。依存の更新は、`dashboard/package.json` の変更案を「4. 対応結果」と報告の `handoff` に書いて止まる。利用者の承認のもと `exec handoff apply` で当て、ロックファイルもそこで作り直したあと、`--resume` で続ける。
 - exec で実施する場合は、その時点の設定による親の検証も通す。親の検証にフロントエンドの検査が含まれない場合も、この項目で指定した検査は省略しない。
 - 保護された設定（`package.json`、`.github/workflows/**` など）の変更が必要な場合、executor は変更案を「4. 対応結果」に書き、pipeline では報告の `handoff` にも書く。反映は利用者の承認のもとで行い、反映と検証が終わるまで close しない。
 - CHANGELOG を更新する場合は未公開の版の節に書き、公開済みの版の節は変えない。範囲外の問題は別の項目に分ける。

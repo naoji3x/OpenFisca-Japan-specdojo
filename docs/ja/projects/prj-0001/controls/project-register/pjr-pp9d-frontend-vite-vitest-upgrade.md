@@ -30,10 +30,11 @@ specdojo:
 ## 2. 完了条件
 
 - 着手の時点の公式のサポート情報・Node の要件・peerDependencies を確かめ、Vite・`@vitejs/plugin-react`・Vitest の更新先と選んだ理由、移行の順序を「4. 対応結果」に記録する。Vite は、[[prj-0001:pjr-dfwv-frontend-storybook-component-tests|PJR-DFWV]] で入れる Storybook が求める版（2026-10-31 時点では Vite 5 以上・Vitest 4 以上）を満たす。
-- Vite 2 系から移行し、依存の宣言とロックファイルが一致し、クリーンな環境で `npm ci` が成功する。
+- Vite 2 系から移行し、依存の宣言とロックファイルが一致する（クリーンな環境での `npm ci` の成功は、統合のあとに orchestrator が確かめる）。
 - 開発サーバーの起動とソースを編集したときの HMR、本番ビルドと preview、`index.html` の環境変数の置き換え、通常と GitHub Pages 向けの `base` の設定を確かめる。
 - [[prj-0001:pjr-49v3-frontend-question-regression|PJR-49V3]] と [[prj-0001:pjr-bzgg-frontend-result-error-regression|PJR-BZGG]] の画面のテストを、削除・skip せずにすべて通す。
-- 検証は `dashboard` で `npm ci`、`npm run test`、`npm run build`、`npm run lint`、`npm run pretty:check` と、[[prj-0001:pjr-1rje-frontend-playwright-e2e|PJR-1RJE]] で追加した E2E のスクリプトを実行する。E2E は build 済みの preview に対して流す。実行したコマンド・環境・成否を「4. 対応結果」に記録する。
+- 検証は `dashboard` で `npm run test`、`npm run build`、`npm run lint`、`npm run pretty:check` と、[[prj-0001:pjr-1rje-frontend-playwright-e2e|PJR-1RJE]] で追加した E2E のスクリプトを実行する。E2E は build 済みの preview に対して流す。実行したコマンド・環境・成否を「4. 対応結果」に記録する。
+- `npm ci` は worktree を作るときに runner が流すため、executor は流さない（executor はネットワークに出られない）。依存の更新は、`dashboard/package.json` の変更案を「4. 対応結果」と報告の `handoff` に書いて止まる。利用者の承認のもと `exec handoff apply` で当て、ロックファイルもそこで作り直したあと、`--resume` で続ける。
 - exec で実施する場合は、その時点の設定による親の検証も通す。親の検証にフロントエンドの検査が含まれない場合も、この項目で指定した検査は省略しない。
 - 保護された設定（`package.json`、`.github/workflows/**` など）の変更が必要な場合、executor は変更案を「4. 対応結果」に書き、pipeline では報告の `handoff` にも書く。反映は利用者の承認のもとで行い、反映と検証が終わるまで close しない。
 - CHANGELOG を更新する場合は未公開の版の節に書き、公開済みの版の節は変えない。範囲外の問題は別の項目に分ける。
