@@ -1,0 +1,290 @@
+{
+  "schema_version": 1,
+  "task_id": "PJR-BZGG",
+  "run_id": "20261031T120132269Z-b593adc0",
+  "stage": {
+    "role": "executor",
+    "actor": "sol-executor",
+    "status": "succeeded",
+    "started_at": "2026-10-31T12:02:02.746Z",
+    "completed_at": "2026-10-31T12:08:20.262Z",
+    "exit_code": 0,
+    "attempts": 1
+  },
+  "changes": [
+    {
+      "path": "docs/ja/projects/prj-0001/controls/project-register/events/pjr-bzgg.yaml",
+      "status": "MM"
+    },
+    {
+      "path": "docs/ja/projects/prj-0001/controls/project-register/pjr-bzgg-frontend-result-error-regression.md",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/questions/template/questionTemplateTestUtils.tsx",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/testSetup.ts",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:docs/dev_note.md",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/errors/errors.test.tsx",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/result/result.test.tsx",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/hooks/calculate.test.tsx",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/mocks/calculate/benefit-only.request.json",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/mocks/calculate/benefit-only.response.json",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/mocks/calculate/both.request.json",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/mocks/calculate/both.response.json",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/mocks/calculate/loan-only.request.json",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/mocks/calculate/loan-only.response.json",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/mocks/calculate/none.request.json",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/mocks/calculate/none.response.json",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/mocks/calculateFixtures.ts",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/mocks/handlers.ts",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/mocks/resultTestUtils.tsx",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/mocks/server.ts",
+      "status": "??"
+    }
+  ],
+  "attempt_changes": [
+    {
+      "path": "docs/ja/projects/prj-0001/controls/project-register/pjr-bzgg-frontend-result-error-regression.md",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/questions/template/questionTemplateTestUtils.tsx",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/testSetup.ts",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:docs/dev_note.md",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/errors/errors.test.tsx",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/result/result.test.tsx",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/hooks/calculate.test.tsx",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/mocks/calculate/benefit-only.request.json",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/mocks/calculate/benefit-only.response.json",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/mocks/calculate/both.request.json",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/mocks/calculate/both.response.json",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/mocks/calculate/loan-only.request.json",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/mocks/calculate/loan-only.response.json",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/mocks/calculate/none.request.json",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/mocks/calculate/none.response.json",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/mocks/calculateFixtures.ts",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/mocks/handlers.ts",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/mocks/resultTestUtils.tsx",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/mocks/server.ts",
+      "status": "??"
+    }
+  ],
+  "diff_summary": {
+    "files_changed": 20,
+    "summary": ".../pjr-bzgg-frontend-result-error-regression.md   | 64 ++++++++++++++++++++--\n 1 file changed, 58 insertions(+), 6 deletions(-)\n[openfisca-japan]\n.../template/questionTemplateTestUtils.tsx         | 11 +++++---\n dashboard/src/testSetup.ts                         |  6 +++++\n docs/dev_note.md                                   | 30 ++++++++++++++++++++++\n 3 files changed, 44 insertions(+), 3 deletions(-)"
+  },
+  "validations": [
+    {
+      "source": "executor",
+      "command": "npm run test",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboardで8ファイル・967件成功。追加27件。共有リンク互換性テストを含む既存940件は変更せず成功。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run build",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboardで成功。既存のバンドルサイズ警告のみ。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run lint",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboardで成功。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run pretty:check",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboardで成功。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run pretty",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboardのpre-commit相当の整形に成功。"
+    },
+    {
+      "source": "executor",
+      "command": "node tools/specdojo-pre-commit.mjs prettier docs/ja/projects/prj-0001/controls/project-register/pjr-bzgg-frontend-result-error-regression.md",
+      "status": "passed",
+      "summary": "対象個票の整形に成功。"
+    },
+    {
+      "source": "executor",
+      "command": "node tools/specdojo-pre-commit.mjs markdownlint docs/ja/projects/prj-0001/controls/project-register/pjr-bzgg-frontend-result-error-regression.md",
+      "status": "passed",
+      "summary": "対象個票のMarkdown検査に成功。"
+    },
+    {
+      "source": "executor",
+      "command": "node tools/specdojo-pre-commit.mjs register-build",
+      "status": "requires_human",
+      "summary": "sandbox内でspawnSync git EPERM。ホスト側runnerでの実行が必要。"
+    },
+    {
+      "source": "executor",
+      "command": "specdojo catalog validate --project prj-0001",
+      "status": "not_applicable",
+      "summary": "カタログ検査は非適用。",
+      "reason": "対象projectに `catalog_path` が設定されていない。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run validate:schema:file",
+      "status": "not_applicable",
+      "summary": "schema検査は非適用。",
+      "reason": "該当scriptがなく、executorによるYAML変更もない。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run typecheck",
+      "status": "not_applicable",
+      "summary": "独立したtypecheckは非適用。dashboardのbuildでtscに成功。",
+      "reason": "projectとdashboardにtypecheck scriptがない。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run test:unit",
+      "status": "not_applicable",
+      "summary": "専用の単体テストscriptは非適用。指定されたdashboardのtestを実行済み。",
+      "reason": "projectとdashboardに `test:unit` scriptがない。"
+    },
+    {
+      "source": "executor",
+      "command": "npm test",
+      "status": "not_applicable",
+      "summary": "projectのtestは非適用。",
+      "reason": "projectのtest scriptはnpm初期化時の仮置き。"
+    },
+    {
+      "source": "executor",
+      "command": "npx markdownlint ../docs/dev_note.md",
+      "status": "not_applicable",
+      "summary": "productのMarkdown lintは非適用。",
+      "reason": "dashboardにMarkdown lintの依存がない。開発メモの追加節は導入済みPrettierで整形済み。"
+    },
+    {
+      "source": "executor",
+      "command": "git diff --check",
+      "status": "passed",
+      "summary": "projectとopenfisca-japanの両方で成功。"
+    }
+  ],
+  "final_message": "API・結果・エラー画面の回帰テスト27件を追加。変更ファイルは openfisca-japan:dashboard/src/hooks/calculate.test.tsx、dashboard/src/components/result/result.test.tsx、dashboard/src/components/errors/errors.test.tsx、dashboard/src/mocks/ 配下のhandlers・server・固定データ・描画ヘルパー、dashboard/src/testSetup.ts、dashboard/src/components/questions/template/questionTemplateTestUtils.tsx、docs/dev_note.md、およびprojectの対象個票。全967件と指定の検査に成功。resultとステータス項目は変更していない。",
+  "completion_status": "complete",
+  "handoff": [
+    "統合後、orchestrator は `openfisca-japan:docs/dev_note.md` の手順で4件の固定リクエストをローカルAPIへ送り、実応答を記録して画面が読むフィールドと照合する。固定応答は手作りで実APIとは未照合。違いがあればAPIの版と差分を記録し、別項目で対応する。",
+    "runner は sandbox 外で `node tools/specdojo-pre-commit.mjs register-build` を確認する。executor 内では `spawnSync git EPERM` により実行できなかった。resultの記入と状態遷移はreporter / runnerが行う。"
+  ],
+  "log_refs": [
+    {
+      "kind": "agent-output-excerpt",
+      "path": "docs/ja/projects/prj-0001/execution/exec/evidence/PJR-BZGG/20261031T120132269Z-b593adc0/executor.log",
+      "bytes": 4807,
+      "truncated": false
+    }
+  ]
+}
