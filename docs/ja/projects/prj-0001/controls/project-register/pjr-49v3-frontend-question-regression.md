@@ -7,12 +7,13 @@ specdojo:
   part_of:
     - prj-0001:pjr-index
   item_type: todo
-  item_status: open
+  item_status: waiting
   priority: high
   difficulty: medium
   owner: DEV
   registered_at: "2026-10-31T04:05:37Z"
   due_on: "2026-11-30"
+  block_reason: "executor reported incomplete: 描画テスト基盤、8テンプレートのテスト、テスト方針の記録を追加。指定検査は成功したが、npm ciの完了を確認できず再実行が必要。"
   derived_from:
     - PJR-Z7FQ
 ---

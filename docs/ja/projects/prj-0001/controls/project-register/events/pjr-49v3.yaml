@@ -38,3 +38,32 @@
     - field: derived_from
       from: ""
       to: '["PJR-Z7FQ"]'
+- v: 1
+  id: reg_4f52e15e6acd4ba4a8021cf6f83ec826
+  ts: "2026-10-31T11:08:42Z"
+  action: start
+  actor: luna-executor
+  from_status: open
+  to_status: in-progress
+  reason: work started
+  changes:
+    - field: status
+      from: open
+      to: in-progress
+  previous_event_id: reg_da0a05811d864755b0f109150820d148
+- v: 1
+  id: reg_703f5c90b71b41b4b6d5308909458f19
+  ts: "2026-10-31T11:15:01Z"
+  action: wait
+  actor: luna-executor
+  from_status: in-progress
+  to_status: waiting
+  reason: "executor reported incomplete: 描画テスト基盤、8テンプレートのテスト、テスト方針の記録を追加。指定検査は成功したが、npm ciの完了を確認できず再実行が必要。"
+  changes:
+    - field: status
+      from: in-progress
+      to: waiting
+    - field: block_reason
+      from: "-"
+      to: "executor reported incomplete: 描画テスト基盤、8テンプレートのテスト、テスト方針の記録を追加。指定検査は成功したが、npm ciの完了を確認できず再実行が必要。"
+  previous_event_id: reg_4f52e15e6acd4ba4a8021cf6f83ec826
