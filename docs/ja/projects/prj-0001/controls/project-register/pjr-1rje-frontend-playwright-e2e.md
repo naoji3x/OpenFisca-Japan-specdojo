@@ -13,7 +13,7 @@ specdojo:
   owner: DEV
   registered_at: "2026-10-31T04:05:52Z"
   due_on: "2026-11-30"
-  block_reason: "executor reported incomplete: Playwright の 3 ファイル・5 テスト、設定、Vitest の収集分離、Cypress ファイル削除、開発手順の更新を実施。967 テスト・build・lint・整形・E2E の型検査は成功。保護された package・lockfile・CI の反映とホスト側の E2E 検証が残る。"
+  block_reason: "integrate failed: project: Result Markdown notation violation before commit: docs/ja/projects/prj-0001/execution/exec/results/pjr-1rje-20261031T124603Z-d162b52f-result.md:49:368 error MD038/no-space-i…"
   derived_from:
     - PJR-Z7FQ
   depends_on:
