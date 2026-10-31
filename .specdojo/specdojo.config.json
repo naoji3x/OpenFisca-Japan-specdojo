@@ -17,7 +17,15 @@
       "repos": [
         {
           "name": "openfisca-japan",
-          "path": "../OpenFisca-Japan"
+          "path": "../OpenFisca-Japan",
+          "integration_branch": "develop",
+          "integration_strategy": "branch-only",
+          "branch_template": "feature/{topic}",
+          "commit_subject_template": "{type}({scope}): {title}",
+          "setup": {
+            "install": true,
+            "build": false
+          }
         }
       ]
     }
