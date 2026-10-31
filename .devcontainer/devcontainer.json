@@ -80,7 +80,8 @@
           "./docs/specdojo/schemas/v1/sch-milestones.schema.yaml": "docs/**/sch-milestones.yaml",
           "./docs/specdojo/schemas/v1/sch-strategy.schema.yaml": "docs/**/sch-strategy-*.yaml",
           "./docs/specdojo/schemas/v1/sch-track.schema.yaml": "docs/**/sch-track-*.yaml"
-        }
+        },
+        "dev.containers.dockerCredentialHelper": false
       }
     }
   },
