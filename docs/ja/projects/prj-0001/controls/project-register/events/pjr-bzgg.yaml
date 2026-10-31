@@ -1,0 +1,43 @@
+# yaml-language-server: $schema=../../../../../../specdojo/schemas/v1/register-events.schema.yaml
+- v: 1
+  id: reg_d4f0695c9b314e2a97a5c337ffce7b25
+  ts: "2026-10-31T04:05:40Z"
+  action: add
+  actor: specdojo-orchestrator
+  from_status: null
+  to_status: open
+  reason: フロントエンドのテスト構築のため、PJR-Z7FQ の方針に沿って起票
+  changes:
+    - field: status
+      from: ""
+      to: open
+    - field: title
+      from: ""
+      to: 結果・エラー画面と計算 API の呼び出しを単体テストで固定する
+    - field: description
+      from: ""
+      to: PJR-49V3 の基盤を使い、給付・貸付・対象なしの結果表示、計算 API の成功と失敗、エラー画面の戻り先を単体テストで固定する
+    - field: type
+      from: ""
+      to: todo
+    - field: priority
+      from: ""
+      to: high
+    - field: difficulty
+      from: ""
+      to: medium
+    - field: owner
+      from: ""
+      to: DEV
+    - field: registered
+      from: ""
+      to: "2026-10-31"
+    - field: due
+      from: ""
+      to: "2026-11-30"
+    - field: derived_from
+      from: ""
+      to: '["PJR-Z7FQ"]'
+    - field: depends_on
+      from: ""
+      to: '["PJR-49V3"]'
