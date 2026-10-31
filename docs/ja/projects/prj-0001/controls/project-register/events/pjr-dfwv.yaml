@@ -38,3 +38,16 @@
     - field: derived_from
       from: ""
       to: '["PJR-Z7FQ","PJR-49V3"]'
+- v: 1
+  id: reg_4093163f7221484aa7419b1d0e128ced
+  ts: "2026-10-31T05:43:47Z"
+  action: update
+  actor: specdojo-orchestrator
+  from_status: open
+  to_status: open
+  reason: PJR-PP9D の起票に合わせ、Vite と Vitest の更新を先行の項目として記録
+  changes:
+    - field: depends_on
+      from: "-"
+      to: '["PJR-PP9D"]'
+  previous_event_id: reg_c274b77d20d44560b12facbe4e62459d

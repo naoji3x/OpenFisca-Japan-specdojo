@@ -16,6 +16,8 @@ specdojo:
   derived_from:
     - PJR-Z7FQ
     - PJR-49V3
+  depends_on:
+    - PJR-PP9D
 ---
 
 # PJR-DFWV Storybook を導入し、画面のテストを story で流す
