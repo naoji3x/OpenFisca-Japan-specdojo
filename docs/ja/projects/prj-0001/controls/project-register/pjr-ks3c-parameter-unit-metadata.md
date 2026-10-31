@@ -23,10 +23,10 @@ specdojo:
 
 ## 2. 完了条件
 
-- 「3.1. 直す箇所」の 34 ファイルが、表のとおりに直っている。
+- 「3.1. 直す箇所」の 34 ファイルが、表のとおりに直っている。どのファイルでも、`threshold_unit` と `rate_unit` は計算にも生成スクリプトにも使われていない（2026-10-31 に OpenFisca-Core 41.0.0 と OpenFisca-Japan の `develop` で確認）。
 - `make docs` で `docs/_data` を作り直し、YAML の修正と同じ commit に入れている。CI の `make check-docs` が生成物との差を検出するため。
 - `make test` と `make check-docs` が通る。
-- パラメータの一覧のページで、3.1.2 の金額が「28,840 円」のように「円」付きで表示される。
+- パラメータの一覧のページで、3.1.2 と 3.1.3 の金額が「28,840 円」のように「円」付きで表示される。
 - `feature/openfisca-hot-reload` の `make serve-dev` を起動したまま 3.1 の修正を当てると、サーバーが自動で再起動し、API の `metadata.unit` が修正後の値に変わる。確かめた結果は「4. 対応結果」に記録する。
 
 ## 3. 作業内容
@@ -68,9 +68,42 @@ metadata:
 | 6   | `openfisca_japan/parameters/社会保険料/厚生年金保険料率.yaml` |
 | 7   | `openfisca_japan/parameters/社会保険料/雇用保険料率.yaml`     |
 
-#### 3.1.2. 金額なのに単位がない（23 件）
+#### 3.1.2. 配列の金額なのに単位がない（13 件）
 
-3〜4 行目の `threshold_unit: person` と `rate_unit: 1` を削除し、`unit: currency-JPY` を追加する。この 2 つのキーは累進税率表（Scale）用であり、ふつうの Parameter には意味がない。
+扶養人数や世帯人数ごとの金額を配列で持つパラメータである。4 行目の `rate_unit: 1` を削除し、`unit: currency-JPY` を追加する。3 行目の `threshold_unit: person` は残す。OpenFisca-Japan の `.agents/skills/openfisca-parameter/SKILL.md` の「パターン 4：配列パラメータ（扶養人数スライス）」が、配列の番号が人数を表す目印としてこの形を示しているためである。
+
+```yaml
+# 修正前
+metadata:
+  threshold_unit: person
+  rate_unit: 1
+  reference: ...
+# 修正後
+metadata:
+  threshold_unit: person
+  reference: ...
+  unit: currency-JPY
+```
+
+| No  | ファイル                                                                               |
+| --- | -------------------------------------------------------------------------------------- |
+| 1   | `openfisca_japan/parameters/東京都/福祉/重度心身障害者手当/所得制限限度額.yaml`        |
+| 2   | `openfisca_japan/parameters/災害/支援/災害援護資金/所得制限額.yaml`                    |
+| 3   | `openfisca_japan/parameters/福祉/特別障害者手当/所得制限限度額/扶養義務者.yaml`        |
+| 4   | `openfisca_japan/parameters/福祉/特別障害者手当/所得制限限度額/本人.yaml`              |
+| 5   | `openfisca_japan/parameters/福祉/育児/児童扶養手当/所得制限限度額/一部支給.yaml`       |
+| 6   | `openfisca_japan/parameters/福祉/育児/児童扶養手当/所得制限限度額/全部支給.yaml`       |
+| 7   | `openfisca_japan/parameters/福祉/育児/児童扶養手当/所得制限限度額/扶養義務者.yaml`     |
+| 8   | `openfisca_japan/parameters/福祉/育児/児童育成手当/所得制限限度額.yaml`                |
+| 9   | `openfisca_japan/parameters/福祉/育児/特別児童扶養手当/所得制限限度額/受給者.yaml`     |
+| 10  | `openfisca_japan/parameters/福祉/育児/特別児童扶養手当/所得制限限度額/扶養義務者.yaml` |
+| 11  | `openfisca_japan/parameters/福祉/育児/障害児福祉手当/所得制限限度額/受給者.yaml`       |
+| 12  | `openfisca_japan/parameters/福祉/育児/障害児福祉手当/所得制限限度額/扶養義務者.yaml`   |
+| 13  | `openfisca_japan/parameters/福祉/育児/障害児童育成手当/所得制限限度額.yaml`            |
+
+#### 3.1.3. 1 つの値の金額なのに単位がない（10 件）
+
+1 つの金額を持つパラメータである。3〜4 行目の `threshold_unit: person` と `rate_unit: 1` を削除し、`unit: currency-JPY` を追加する。番号を持たないため、`threshold_unit` に意味がない。
 
 ```yaml
 # 修正前
@@ -86,40 +119,27 @@ metadata:
 
 | No  | ファイル                                                                                                                            |
 | --- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | `openfisca_japan/parameters/東京都/福祉/重度心身障害者手当/所得制限限度額.yaml`                                                     |
-| 2   | `openfisca_japan/parameters/災害/支援/災害援護資金/所得制限額.yaml`                                                                 |
-| 3   | `openfisca_japan/parameters/災害/支援/災害援護資金/所得制限額_一人当たり追加額.yaml`                                                |
-| 4   | `openfisca_japan/parameters/災害/支援/災害援護資金/所得制限額_住居が滅失した場合.yaml`                                              |
-| 5   | `openfisca_japan/parameters/福祉/感染症/健康管理支援事業/支給額.yaml`                                                               |
-| 6   | `openfisca_japan/parameters/福祉/感染症/健康管理費用/支給額_最大.yaml`                                                              |
-| 7   | `openfisca_japan/parameters/福祉/感染症/健康管理費用/支給額_最小.yaml`                                                              |
-| 8   | `openfisca_japan/parameters/福祉/感染症/先天性の傷病治療によるC型肝炎患者に係るQOL向上等のための調査研究事業/調査研究協力謝金.yaml` |
-| 9   | `openfisca_japan/parameters/福祉/特別障害者手当/所得制限限度額/扶養義務者.yaml`                                                     |
-| 10  | `openfisca_japan/parameters/福祉/特別障害者手当/所得制限限度額/扶養義務者_老人扶養親族加算額.yaml`                                  |
-| 11  | `openfisca_japan/parameters/福祉/特別障害者手当/所得制限限度額/本人.yaml`                                                           |
-| 12  | `openfisca_japan/parameters/福祉/特別障害者手当/所得制限限度額/本人_特定扶養親族加算額.yaml`                                        |
-| 13  | `openfisca_japan/parameters/福祉/特別障害者手当/所得制限限度額/本人_老人扶養親族加算額.yaml`                                        |
-| 14  | `openfisca_japan/parameters/福祉/特別障害者手当/支給額.yaml`                                                                        |
-| 15  | `openfisca_japan/parameters/福祉/育児/児童扶養手当/所得制限限度額/一部支給.yaml`                                                    |
-| 16  | `openfisca_japan/parameters/福祉/育児/児童扶養手当/所得制限限度額/全部支給.yaml`                                                    |
-| 17  | `openfisca_japan/parameters/福祉/育児/児童扶養手当/所得制限限度額/扶養義務者.yaml`                                                  |
-| 18  | `openfisca_japan/parameters/福祉/育児/児童育成手当/所得制限限度額.yaml`                                                             |
-| 19  | `openfisca_japan/parameters/福祉/育児/特別児童扶養手当/所得制限限度額/受給者.yaml`                                                  |
-| 20  | `openfisca_japan/parameters/福祉/育児/特別児童扶養手当/所得制限限度額/扶養義務者.yaml`                                              |
-| 21  | `openfisca_japan/parameters/福祉/育児/障害児福祉手当/所得制限限度額/受給者.yaml`                                                    |
-| 22  | `openfisca_japan/parameters/福祉/育児/障害児福祉手当/所得制限限度額/扶養義務者.yaml`                                                |
-| 23  | `openfisca_japan/parameters/福祉/育児/障害児童育成手当/所得制限限度額.yaml`                                                         |
+| 1   | `openfisca_japan/parameters/災害/支援/災害援護資金/所得制限額_一人当たり追加額.yaml`                                                |
+| 2   | `openfisca_japan/parameters/災害/支援/災害援護資金/所得制限額_住居が滅失した場合.yaml`                                              |
+| 3   | `openfisca_japan/parameters/福祉/感染症/健康管理支援事業/支給額.yaml`                                                               |
+| 4   | `openfisca_japan/parameters/福祉/感染症/健康管理費用/支給額_最大.yaml`                                                              |
+| 5   | `openfisca_japan/parameters/福祉/感染症/健康管理費用/支給額_最小.yaml`                                                              |
+| 6   | `openfisca_japan/parameters/福祉/感染症/先天性の傷病治療によるC型肝炎患者に係るQOL向上等のための調査研究事業/調査研究協力謝金.yaml` |
+| 7   | `openfisca_japan/parameters/福祉/特別障害者手当/所得制限限度額/扶養義務者_老人扶養親族加算額.yaml`                                  |
+| 8   | `openfisca_japan/parameters/福祉/特別障害者手当/所得制限限度額/本人_特定扶養親族加算額.yaml`                                        |
+| 9   | `openfisca_japan/parameters/福祉/特別障害者手当/所得制限限度額/本人_老人扶養親族加算額.yaml`                                        |
+| 10  | `openfisca_japan/parameters/福祉/特別障害者手当/支給額.yaml`                                                                        |
 
-#### 3.1.3. 日数なのに単位がない（2 件）
+#### 3.1.4. 日数なのに単位がない（2 件）
 
-3.1.2 と同じく 3〜4 行目の 2 つのキーを削除し、`unit: day` を追加する。
+3.1.3 と同じく 3〜4 行目の 2 つのキーを削除し、`unit: day` を追加する。
 
 | No  | ファイル                                                      |
 | --- | ------------------------------------------------------------- |
 | 1   | `openfisca_japan/parameters/福祉/傷病手当金/日数_会社員.yaml` |
 | 2   | `openfisca_japan/parameters/福祉/傷病手当金/日数_公務員.yaml` |
 
-#### 3.1.4. 学年なのに単位が `year` になっている（2 件）
+#### 3.1.5. 学年なのに単位が `year` になっている（2 件）
 
 値は小学 1 年生を 1 とした通算の学年（Variable `学年` と比べる値）であり、年齢ではない。4 行目の `unit: year` を `unit: 学年` にする。
 
