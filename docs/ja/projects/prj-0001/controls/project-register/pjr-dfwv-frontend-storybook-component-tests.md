@@ -66,6 +66,15 @@ Vite と Vitest の更新後に Storybook と `@storybook/addon-vitest` を導�
 - サンドボックスでは、ブラウザーモードのテストと Storybook の開発サーバーが、ポートを開けず（`listen EPERM`）に流せない場合がある。その場合は `requires_human` として記録し、ほかの検査（`npm run test`・`build`・`lint`・`pretty:check`）が通れば完了としてよい。ブラウザーモードのテストと `build-storybook` は、統合のあとに orchestrator が流す。
 - 上流の文書・コードに、登録簿の ID やリンクを書かない。
 
+### 2.2. 統合後の確認で見つかった不具合と再実行の指示（2026-10-31、specdojo-orchestrator）
+
+- 1 回目の統合（`3654803`）のあと、orchestrator がサンドボックスの外で `npx vitest run --config vitest.browser.config.mts` を流すと、起動の時点で `Cannot define a nested project for a chromium browser. The project name "browser (chromium)" was already defined.` で失敗した。
+- 原因は、`vitest.browser.config.mts` で 2 つの project（`storybook`・`browser`）が同じ `browser` の設定オブジェクトを共有していることである。Vitest は各 instance に名前を書き込むため、共有すると名前がぶつかる。
+- 直し方: `browser` の設定を、project ごとに新しいオブジェクトを返す関数にする（例: `const browser = () => ({ enabled: true, headless: true, provider: playwright(), instances: [{ browser: 'chromium' as const }] })` とし、各 project で `browser: browser()` とする）。orchestrator がこの直し方を一時的な worktree で試し、4 ファイル・35 件が通ることを確かめた。
+- この再実行で行うのは、この修正と、修正に合わせた `docs/dev_note.md` の記述の見直しだけとする。ほかの成果は変えない。
+- ブラウザーのテストは、サンドボックスでは流せない場合がある。その場合は `requires_human` としてよい。統合のあとに orchestrator が流し、a11y の違反の一覧を集めて「4. 対応結果」に追記する。
+- 保護された設定の変更案（`package.json` のスクリプトと CI）は、記録済みのものを変えずに残す。
+
 ## 3. 作業内容
 
 前提: [[prj-0001:pjr-pp9d-frontend-vite-vitest-upgrade|PJR-PP9D]]（Vite・Reactプラグイン・Vitest の更新）が完了していることを確かめてから着手する。
