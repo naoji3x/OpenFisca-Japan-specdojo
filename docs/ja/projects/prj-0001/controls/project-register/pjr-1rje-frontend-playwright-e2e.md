@@ -154,6 +154,16 @@ E2E を追加した際の最初の追加 lint（`npx eslint playwright.config.ts
 - preview の起動は sandbox の `listen EPERM` で実行不可だった。2.1 節に従い E2E は `requires_human` とする。テストの列挙・型検査・追加 lint は通ったが、実ブラウザーでの成否は未確認である。
 - runner は sandbox 外で `node tools/specdojo-pre-commit.mjs register-build` と、その時点の親検証を実行する。reporter / runner が result の記入と状態遷移を行う。保護された設定の反映が残るため、executor の報告は `incomplete` とする。
 
+### orchestrator の確認と保護された設定の反映（2026-10-31、specdojo-orchestrator）
+
+- 再開の統合で、reporter の result に MD038（コードの書式の中の空白）が 2 か所あり、commit 前の検査で止まった。閉じる記号の前の空白だけを消し、統合の段から再開した。
+- naoji の承認のもと、executor の変更案を `feature/frontend-test-upgrade` に当てた。
+  - `076a27f`: `dashboard/package.json` から `cypress`・`cypress-axe`・`axe-core` と `cy:open`・`cy:run` を外し、`test:e2e` を足した。`npm install --package-lock-only` でロックファイルを合わせ、Cypress まわりの 150 のパッケージが消えた（ほかの版は変わらない）。
+  - `60ed52d`: `.github/workflows/test_frontend.yml` の Cypress の段を、Playwright の Chromium の導入・build・`npm run test:e2e` の 3 段に替えた。
+- 一時的な worktree で `npm ci` から流し、`npm run test`（967 件）・`build`・`lint`・`pretty:check` が通り、`npm run test:e2e` は連続 2 回とも 5 件が通った。
+- E2E は 3 シナリオ（`Homepage`・`SimpleCalculation`・`DetailedCalculation`）を移し、かんたん・くわしく見積もりを `page.route` と `dashboard/src/mocks/` の固定データで結果まで流す。Chromium だけで、`webServer` が preview を起動する。
+- Cypress への参照は `dashboard`・`.github`・`docs/dev_note.md` に残っていない。上流の変更に登録簿の ID やリンクはない（commit メッセージの `Refs:` 行を除く）。
+
 ## 5. 関連ドキュメント
 
 - 方針: [[prj-0001:pjr-z7fq-frontend-test-strategy|PJR-Z7FQ フロントエンドのテストの方針を決める]]
