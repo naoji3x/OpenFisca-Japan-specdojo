@@ -24,3 +24,20 @@ docker compose down            # 止める
 - exec の worktree（`../OpenFisca-Japan-specdojo-worktrees/` の下）では、`docker compose up` を流さないでください。ポート 30000・50000 が、起動中のコンテナとぶつかります。また `LOCAL_WORKSPACE_FOLDER` は元の `../OpenFisca-Japan` を指しているので、worktree のソースはマウントされません。
 - `../OpenFisca-Japan` のコンテナと、同じホストの Docker を使います。どちらから起動しても同じコンテナが動くので、片方で起動したものをもう片方から止められます。
 - Docker のソケットを共有すると、このコンテナで動く agent（Claude Code・Codex・opencode など）が、ホストの Docker を操作できます。ホストの root とほぼ同じ権限です。この点を承知のうえで、この方式を採っています（PJR-T62D）。
+
+## Docker の認証ヘルパーを止めている理由
+
+VS Code の Dev Containers は、既定では接続のたびに `~/.docker/config.json` へ `"credsStore": "dev-containers-<id>"` を書き込みます。イメージを取ってくるときは、このヘルパーを通してホストの VS Code に認証情報を問い合わせます。このヘルパーは環境変数 `REMOTE_CONTAINERS_IPC` で VS Code とつながるため、この変数がない tmux の中では `error getting credentials - err: exit status 255` で失敗します。
+
+そこで、`devcontainer.json` の `customizations.vscode.settings` で `"dev.containers.dockerCredentialHelper": false` を指定しています。これには次の効果と制約があります。
+
+- tmux の中でも `docker compose up --build` が通ります。
+- ホストの Docker の認証情報が、このコンテナで動く agent に渡りません。
+- Docker Hub には、ログインせずに接続します。ログインなしの取得回数の制限を受け、非公開のイメージは取ってこられません。OpenFisca-Japan が使うのは公開されたイメージだけです。
+
+設定を変える前に作ったコンテナでは、`~/.docker/config.json` に `credsStore` が残っています。devcontainer を作り直すと消えます。作り直すまでは、次のように空の設定で流してください。
+
+```bash
+mkdir -p /tmp/docker-anon && echo '{}' > /tmp/docker-anon/config.json
+DOCKER_CONFIG=/tmp/docker-anon docker compose up --build -d
+```
