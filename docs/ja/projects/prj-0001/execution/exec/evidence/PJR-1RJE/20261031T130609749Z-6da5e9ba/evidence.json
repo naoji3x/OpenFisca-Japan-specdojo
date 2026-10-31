@@ -1,0 +1,317 @@
+{
+  "schema_version": 1,
+  "task_id": "PJR-1RJE",
+  "run_id": "20261031T130609749Z-6da5e9ba",
+  "stage": {
+    "role": "executor",
+    "actor": "sol-executor",
+    "status": "succeeded",
+    "started_at": "2026-10-31T13:06:09.749Z",
+    "completed_at": "2026-10-31T13:08:37.927Z",
+    "exit_code": 0,
+    "attempts": 1
+  },
+  "changes": [
+    {
+      "path": "docs/ja/projects/prj-0001/controls/project-register/events/pjr-1rje.yaml",
+      "status": "M"
+    },
+    {
+      "path": "docs/ja/projects/prj-0001/controls/project-register/pjr-1rje-frontend-playwright-e2e.md",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/cypress.config.js",
+      "status": "D"
+    },
+    {
+      "path": "openfisca-japan:dashboard/cypress/e2e/DetailedCalculation.cy.js",
+      "status": "D"
+    },
+    {
+      "path": "openfisca-japan:dashboard/cypress/e2e/Homepage.cy.js",
+      "status": "D"
+    },
+    {
+      "path": "openfisca-japan:dashboard/cypress/e2e/SimpleCalculation.cy.js",
+      "status": "D"
+    },
+    {
+      "path": "openfisca-japan:dashboard/cypress/support/e2e.js",
+      "status": "D"
+    },
+    {
+      "path": "openfisca-japan:dashboard/vite.config.ts",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:docs/dev_note.md",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/e2e/DetailedCalculation.spec.ts",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/e2e/Homepage.spec.ts",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/e2e/SimpleCalculation.spec.ts",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/e2e/helpers.ts",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/e2e/tsconfig.json",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/playwright.config.ts",
+      "status": "??"
+    }
+  ],
+  "attempt_changes": [],
+  "diff_summary": {
+    "files_changed": 15,
+    "summary": ".../controls/project-register/events/pjr-1rje.yaml   | 20 ++++++++++++++++++--\n .../pjr-1rje-frontend-playwright-e2e.md              |  3 +--\n 2 files changed, 19 insertions(+), 4 deletions(-)\n[openfisca-japan]\ndashboard/cypress.config.js                     |  9 --------\n dashboard/cypress/e2e/DetailedCalculation.cy.js | 30 -------------------------\n dashboard/cypress/e2e/Homepage.cy.js            | 18 ---------------\n dashboard/cypress/e2e/SimpleCalculation.cy.js   | 29 ------------------------\n dashboard/cypress/support/e2e.js                |  2 --\n dashboard/vite.config.ts                        |  5 ++++-\n docs/dev_note.md                                | 18 ++++++++++++---\n 7 files changed, 19 insertions(+), 92 deletions(-)"
+  },
+  "validations": [
+    {
+      "source": "executor",
+      "command": "npm run test",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboard、Node.js v22.23.3・npm 10.9.9。8 ファイル・967 件成功。Playwright spec の混入なし。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run build",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboard。成功。既存のバンドルサイズ警告のみ。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run lint",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboard。成功。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run pretty",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboard の pre-commit 相当。成功。追加の内容差分なし。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run pretty:check",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboard。全対象の整形確認に成功。"
+    },
+    {
+      "source": "executor",
+      "command": "npx playwright test --list",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboard。Chromium の 3 ファイル・5 テストを確認。"
+    },
+    {
+      "source": "executor",
+      "command": "npx tsc --project e2e/tsconfig.json",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboard。E2E と Playwright 設定の型検査に成功。"
+    },
+    {
+      "source": "executor",
+      "command": "npx eslint --no-ignore --parser-options '{\"project\":\"e2e/tsconfig.json\"}' playwright.config.ts e2e --ext .ts",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboard。E2E と Playwright 設定の追加 lint に成功。"
+    },
+    {
+      "source": "executor",
+      "command": "npx playwright test",
+      "status": "requires_human",
+      "summary": "openfisca-japan:dashboard。sandbox では webServer が起動できず実ブラウザー検証不可。個票 2.2 節にホスト側で 5 件を連続 2 回成功した記録あり。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run preview -- --host 127.0.0.1 --strictPort",
+      "status": "requires_human",
+      "summary": "openfisca-japan:dashboard。起動不可の原因を診断し、listen EPERM: operation not permitted 0.0.0.0:30000 を確認。"
+    },
+    {
+      "source": "executor",
+      "command": "node tools/specdojo-pre-commit.mjs prettier docs/ja/projects/prj-0001/controls/project-register/pjr-1rje-frontend-playwright-e2e.md",
+      "status": "passed",
+      "summary": "project。個票の整形に成功。内容変更なし。"
+    },
+    {
+      "source": "executor",
+      "command": "node tools/specdojo-pre-commit.mjs markdownlint docs/ja/projects/prj-0001/controls/project-register/pjr-1rje-frontend-playwright-e2e.md",
+      "status": "passed",
+      "summary": "project。個票の Markdown 検査に成功。"
+    },
+    {
+      "source": "executor",
+      "command": "node tools/specdojo-pre-commit.mjs register-build",
+      "status": "requires_human",
+      "summary": "project。sandbox の spawnSync git EPERM により実行不可。runner がホスト側で実行する。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run validate:schema:file",
+      "status": "not_applicable",
+      "summary": "schema 検証 script はない。",
+      "reason": "project・product とも対象の package.json に該当 script がない。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run typecheck",
+      "status": "not_applicable",
+      "summary": "typecheck script はない。E2E の型検査は tsc で成功。",
+      "reason": "project・dashboard の package.json に該当 script がない。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run test:unit",
+      "status": "not_applicable",
+      "summary": "専用の unit test script はない。",
+      "reason": "project・dashboard の package.json に該当 script がない。dashboard の npm run test は実行済み。"
+    },
+    {
+      "source": "executor",
+      "command": "npm test",
+      "status": "not_applicable",
+      "summary": "project の test script は仮置き。",
+      "reason": "project の test script は npm init の初期値であり、実際のテストではない。"
+    },
+    {
+      "source": "executor",
+      "command": "npx specdojo catalog validate --project prj-0001",
+      "status": "not_applicable",
+      "summary": "catalog 検証の対象設定なし。",
+      "reason": "prj-0001 に catalog_path が設定されていない。"
+    },
+    {
+      "source": "executor",
+      "command": "npm --prefix ../openfisca-japan/dashboard exec -- markdownlint ../docs/dev_note.md",
+      "status": "not_applicable",
+      "summary": "product の Markdown lint は非適用。",
+      "reason": "dashboard の package.json に markdownlint の依存がない。"
+    },
+    {
+      "source": "executor",
+      "command": "git diff --check",
+      "status": "passed",
+      "summary": "project の累積差分に空白エラーなし。"
+    },
+    {
+      "source": "executor",
+      "command": "git -C ../openfisca-japan diff --check",
+      "status": "passed",
+      "summary": "product の累積差分に空白エラーなし。"
+    }
+  ],
+  "target_coverage": [
+    {
+      "target": "docs/ja/projects/prj-0001/controls/project-register/pjr-1rje-frontend-playwright-e2e.md",
+      "status": "changed",
+      "path": "docs/ja/projects/prj-0001/controls/project-register/pjr-1rje-frontend-playwright-e2e.md",
+      "reason": ""
+    },
+    {
+      "target": "openfisca-japan:dashboard/cypress.config.js",
+      "status": "changed",
+      "path": "openfisca-japan:dashboard/cypress.config.js",
+      "reason": ""
+    },
+    {
+      "target": "openfisca-japan:dashboard/cypress/e2e/DetailedCalculation.cy.js",
+      "status": "changed",
+      "path": "openfisca-japan:dashboard/cypress/e2e/DetailedCalculation.cy.js",
+      "reason": ""
+    },
+    {
+      "target": "openfisca-japan:dashboard/cypress/e2e/Homepage.cy.js",
+      "status": "changed",
+      "path": "openfisca-japan:dashboard/cypress/e2e/Homepage.cy.js",
+      "reason": ""
+    },
+    {
+      "target": "openfisca-japan:dashboard/cypress/e2e/SimpleCalculation.cy.js",
+      "status": "changed",
+      "path": "openfisca-japan:dashboard/cypress/e2e/SimpleCalculation.cy.js",
+      "reason": ""
+    },
+    {
+      "target": "openfisca-japan:dashboard/cypress/support/e2e.js",
+      "status": "changed",
+      "path": "openfisca-japan:dashboard/cypress/support/e2e.js",
+      "reason": ""
+    },
+    {
+      "target": "openfisca-japan:dashboard/vite.config.ts",
+      "status": "changed",
+      "path": "openfisca-japan:dashboard/vite.config.ts",
+      "reason": ""
+    },
+    {
+      "target": "openfisca-japan:docs/dev_note.md",
+      "status": "changed",
+      "path": "openfisca-japan:docs/dev_note.md",
+      "reason": ""
+    },
+    {
+      "target": "openfisca-japan:dashboard/e2e/DetailedCalculation.spec.ts",
+      "status": "changed",
+      "path": "openfisca-japan:dashboard/e2e/DetailedCalculation.spec.ts",
+      "reason": ""
+    },
+    {
+      "target": "openfisca-japan:dashboard/e2e/Homepage.spec.ts",
+      "status": "changed",
+      "path": "openfisca-japan:dashboard/e2e/Homepage.spec.ts",
+      "reason": ""
+    },
+    {
+      "target": "openfisca-japan:dashboard/e2e/SimpleCalculation.spec.ts",
+      "status": "changed",
+      "path": "openfisca-japan:dashboard/e2e/SimpleCalculation.spec.ts",
+      "reason": ""
+    },
+    {
+      "target": "openfisca-japan:dashboard/e2e/helpers.ts",
+      "status": "changed",
+      "path": "openfisca-japan:dashboard/e2e/helpers.ts",
+      "reason": ""
+    },
+    {
+      "target": "openfisca-japan:dashboard/e2e/tsconfig.json",
+      "status": "changed",
+      "path": "openfisca-japan:dashboard/e2e/tsconfig.json",
+      "reason": ""
+    },
+    {
+      "target": "openfisca-japan:dashboard/playwright.config.ts",
+      "status": "changed",
+      "path": "openfisca-japan:dashboard/playwright.config.ts",
+      "reason": ""
+    }
+  ],
+  "final_message": "個票 2.2 節の再開指示に従い、既存成果と変更案を維持して executor 作業を完了。967 テスト・build・lint・整形・E2E の型検査が成功。保護された設定の反映は orchestrator に引き継ぐ。",
+  "completion_status": "complete",
+  "handoff": [
+    "個票 2.2 節に従い、既存成果と記録済みの変更案を変更していない。個票の前回の incomplete 記録は当時の結果であり、今回の完了判定には 2.2 節を適用した。個票には、naoji が保護された設定の反映を承認済みであり、orchestrator がホスト側で build 後に E2E 5 件を連続 2 回成功させたと記録されている。今回 sandbox でも E2E を試みたが、preview が listen EPERM で起動できなかった。",
+    "統合後、orchestrator が承認済みの次の変更案を `openfisca-japan:dashboard/package.json` に反映する。導入済みの `@playwright/test` は維持する。\n```diff\n@@ scripts\n-    \"cy:open\": \"./node_modules/.bin/cypress open\",\n-    \"cy:run\": \"./node_modules/.bin/cypress run\",\n+    \"test:e2e\": \"playwright test\",\n@@ dependencies\n-    \"axe-core\": \"^4.7.2\",\n-    \"cypress-axe\": \"^1.4.0\",\n@@ devDependencies\n-    \"cypress\": \"^12.17.4\",\n```\nホスト側の dashboard で `npm install --package-lock-only --ignore-scripts` を実行して lockfile を同期し、`npm ci` の成功を確認する。executor は package・lockfile を変更していない。",
+    "統合後、orchestrator が承認済みの次の変更案を `openfisca-japan:.github/workflows/test_frontend.yml` に反映する。\n```diff\n-      - name: Cypress run\n-        uses: cypress-io/github-action@v6\n-        with:\n-          build: npm run build\n-          start: npm run preview\n-          working-directory: ./dashboard\n+      - name: Install Playwright Chromium\n+        run: npx playwright install --with-deps chromium\n+        working-directory: ./dashboard\n+      - name: Build\n+        run: npm run build\n+        working-directory: ./dashboard\n+      - name: Playwright smoke\n+        run: npm run test:e2e\n+        working-directory: ./dashboard\n```\n設定反映後、dashboard で test・build・lint・pretty:check と `npm run test:e2e` の連続 2 回を確認する。設定の反映・検証が終わるまで close しない。",
+    "runner は sandbox 外で `node tools/specdojo-pre-commit.mjs register-build` と、その時点の親検証を実行する。reporter / runner が result を記入し、状態遷移を行う。executor は result・登録簿の行・個票のステータスを変更していない。"
+  ],
+  "log_refs": [
+    {
+      "kind": "agent-output-excerpt",
+      "path": "docs/ja/projects/prj-0001/execution/exec/evidence/PJR-1RJE/20261031T130609749Z-6da5e9ba/executor.log",
+      "bytes": 10070,
+      "truncated": false
+    }
+  ]
+}

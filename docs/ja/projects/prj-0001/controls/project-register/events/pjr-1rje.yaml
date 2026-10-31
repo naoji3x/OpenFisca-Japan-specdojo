@@ -102,3 +102,19 @@
       from: "-"
       to: "integrate failed: project: Result Markdown notation violation before commit: docs/ja/projects/prj-0001/execution/exec/results/pjr-1rje-20261031T124603Z-d162b52f-result.md:49:368 error MD038/no-space-i…"
   previous_event_id: reg_ac96f2ea0d5d4fec8949ada67b96e2d0
+- v: 1
+  id: reg_2a2e750e235a49d3a65e624964e9df08
+  ts: "2026-10-31T13:10:47Z"
+  action: start
+  actor: gemma-reporter
+  from_status: waiting
+  to_status: in-progress
+  reason: integration resumed
+  changes:
+    - field: status
+      from: waiting
+      to: in-progress
+    - field: block_reason
+      from: "integrate failed: project: Result Markdown notation violation before commit: docs/ja/projects/prj-0001/execution/exec/results/pjr-1rje-20261031T124603Z-d162b52f-result.md:49:368 error MD038/no-space-i…"
+      to: "-"
+  previous_event_id: reg_76af56029e4141f187470dcde5e9680f
