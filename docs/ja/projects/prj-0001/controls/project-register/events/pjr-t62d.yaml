@@ -35,3 +35,22 @@
     - field: due
       from: ""
       to: "2026-11-30"
+- v: 1
+  id: reg_0d6fe0d79aea46c7a257cb44b67900b9
+  ts: "2026-10-31T10:21:06Z"
+  action: close
+  actor: specdojo-orchestrator
+  from_status: open
+  to_status: done
+  reason: 完了条件をすべて確かめた。ホストでの確認は naoji、コンテナの中での確認は specdojo-orchestrator が行った
+  changes:
+    - field: status
+      from: open
+      to: done
+    - field: completed
+      from: "-"
+      to: "2026-10-31"
+    - field: conclusion
+      from: "-"
+      to: docker-outside-of-docker で specdojo のコンテナから OpenFisca-Japan の docker compose を起動できるようにし、tmux の中での起動と編集の反映を確かめた
+  previous_event_id: reg_a02bb712509748a7973fd5955ab53306

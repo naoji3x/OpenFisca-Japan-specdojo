@@ -2,17 +2,19 @@
 specdojo:
   id: prj-0001:pjr-t62d-devcontainer-docker-compose
   type: project
-  status: draft
+  status: ready
   rulebook: specdojo:pjr-rulebook
   part_of:
     - prj-0001:pjr-index
   item_type: todo
-  item_status: open
+  item_status: done
   priority: medium
   difficulty: medium
   owner: ARC
   registered_at: "2026-10-31T08:51:07Z"
   due_on: "2026-11-30"
+  completed_at: "2026-10-31T10:21:06Z"
+  conclusion: docker-outside-of-docker で specdojo のコンテナから OpenFisca-Japan の docker compose を起動できるようにし、tmux の中での起動と編集の反映を確かめた
 ---
 
 # PJR-T62D specdojo のコンテナから OpenFisca-Japan の docker compose を起動できるようにする
