@@ -46,9 +46,9 @@ specdojo:
 | No  | 作業                                                                      | 担当                  | 状態 | メモ                             |
 | --- | ------------------------------------------------------------------------- | --------------------- | ---- | -------------------------------- |
 | 1   | 2 つのコンテナの設定を比べ、移すものを決める                              | specdojo-orchestrator | done | 2026-10-31 に比べた              |
-| 2   | `feature/prj-0001/devcontainer-docker-compose` で `.devcontainer/` を直す | specdojo-orchestrator | open | 利用者の承認のもとで commit する |
-| 3   | devcontainer を作り直し、完了条件の確認を行う                             | naoji                 | open | ホストでの確認                   |
-| 4   | 確認の結果を「4. 対応結果」に記録する                                     | naoji                 | open | -                                |
+| 2   | `feature/prj-0001/devcontainer-docker-compose` で `.devcontainer/` を直す | specdojo-orchestrator | done | 利用者の承認のもとで commit する |
+| 3   | devcontainer を作り直し、完了条件の確認を行う                             | naoji                 | done | ホストでの確認                   |
+| 4   | 確認の結果を「4. 対応結果」に記録する                                     | naoji                 | done | -                                |
 
 ### 3.1. 2 つのコンテナの違い
 
@@ -64,7 +64,29 @@ specdojo:
 
 ## 4. 対応結果
 
--
+**実施内容**（`feature/prj-0001/devcontainer-docker-compose` で直し、`project/prj-0001/develop` に取り込んだ）
+
+| commit    | 内容                                                                                                                                                                                                                                                   |
+| --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `b66afe7` | feature の `docker-outside-of-docker:1`（`moby: false`）、`LOCAL_WORKSPACE_FOLDER`、`devcontainer-lock.json` の digest、`.devcontainer/README.md` を足した                                                                                             |
+| `ce714ae` | `"dev.containers.dockerCredentialHelper": false` を足した。作り直しの後、tmux の中で `error getting credentials - err: exit status 255` になったため。原因は、VS Code の認証ヘルパーが `REMOTE_CONTAINERS_IPC` を要し、tmux の中にはこの変数がないこと |
+| `95653c3` | `LOCAL_WORKSPACE_FOLDER` を `remoteEnv` から `containerEnv` に移した。`remoteEnv` が `docker exec` で入る tmux に届かず、`mounts denied` になったため                                                                                                  |
+
+**確認の結果**（2026-10-31、作り直した devcontainer の tmux の中）
+
+| 条件                                         | 結果                                                                                                                                                                                                                              | 確かめた人                   |
+| -------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- |
+| `docker version` と `docker compose version` | 29.9.2、v5.6.1                                                                                                                                                                                                                    | specdojo-orchestrator        |
+| `LOCAL_WORKSPACE_FOLDER` と `credsStore`     | ホストのパスが入り、`~/.docker/config.json` はない                                                                                                                                                                                | specdojo-orchestrator        |
+| `docker compose up --build -d`               | `openfisca`・`dashboard`・`swagger-ui` が Up                                                                                                                                                                                      | naoji                        |
+| ホストのブラウザー                           | `localhost:30000` が表示され、`localhost:50000/spec` で JSON が見えた                                                                                                                                                             | naoji                        |
+| コンテナの中から                             | `host.docker.internal` の 30000・50000/spec・8080 がどれも 200                                                                                                                                                                    | specdojo-orchestrator        |
+| `dashboard/src` の編集の反映                 | `topPage.tsx` のボタンの文字に目印を足すと、Vite が `hmr update` を出し、ホストの画面が再読み込みなしに変わった。元に戻すと元の表示に戻った。ファイルは元の中身（sha1 `8b68128…`）に戻し、`git status` に変更がないことを確かめた | naoji、specdojo-orchestrator |
+| 以前からある機能                             | claude・codex・git は naoji が起動を確かめた。opencode 1.19.5、agy 1.4.12、cron の稼働、git の `user.name` と `safe.directory` を specdojo-orchestrator が確かめた                                                                | naoji、specdojo-orchestrator |
+
+**残課題**
+
+- `remoteEnv` の `PATH`（`~/.local/bin` を足す設定）も、同じ理由で `docker exec` の tmux には届かない。今は困っていないため、この項目では扱わない。
 
 ## 5. 関連ドキュメント
 
