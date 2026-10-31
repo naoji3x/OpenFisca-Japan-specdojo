@@ -2,17 +2,19 @@
 specdojo:
   id: prj-0001:pjr-0hyv-frontend-react-upgrade
   type: project
-  status: draft
+  status: ready
   rulebook: specdojo:pjr-rulebook
   part_of:
     - prj-0001:pjr-index
   item_type: todo
-  item_status: review
+  item_status: done
   priority: medium
   difficulty: hard
   owner: DEV
   registered_at: "2026-10-31T05:43:50Z"
   due_on: "2026-11-30"
+  completed_at: "2026-10-31T23:48:40Z"
+  conclusion: React 18 の範囲で React・React DOM を 18.3.1、型定義を 18.3、React Router を 6.30.6 に上げ、Router の future flag を有効にした（openfisca-japan の 7c6f2bf・8e4b6ca）。React 19 は Recoil の置き換え（PJR-B1ZQ）のあとに PJR-6B0Q で行う
   derived_from:
     - PJR-Z7FQ
   depends_on:

@@ -67,3 +67,22 @@
       from: in-progress
       to: review
   previous_event_id: reg_7cd325ad37b04dc8802f838544d55121
+- v: 1
+  id: reg_46e70ee11a8b4c09979e6c5d10a77157
+  ts: "2026-10-31T23:48:40Z"
+  action: close
+  actor: specdojo-orchestrator
+  from_status: review
+  to_status: done
+  reason: 完了条件を確かめ、統合されたブランチで npm ci から全検査と E2E が通ることを確かめた。範囲を React 18 にしたのは naoji の判断
+  changes:
+    - field: status
+      from: review
+      to: done
+    - field: completed
+      from: "-"
+      to: "2026-10-31"
+    - field: conclusion
+      from: "-"
+      to: React 18 の範囲で React・React DOM を 18.3.1、型定義を 18.3、React Router を 6.30.6 に上げ、Router の future flag を有効にした（openfisca-japan の 7c6f2bf・8e4b6ca）。React 19 は Recoil の置き換え（PJR-B1ZQ）のあとに PJR-6B0Q で行う
+  previous_event_id: reg_ffbd032f0c6e41c7a3b168daae365ddd
