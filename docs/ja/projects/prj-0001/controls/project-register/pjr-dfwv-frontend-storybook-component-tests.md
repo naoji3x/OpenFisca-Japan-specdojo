@@ -2,17 +2,19 @@
 specdojo:
   id: prj-0001:pjr-dfwv-frontend-storybook-component-tests
   type: project
-  status: draft
+  status: ready
   rulebook: specdojo:pjr-rulebook
   part_of:
     - prj-0001:pjr-index
   item_type: todo
-  item_status: review
+  item_status: done
   priority: high
   difficulty: medium
   owner: DEV
   registered_at: "2026-10-31T04:05:54Z"
   due_on: "2026-11-30"
+  completed_at: "2026-10-31T21:32:32Z"
+  conclusion: Storybook と addon-vitest・addon-a11y を導入し、画面のテストを story と Browser Mode に移し、スクリプトと CI を足した（openfisca-japan の ce4a04d・3654803・046b2cc・73993ff・3f5eaaa）。a11y の違反は PJR-4SM2・PJR-BN8W に分けた
   derived_from:
     - PJR-Z7FQ
     - PJR-49V3
