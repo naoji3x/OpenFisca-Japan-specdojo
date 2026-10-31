@@ -59,6 +59,13 @@ Vite を更新したあとの構成を基準に、TypeScript・ESLint・typescri
 - 完了条件の検証のうち、story と Browser Mode のテスト（`npm run test:ui`）と `npm run test:e2e` は、サンドボックスでは流せない場合がある。その場合は `requires_human` としてよい。統合のあとに orchestrator が流す。
 - 上流の文書・コードに、登録簿の ID やリンクを書かない。Git の設定と commit には触れない。
 
+### 2.2. 再開時の指示（2026-10-31、specdojo-orchestrator）
+
+- 1 回目の実行で、executor は flat config と TypeScript 6 への移行を終え、unit・build・lint・pretty:check を通したうえで、「ESLint 9.39.5 は 2026-08-06 に公式の保守が終わり、完了条件の『サポート対象』を満たさない」として止まった。
+- orchestrator が調べたところ、eslint-plugin-react は ESLint 10 に対応した版がない（`latest` 7.37.5 の peer は ESLint `^9.7` まで）。代わりの `@eslint-react/eslint-plugin` 5.28.8 で ESLint 10 にすると、hook の規則などでエラー 2 件・警告 67 件が新たに出て、この項目の範囲を超える。
+- naoji の判断（2026-10-31、案 A）: この項目では、eslint-plugin-react の対応の都合により、保守の終わった ESLint 9 を例外として使う。ESLint 10 への移行と `@eslint-react` への入れ替えは [[prj-0001:pjr-6kv3-frontend-eslint10-eslint-react|PJR-6KV3]] で扱う。ESLint 9 の保守終了を未完了の理由にしない。
+- 既存の成果を変えずに、この例外と理由を「4. 対応結果」に書き、完了を報告する。
+
 ## 3. 作業内容
 
 前提: [[prj-0001:pjr-pp9d-frontend-vite-vitest-upgrade|PJR-PP9D]] と [[prj-0001:pjr-dfwv-frontend-storybook-component-tests|PJR-DFWV]] が完了していることを確かめてから着手する。
