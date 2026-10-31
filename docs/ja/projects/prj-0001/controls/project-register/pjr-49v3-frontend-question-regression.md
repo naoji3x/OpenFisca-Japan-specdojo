@@ -2,17 +2,19 @@
 specdojo:
   id: prj-0001:pjr-49v3-frontend-question-regression
   type: project
-  status: draft
+  status: ready
   rulebook: specdojo:pjr-rulebook
   part_of:
     - prj-0001:pjr-index
   item_type: todo
-  item_status: review
+  item_status: done
   priority: high
   difficulty: medium
   owner: DEV
   registered_at: "2026-10-31T04:05:37Z"
   due_on: "2026-11-30"
+  completed_at: "2026-10-31T11:51:15Z"
+  conclusion: 質問テンプレート 8 種類の描画のテスト 35 件と、jsdom・Testing Library の基盤、テストの分担の表を整えた（openfisca-japan の 3636260、9933fbc）
   derived_from:
     - PJR-Z7FQ
 ---

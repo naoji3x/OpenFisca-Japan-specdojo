@@ -128,3 +128,22 @@
       from: in-progress
       to: review
   previous_event_id: reg_83a5e00bafa34dbdb12c93c499392d3f
+- v: 1
+  id: reg_81f1436c64fe458d9fcfd424f25a1cc7
+  ts: "2026-10-31T11:51:15Z"
+  action: close
+  actor: specdojo-orchestrator
+  from_status: review
+  to_status: done
+  reason: 完了条件を差分・個票・result で確かめ、統合されたブランチでクリーンな npm ci から test・build・lint・pretty:check が通ることを確かめた
+  changes:
+    - field: status
+      from: review
+      to: done
+    - field: completed
+      from: "-"
+      to: "2026-10-31"
+    - field: conclusion
+      from: "-"
+      to: 質問テンプレート 8 種類の描画のテスト 35 件と、jsdom・Testing Library の基盤、テストの分担の表を整えた（openfisca-japan の 3636260、9933fbc）
+  previous_event_id: reg_145bce80ec0e4d5dbd0c2e1c1b6cf9f9
