@@ -59,6 +59,12 @@ specdojo:
 - executor はネットワークに出られず、サンドボックスでは開発サーバーと preview を起動できない（`listen EPERM`）。開発サーバーの起動・HMR・preview・`test:e2e` を流せない場合は `requires_human` として記録し、ほかの検査が通れば完了としてよい。これらは統合のあとに orchestrator が確かめる。
 - 上流の文書・コードに、登録簿の ID やリンクを書かない。
 
+### 2.2. 再開時の指示（2026-10-31、specdojo-orchestrator）
+
+- 2 回目の実行で、executor は `.github/workflows/develop.yml` と `jekyll-gh-pages.yml` が Node 18 で `dashboard` を build していることを見つけ、`node-version` を `26.4.0` に上げる変更案を書いて止まった。2.1 の指示どおりである。
+- この変更案と、サンドボックスで流せない検査（開発サーバー・HMR・preview・`test:e2e`・`npm ci`）を、未完了の理由にしない。変更案は統合のあとに orchestrator が承認のもとで当てる（naoji が 2026-10-31 に承認）。流せない検査は、統合のあとに orchestrator が確かめる。
+- 既存の成果と、記録済みの変更案を変えずに完了を報告する。Git の設定と commit には触れない。
+
 ## 3. 作業内容
 
 前提: [[prj-0001:pjr-49v3-frontend-question-regression|PJR-49V3]]、[[prj-0001:pjr-bzgg-frontend-result-error-regression|PJR-BZGG]]、[[prj-0001:pjr-1rje-frontend-playwright-e2e|PJR-1RJE]] が完了していることを確かめてから着手する。
