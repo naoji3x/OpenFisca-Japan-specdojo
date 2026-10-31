@@ -79,12 +79,13 @@ Vite と Vitest の更新後に Storybook と `@storybook/addon-vitest` を導�
 
 前提: [[prj-0001:pjr-pp9d-frontend-vite-vitest-upgrade|PJR-PP9D]]（Vite・Reactプラグイン・Vitest の更新）が完了していることを確かめてから着手する。
 
-| No  | 作業                                                                            | 担当 | 状態 | メモ                                           |
-| --- | ------------------------------------------------------------------------------- | ---- | ---- | ---------------------------------------------- |
-| 1   | Storybook の要件と、更新後の Vite・Vitest の版が合うことを確かめる              | DEV  | done | 要件・metadata の適合を確認                    |
-| 2   | Storybook と addon を導入し、Provider と固定データを story から使えるようにする | DEV  | done | 導入済み依存を維持し、Provider を共用          |
-| 3   | 画面のテストを story に移し、a11y の検査を流す                                  | DEV  | done | story へ移行。ブラウザー実測はホストへ引き継ぎ |
-| 4   | CI と `docs/dev_note.md` を書き換え、検証を流す                                 | DEV  | done | 文書・検証を実施。CI 差分案は承認後に反映      |
+| No  | 作業                                                                            | 担当 | 状態 | メモ                                             |
+| --- | ------------------------------------------------------------------------------- | ---- | ---- | ------------------------------------------------ |
+| 1   | Storybook の要件と、更新後の Vite・Vitest の版が合うことを確かめる              | DEV  | done | 要件・metadata の適合を確認                      |
+| 2   | Storybook と addon を導入し、Provider と固定データを story から使えるようにする | DEV  | done | 導入済み依存を維持し、Provider を共用            |
+| 3   | 画面のテストを story に移し、a11y の検査を流す                                  | DEV  | done | story へ移行。ブラウザー実測はホストへ引き継ぎ   |
+| 4   | CI と `docs/dev_note.md` を書き換え、検証を流す                                 | DEV  | done | 文書・検証を実施。CI 差分案は承認後に反映        |
+| 5   | 再実行指示に従い、ブラウザー設定の共有による起動失敗を修正する                  | DEV  | done | project ごとに設定を生成し、開発文書へ理由を追記 |
 
 ## 4. 対応結果
 
@@ -179,6 +180,28 @@ project の個票は hook に定める Prettier・markdownlint が成功し、�
 - 2.1 節の例外に従い、保護設定の差分案とサンドボックスで実行不能な検査を引き継ぎ、executor の `completion_status` は `complete` とする。ブラウザー検査や a11y が成功したという意味ではない。個票の状態・登録簿の行・result・Git 設定・commit は変更していない。
 - orchestrator は naoji の承認のもとで上記 scripts と CI の差分を反映し、ホストで `npm run test:ui`（34 stories と Browser Mode 1 件）、`npm run build-storybook`、`npm run storybook` の表示を確認する。a11y の違反一覧を実測で埋め、見つかった違反を別項目へ分ける。通常の test・build・lint・pretty:check と CI も成功してから close を判断する。
 - runner はホストで register-build とその時点の親検証を実施し、reporter / runner が本節・差分案・検証・a11y の未計測を result に反映する。
+
+### 再実行: ブラウザー設定の共有の解消（2026-10-31）
+
+- 2.2 節の再実行指示に従い、今回の product 変更は次の 2 ファイルに限定した。`openfisca-japan:dashboard/vitest.browser.config.mts` の `browser` を新しい設定オブジェクトを返す関数にし、`storybook`・`browser` の各 project が `browser()` を呼ぶ。provider・`instances` 配列・その要素も呼び出しごとに生成されるため、Vitest による instance 名の書き込みを共有しない。
+- `openfisca-japan:docs/dev_note.md` に、設定を project ごとに生成する理由と共有時の起動失敗を追記した。Prettier を実行した後、今回と無関係な既存部分の整形差分を除去した。story・固定データ・期待値・依存・lockfile・保護設定は変更していない。上流に登録簿 ID・リンクを追加していない。
+- 検証環境は Linux arm64・Node v22.23.3、既存の導入済み依存を使用した。以下は今回再実行した検査であり、前回の成功記録とは区別する。product のコマンドは `openfisca-japan:dashboard` で実行した。
+
+| コマンド                                                                                                                                                                                                                                           | 今回の結果                                                                                                                                                 |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run test`                                                                                                                                                                                                                                     | 成功。unit 6 ファイル・937 件                                                                                                                              |
+| `npm run build`                                                                                                                                                                                                                                    | 成功。`tsc` と Vite build。既存の chunk サイズ警告のみ                                                                                                     |
+| `npm run lint`                                                                                                                                                                                                                                     | 成功                                                                                                                                                       |
+| `npx prettier --write vitest.browser.config.mts ../docs/dev_note.md`                                                                                                                                                                               | 成功。文書の変更対象外の整形差分は除去                                                                                                                     |
+| `npm run pretty`                                                                                                                                                                                                                                   | 成功。product の pre-commit 相当                                                                                                                           |
+| `npm run pretty:check`                                                                                                                                                                                                                             | 成功                                                                                                                                                       |
+| `npx tsc --noEmit --skipLibCheck --module ESNext --moduleResolution Bundler --jsx react-jsx --target ESNext --allowSyntheticDefaultImports --resolveJsonModule .storybook/main.ts .storybook/preview.ts vitest.browser.config.mts vite.config.mts` | 成功。ブラウザー設定を含む設定ファイルの型検査                                                                                                             |
+| `npx vitest run --config vitest.browser.config.mts`                                                                                                                                                                                                | `requires_human`。Storybook import 中の `os.networkInterfaces()` が `uv_interface_addresses` errno 1 で拒否され、project の起動・テスト・a11y 実行前に停止 |
+| project の `node tools/specdojo-pre-commit.mjs register-build`                                                                                                                                                                                     | `requires_human`。`spawnSync git EPERM`。ホストでの検査が必要                                                                                              |
+
+- 本個票の Prettier・markdownlint と両リポジトリの `git diff --check` は成功した。project の `catalog_path`・schema 検証・typecheck・`test:unit` script はなく、`test` は初期化時の仮置きのため非適用。product の独立した typecheck・`test:unit` script、markdownlint 依存もない。今回 YAML は変更していない。`specdojo index build` は実行していない。
+- 2.2 節の許容に従い、今回の executor 修正は完了とする。ホストでは `npx vitest run --config vitest.browser.config.mts` を再実行し、2 project・4 ファイル・35 件の成功と project 名の重複解消を確認する。a11y は今回も未計測であり、違反なしとは判定しない。統合後に orchestrator が story 名・axe rule ID・重大度・対象要素を収集し、本個票・result に追記して別項目へ分ける。
+- 保護設定の scripts・CI 変更案は上記のまま維持し、naoji の承認のもとで統合後に orchestrator が反映・検証する。Storybook の静的 build と表示、register-build、その時点の親検証もホストで確認する。これらの引き継ぎを reporter / runner が result へ記録する。executor は個票の状態・登録簿の行・result・Git 設定・commit を変更していない。
 
 ## 5. 関連ドキュメント
 
