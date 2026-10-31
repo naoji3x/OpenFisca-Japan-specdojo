@@ -32,3 +32,22 @@
     - field: due
       from: ""
       to: "2026-11-30"
+- v: 1
+  id: reg_df42a0bb73da409cb4ac80a0374c4774
+  ts: "2026-10-31T04:08:13Z"
+  action: close
+  actor: naoji
+  from_status: open
+  to_status: decided
+  reason: 会話で naoji が方針を承認
+  changes:
+    - field: status
+      from: open
+      to: decided
+    - field: completed
+      from: "-"
+      to: "2026-10-31"
+    - field: conclusion
+      from: "-"
+      to: 品質は単体テストと画面のテストで保証し、画面のテストは Vite の更新後に Storybook へ移す。E2E は Playwright のスモークに限る
+  previous_event_id: reg_9c0e50a074334e41af6d25b93c55b78d

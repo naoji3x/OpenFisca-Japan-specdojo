@@ -2,16 +2,18 @@
 specdojo:
   id: prj-0001:pjr-z7fq-frontend-test-strategy
   type: project
-  status: draft
+  status: ready
   rulebook: specdojo:pjr-rulebook
   part_of:
     - prj-0001:pjr-index
   item_type: decision
-  item_status: open
+  item_status: decided
   priority: high
   owner: naoji
   registered_at: "2026-10-31T04:05:22Z"
   due_on: "2026-11-30"
+  completed_at: "2026-10-31T04:08:13Z"
+  conclusion: 品質は単体テストと画面のテストで保証し、画面のテストは Vite の更新後に Storybook へ移す。E2E は Playwright のスモークに限る
 ---
 
 # PJR-Z7FQ フロントエンドのテストの方針を決める（単体テスト中心、E2E は Playwright）
