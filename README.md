@@ -72,11 +72,34 @@ openfisca-japan-workspace/
 | テストの基盤がそろったとき（PJR-1RJE の close の後） | PJR-49V3・BZGG・1RJE             |
 | 依存の更新が終わったとき（PJR-BSXA の close の後）   | PJR-PP9D・DFWV・2CSW・0HYV・BSXA |
 
-1. 区切りの項目を close したら、`../OpenFisca-Japan` で `git push origin feature/frontend-test-upgrade` を流す。
+1. 区切りの項目を close したら、区切りの最後の commit を指す **PR 用のブランチ**を作り、push する。`feature/frontend-test-upgrade` からは PR を出さない（理由は下記）。
+
+   ```bash
+   cd ../OpenFisca-Japan
+   git log --oneline develop..feature/frontend-test-upgrade   # 区切りの最後の commit を確かめる
+   git branch feature/frontend-test-foundation <区切りの最後の commit>
+   git push -u origin feature/frontend-test-foundation
+   ```
+
 2. フォークから上流の `develop` へ PR を作る。commit メッセージの `Refs: prj-0001:<PJR-ID>` は消さない。
+
+   ```bash
+   gh pr create --repo project-inclusive/OpenFisca-Japan --base develop \
+     --head naoji3x:feature/frontend-test-foundation
+   ```
+
 3. 上流で merge されたら、手元の `develop` を `origin/develop`（フォークを上流と同期した後）に合わせる。
    - merge commit で取り込まれた場合は、そのまま `feature/frontend-test-upgrade` に次の項目を積んでよい。
    - squash で取り込まれた場合は、項目を流していないときに、PR の後に積んだ commit だけを新しい `develop` の上へ移す（`git rebase --onto develop <PR に入れた最後の commit> feature/frontend-test-upgrade`）。PR の後に何も積んでいなければ、`git branch -f feature/frontend-test-upgrade develop` で作り直す。
+
+##### PR 用のブランチについて
+
+PR 用のブランチの名前は、中身が分かるものにする（区切り 1 は `feature/frontend-test-foundation`、区切り 2 は `feature/frontend-deps-upgrade` など）。
+
+- **PR を `feature/frontend-test-upgrade` から出さない理由**: 統合のためのブランチには、区切りの後も次の項目が積まれる。このブランチから PR を出すと、push のたびに次の区切りの commit まで PR に入ってしまう。区切りの commit を指す別のブランチなら、PR の範囲が固定される。
+- **統合のためのブランチの名前を変えない理由**: `.specdojo/specdojo.config.json` の `integration_branch` が `feature/frontend-test-upgrade` を指し、流している run も成功するとこのブランチを早送りする。
+- **前の区切りの PR が merge される前に、次の区切りの PR を出さない**: 次の区切りの PR に、前の区切りの commit も含まれてしまう。前の PR が merge されたら、手順 3 で手元の `develop` を合わせてから出す。
+- **レビューで直しが要る場合**: PR 用のブランチに直しの commit を積んで push する。その commit は、項目を流していないときに `feature/frontend-test-upgrade` にも `git cherry-pick` で取り込む。
 
 #### フロントエンド以外の項目
 
