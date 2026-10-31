@@ -179,7 +179,8 @@ fi
 # OpenFisca-Japan の dashboard の E2E と Storybook のテストに使う Playwright の Chromium と、その OS のライブラリを入れる。
 # dashboard/package.json の @playwright/test を上げたときは、ブラウザーの版を合わせるためこの値も上げる。
 PLAYWRIGHT_VERSION="1.64.1"
-if ! sudo -E env "PATH=${PATH}" npx -y "playwright@${PLAYWRIGHT_VERSION}" install-deps chromium; then
+# sudo -E のままだと HOME が引き継がれ、~/.npm に root のファイルができて後の npx が失敗する。root の HOME を使わせる。
+if ! sudo env "PATH=${PATH}" HOME=/root npx -y "playwright@${PLAYWRIGHT_VERSION}" install-deps chromium; then
   echo "Warning: Failed to install OS dependencies for Playwright Chromium." >&2
 fi
 if ! npx -y "playwright@${PLAYWRIGHT_VERSION}" install chromium; then
