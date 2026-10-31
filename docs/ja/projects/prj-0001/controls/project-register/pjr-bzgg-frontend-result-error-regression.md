@@ -110,6 +110,14 @@ project に `catalog_path`、schema 検証 script、typecheck script、`test:uni
 - 統合後、orchestrator は `docs/dev_note.md` の手順で、4 件の `*.request.json` と同じ本文をローカルの `docker compose` の `openfisca` の `/calculate` に送り、実際の応答を `tmp/calculate-recordings/` に記録する。結果画面が読む世帯・日付・金額・居住地・配列の形を固定応答と比較し、違いがあれば API の版と差分を記録して別項目で対応する。executor はネットワークとローカル API に接続できないため、今回の固定応答は実 API と未照合である。
 - runner は sandbox 外で `node tools/specdojo-pre-commit.mjs register-build` を確認する。result の記入・登録簿と個票の状態遷移は reporter / runner が行う。
 
+### orchestrator の確認（2026-10-31、specdojo-orchestrator）
+
+- `openfisca-japan` の `feature/frontend-test-upgrade`（`a99c1c9`）を一時的な worktree に取り出し、`dashboard` で `npm ci`、`npm run test`（8 ファイル・967 件）、`npm run build`、`npm run lint`、`npm run pretty:check` がすべて成功することを確かめた。
+- 上流の変更に登録簿の ID やリンクがないこと（commit メッセージの `Refs:` 行を除く）、保護された設定と既存の 5 つのテストのファイルが変わっていないことを確かめた。
+- `docs/dev_note.md` の手順で、4 件の `*.request.json` をローカルの API（`docker compose` の `openfisca`）の `/calculate` に送り、実際の応答を記録した。4 件とも 200 で、応答の構造（キーの並び・日付付きの値・配列の形）は固定データと同じだった。金額が 0 でない制度の組み合わせも 4 件とも同じで、給付のみ・貸付のみ・両方・対象なしの出し分けは実際の応答でも変わらない。
+- 金額は 3 件で違った（手作りのため）。例: `benefit-only` の児童扶養手当は固定データが 10,000〜45,000 円、実際は 11,010〜46,680 円。`loan-only` の緊急小口資金は固定データが 200,000 円、実際は 100,000 円。`dev_note.md` は応答を手作りと明記しており、テストは表示の出し分けと換算を確かめるものなので、この項目では直さない。実際の応答に置き換えるかは別に判断する。
+- 申し送りの、くわしく見積もりの API 失敗後にトップへ戻る挙動は、今の実装として固定された。
+
 ## 5. 関連ドキュメント
 
 - 方針: [[prj-0001:pjr-z7fq-frontend-test-strategy|PJR-Z7FQ フロントエンドのテストの方針を決める]]
