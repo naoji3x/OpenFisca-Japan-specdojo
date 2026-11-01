@@ -40,8 +40,8 @@ naoji の判断（2026-11-01）で、ほかの自動のテストで確かめて�
 | No  | 作業                                 | 担当                  | 状態 | メモ     |
 | --- | ------------------------------------ | --------------------- | ---- | -------- |
 | 1   | 手順書を用意する                     | specdojo-orchestrator | done | -        |
-| 2   | 手順書に沿って通しで操作する         | DEV                   | open | 人が行う |
-| 3   | 結果を記録し、問題を別の項目に分ける | DEV                   | open | -        |
+| 2   | 手順書に沿って通しで操作する         | DEV                   | done | 人が行う |
+| 3   | 結果を記録し、問題を別の項目に分ける | DEV                   | done | -        |
 
 ### 3.1. 手順書（2026-11-01、specdojo-orchestrator）
 
@@ -108,9 +108,9 @@ docker run -d --name ofj-dashboard-before -p 30001:30001 ofj-dashboard-before \
 
 - 3 つとも、移行の前と後で違いはなかった。
 
-**最低限の起動の確認**（naoji）
+**最低限の起動の確認**（2026-11-01、naoji）
 
-- （未実施）
+- 移行の後の版（`feature/frontend-test-upgrade` の `0134bda`）を docker compose で起動し（dashboard は Vite 8.3.5 で build されていることを orchestrator が確かめた）、ホストのブラウザーの `http://localhost:30000` で、トップからかんたん見積もりの結果まで通した。問題はなかった。
 
 ## 5. 関連ドキュメント
 
