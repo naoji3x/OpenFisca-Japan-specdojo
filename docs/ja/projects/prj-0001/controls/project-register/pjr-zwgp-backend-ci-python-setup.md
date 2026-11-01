@@ -36,13 +36,31 @@ specdojo:
 
 | No  | 作業                                           | 担当 | 状態 | メモ           |
 | --- | ---------------------------------------------- | ---- | ---- | -------------- |
-| 1   | CI のログで原因を確かめる                      | DEV  | open | -              |
+| 1   | CI のログで原因を確かめる                      | DEV  | done | -              |
 | 2   | workflow の直し方を決め、変更案を書く          | DEV  | open | 保護された設定 |
 | 3   | 直したあと、Backend の CI が通ることを確かめる | DEV  | open | -              |
 
 ## 4. 対応結果
 
--
+**原因**（2026-11-01、specdojo-orchestrator。`gh run view 41204858308` の annotation で確認）
+
+- `X The version '3.11.6' with architecture 'x64' was not found for Ubuntu 26.04.`
+- GitHub は 2026-10-19 から `ubuntu-latest` を Ubuntu 26.04 に移した（annotation: "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026"）。`actions/python-versions` の manifest では、3.11.6 は Ubuntu 24.04 向けにはあるが 26.04 向けにはない。26.04 向けにある 3.11 は 3.11.15〜3.11.18 である。
+- あわせて、`actions/checkout@v3` と `actions/setup-python@v4` は Node.js 20 を前提とし、非推奨の警告が出ている。`actions/cache@v3` は、GitHub のキャッシュのサービスの更新で使えなくなった版であり、Python を直しても次にここで止まるおそれがある。
+
+**変更案**（承認待ち。`.github/workflows/test_backend.yml` は保護された設定）
+
+| 箇所                                      | 今              | 案                             | 理由                                                                                                                                                                                      |
+| ----------------------------------------- | --------------- | ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `python-version`（build・test の 2 か所） | `3.11.6`        | `3.11.18`                      | Ubuntu 26.04 向けにある 3.11 の最新。workflow のコメントの方針（キャッシュのキーのためパッチの版まで書く）に合う。このコンテナの仮想環境も 3.11.18 で、`make test`（1829 件）が通っている |
+| `actions/checkout`                        | `@v3`           | `@v7`（2026-11-01 時点の最新） | Node.js 20 の非推奨への対応                                                                                                                                                               |
+| `actions/setup-python`                    | `@v4`           | `@v7`（同）                    | 同上                                                                                                                                                                                      |
+| `actions/cache`                           | `@v3`・`@v4`    | `@v6`（同）                    | `@v3` は使えなくなった版のため。`@v4` の箇所もそろえる                                                                                                                                    |
+| `runs-on`                                 | `ubuntu-latest` | そのまま                       | 別案として `ubuntu-24.04` に固定すれば 3.11.6 のまま動くが、古い OS に留まるため採らない                                                                                                  |
+
+- 反映するブランチの案: `develop` から `fix/backend-ci-python`（`feature/parameter-unit-metadata` などとは独立に PR にできる）。
+- 反映したあとの確かめ方: そのブランチを push し、fork の GitHub Actions で `Test Backend Openfisca` の build と test が通ることを確かめる。push は利用者が行う。
+- `test_frontend.yml` も `actions/checkout@v3`・`actions/setup-node@v3` を使っているが、今は通っているため、この項目では扱わない。
 
 ## 5. 関連ドキュメント
 
