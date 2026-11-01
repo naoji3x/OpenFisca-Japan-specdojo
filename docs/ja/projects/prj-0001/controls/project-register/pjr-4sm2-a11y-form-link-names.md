@@ -67,6 +67,14 @@ a11y の検査で、人数の入力欄にラベルがない（label・critical�
 - `npm run test:ui` は Storybook 設定読み込み中の `uv_interface_addresses` エラーで起動できなかった。`npm run test:e2e` も preview サーバーを起動できず、同じサーバーコマンドで `listen EPERM: operation not permitted 0.0.0.0:30000` を確認した。いずれも sandbox の制約によるため `requires_human` とする。
 - 申し送り: 統合後、orchestrator が dashboard で `npm run test:ui`（storybook project を含む）と `npm run test:e2e` を再実行する。Storybook の a11y report で `questions-templates--person-count`・`restored-person-count` の `label` と、ホームリンクに起因する 6 story の `link-name` が消えたことを確認する。ブラウザー検証が起動できていないため、違反解消と実画面の表示はまだ未確認である。
 
+### orchestrator の確認（2026-11-01、specdojo-orchestrator）
+
+- 申し送りを受け、`feature/frontend-test-upgrade`（`700fc34`）を一時的な worktree に取り出し、`npm ci` から `npm run test`（937 件）・`build`・`lint`・`pretty:check`・`build-storybook` が通り、`npm run test:e2e` は連続 2 回とも 5 件が通ることを確かめた。
+- ブラウザーのテスト（51 件）が通り、a11y の report で `label` と `link-name` がなくなったことを確かめた。残る違反は `color-contrast`（21 story・29 要素）だけで、[[prj-0001:pjr-bn8w-a11y-contrast-landmark|PJR-BN8W]] で扱う。
+- PJR-HQBE の仕組みで 13 画面 × 2 の大きさを撮り、`378eb36` と比べて 26 枚すべてで画素の差が 0% だった。
+- Git の local config は実行の前後で変わっていない。上流の変更に登録簿の ID やリンクはない（commit メッセージの `Refs:` 行を除く）。
+- この記録は close（`5b254f8`）のあとに足した。close の前に確かめた内容である。
+
 ## 6. 関連ドキュメント
 
 - 発見元: [[prj-0001:pjr-dfwv-frontend-storybook-component-tests|PJR-DFWV]] の「a11y の違反の一覧」
