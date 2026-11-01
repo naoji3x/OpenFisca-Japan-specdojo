@@ -69,6 +69,13 @@ React を更新したあとの構成で、Chakra UI・icons・Emotion・framer-m
 - `npm ci` は流さない（executor はネットワークに出られない）。保護された設定の変更が必要な場合は、変更案を「4. 対応結果」と `handoff` に書き、未完了の理由にしない。
 - 上流の文書・コードに、登録簿の ID やリンクを書かない。Git の設定と commit には触れない。
 
+### 2.2. 統合後の確認で見つかった不具合と再実行の指示（2026-11-01、specdojo-orchestrator）
+
+- 1 回目の統合（`325df52`）のあと、orchestrator がサンドボックスの外で `npx vitest run --config vitest.browser.config.mts` を流すと、`result.stories.tsx` の `Benefit Only`・`Loan Only`・`Both` の 3 件が `Received element is not visible` で失敗した。3 回流して 3 回とも同じだった。
+- 原因は、足した `checkAccordionKeyboard` が、Space キーで Accordion を開いた直後に `await expect(panel).toBeVisible()` を確かめていることである。framer-motion の開くアニメーションが終わる前なので、パネルはまだ見えない。閉じるほうは `waitFor` で待っている。
+- 直し方: 開いたあとの確認を `await waitFor(() => expect(panel).toBeVisible())` にする。orchestrator がこの直し方を一時的な worktree で試し、`vitest.browser.config.mts` の全体（51 件）が 2 回とも通ることを確かめた。
+- この再実行で行うのは、この修正だけとする。ほかの成果は変えない。ブラウザーのテストをサンドボックスで流せない場合は `requires_human` としてよく、統合のあとに orchestrator が流す。
+
 ## 3. 作業内容
 
 前提: [[prj-0001:pjr-0hyv-frontend-react-upgrade|PJR-0HYV]] が完了していることを確かめてから着手する。
