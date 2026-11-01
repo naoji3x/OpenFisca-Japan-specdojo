@@ -1,0 +1,40 @@
+# yaml-language-server: $schema=../../../../../../specdojo/schemas/v1/register-events.schema.yaml
+- v: 1
+  id: reg_4350e839ff4a48a585c55ff7a61bf52b
+  ts: "2026-11-01T02:31:41Z"
+  action: add
+  actor: specdojo-orchestrator
+  from_status: null
+  to_status: open
+  reason: フロントエンドの移行の確かめ方の足りない点を埋めるため、naoji の依頼で起票
+  changes:
+    - field: status
+      from: ""
+      to: open
+    - field: title
+      from: ""
+      to: 移行の前後で主な画面のスクリーンショットを比べる
+    - field: description
+      from: ""
+      to: 区切り 1 の前（823818e）と今の先頭（378eb36）で、主な画面を Playwright で PC とスマートフォンの大きさで撮り、違いを人が見て判断する
+    - field: type
+      from: ""
+      to: todo
+    - field: priority
+      from: ""
+      to: high
+    - field: difficulty
+      from: ""
+      to: medium
+    - field: owner
+      from: ""
+      to: DEV
+    - field: registered
+      from: ""
+      to: "2026-11-01"
+    - field: due
+      from: ""
+      to: "2026-11-30"
+    - field: derived_from
+      from: ""
+      to: '["PJR-BSXA"]'
