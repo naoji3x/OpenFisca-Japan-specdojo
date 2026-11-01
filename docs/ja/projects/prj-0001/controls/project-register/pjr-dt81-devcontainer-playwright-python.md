@@ -2,17 +2,19 @@
 specdojo:
   id: prj-0001:pjr-dt81-devcontainer-playwright-python
   type: project
-  status: draft
+  status: ready
   rulebook: specdojo:pjr-rulebook
   part_of:
     - prj-0001:pjr-index
   item_type: todo
-  item_status: open
+  item_status: done
   priority: medium
   difficulty: medium
   owner: ARC
   registered_at: "2026-10-31T12:29:51Z"
   due_on: "2026-11-30"
+  completed_at: "2026-11-01T08:24:34Z"
+  conclusion: post-create.sh で Python 3.11 の仮想環境と make install、PATH、Playwright の Chromium と OS のライブラリ、check-style 用の版の固定を入れ、作り直したコンテナで動くことを確かめた
   derived_from:
     - PJR-T62D
 ---

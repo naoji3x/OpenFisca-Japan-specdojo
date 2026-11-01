@@ -38,3 +38,22 @@
     - field: derived_from
       from: ""
       to: '["PJR-T62D"]'
+- v: 1
+  id: reg_65184217eca54daab0437507a6bd55f7
+  ts: "2026-11-01T08:24:34Z"
+  action: close
+  actor: specdojo-orchestrator
+  from_status: open
+  to_status: done
+  reason: 作り直したコンテナで完了条件をすべて確かめた。作り直しは naoji、確認は specdojo-orchestrator
+  changes:
+    - field: status
+      from: open
+      to: done
+    - field: completed
+      from: "-"
+      to: "2026-11-01"
+    - field: conclusion
+      from: "-"
+      to: post-create.sh で Python 3.11 の仮想環境と make install、PATH、Playwright の Chromium と OS のライブラリ、check-style 用の版の固定を入れ、作り直したコンテナで動くことを確かめた
+  previous_event_id: reg_4de8887cbe2f4787b433eab62496ac97
