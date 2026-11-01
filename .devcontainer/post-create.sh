@@ -162,6 +162,12 @@ if command -v uv >/dev/null 2>&1 && [ -f "${OPENFISCA_JAPAN_DIR}/setup.py" ]; th
   if ! PATH="${OPENFISCA_JAPAN_DIR}/.venv/bin:${PATH}" make -C "${OPENFISCA_JAPAN_DIR}" install; then
     echo "Warning: make install for OpenFisca-Japan failed." >&2
   fi
+  # make check-style は flake8 3.9 と flake8-commas を使う。flake8-commas は pkg_resources を import するため
+  # setuptools を 81 未満に、flake8 3.9 は pycodestyle 2.7 系を要するためそれに合わせる。
+  # （上流で flake8-commas を外す修正が入れば、この固定は要らなくなる）
+  if ! "${OPENFISCA_JAPAN_DIR}/.venv/bin/pip" install "setuptools<81" "pycodestyle>=2.7.0,<2.8.0"; then
+    echo "Warning: Failed to pin setuptools and pycodestyle for make check-style." >&2
+  fi
 fi
 
 # tmux は docker exec で入るため remoteEnv が届かない。対話のシェルが読む ~/.bashrc で仮想環境を PATH の先頭に置く。
