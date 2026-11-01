@@ -183,6 +183,22 @@ npm run test:browser -- --coverage --coverage.reportsDirectory=coverage/browser
 - プロジェクト・製品の `git diff --check` は成功。catalog 検査は `catalog_path` の設定がないため、schema 検査は該当スクリプトも今回編集した YAML もないため適用外。
 - story・Browser Mode の検証は 4.3 の環境制限により `requires_human`。ホストでの再計測と結果の追記を申し送る。
 
+### orchestrator の確認（2026-11-01、specdojo-orchestrator）
+
+- `feature/frontend-test-upgrade`（`2276ec5`）を一時的な worktree に取り出し、`npm ci` から `npm run test`・`build`・`lint`・`pretty:check` が通ることを確かめた。
+- 4.3 の申し送りを受けて、サンドボックスの外で網羅率を測った。
+
+  | 対象                                   | コマンド                                                       | Statements | Branches | Functions | Lines  |
+  | -------------------------------------- | -------------------------------------------------------------- | ---------- | -------- | --------- | ------ |
+  | unit                                   | `npx vitest run --project unit --coverage`                     | 58.18%     | 58.06%   | 44.84%    | 57.99% |
+  | story と Browser Mode（51 件が通った） | `npx vitest run --config vitest.browser.config.mts --coverage` | 27.52%     | 18.58%   | 29.52%    | 27.08% |
+
+  2.1 の 90.88%（Lines）は、テストが読み込んだファイルだけを数えた値で、今回は `include` の `src/**/*.{ts,tsx}` の全ファイル（読み込まれないファイルは 0%）を数えている。
+
+- 出力先の `dashboard/coverage/` は、もとからある `dashboard/.gitignore` の `/coverage` で無視される。`package.json` の変更は要らない（既存のスクリプトに `-- --coverage` を渡す）。
+- 上流の変更に登録簿の ID やリンクはない（commit メッセージの `Refs:` 行を除く）。Git の local config は実行の前後で変わっていない。
+- **残っていること**: 4.4 のテストを足す項目の案（5 件）を登録簿に起票すること。担当と期限が決まっていないため、naoji の判断を待つ。起票したら close する。
+
 ## 5. 関連ドキュメント
 
 - 由来: [[prj-0001:pjr-bsxa-frontend-chakra-ui-upgrade|PJR-BSXA]]（2026-11-01 の、移行の確かめ方の整理）
