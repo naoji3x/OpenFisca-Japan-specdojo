@@ -1,0 +1,40 @@
+# yaml-language-server: $schema=../../../../../../specdojo/schemas/v1/register-events.schema.yaml
+- v: 1
+  id: reg_52e0dd572d9944a4b3febf56a639e282
+  ts: "2026-11-01T06:52:55Z"
+  action: add
+  actor: specdojo-orchestrator
+  from_status: null
+  to_status: open
+  reason: 見た目の比較の道具は移行用としてこのリポジトリに置き、普段の見張りは上流に別に作る方針（naoji の承認）
+  changes:
+    - field: status
+      from: ""
+      to: open
+    - field: title
+      from: ""
+      to: 見た目の回帰テストを上流に入れる
+    - field: description
+      from: ""
+      to: 上流の dashboard に、Playwright の toHaveScreenshot か story の撮影による見た目の回帰テストを入れ、基準画像の管理と CI の撮影の環境を決める。依存の追加と CI の変更が要るため、上流と相談してから進める
+    - field: type
+      from: ""
+      to: todo
+    - field: priority
+      from: ""
+      to: low
+    - field: difficulty
+      from: ""
+      to: medium
+    - field: owner
+      from: ""
+      to: DEV
+    - field: registered
+      from: ""
+      to: "2026-11-01"
+    - field: due
+      from: ""
+      to: "2026-11-30"
+    - field: derived_from
+      from: ""
+      to: '["PJR-HQBE"]'
