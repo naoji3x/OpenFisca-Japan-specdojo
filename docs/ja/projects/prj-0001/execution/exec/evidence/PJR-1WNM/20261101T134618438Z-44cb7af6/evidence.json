@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "task_id": "PJR-1WNM",
+  "run_id": "20261101T134618438Z-44cb7af6",
+  "stage": {
+    "role": "executor",
+    "actor": "sol-executor",
+    "status": "succeeded",
+    "started_at": "2026-11-01T13:47:14.783Z",
+    "completed_at": "2026-11-01T13:51:30.870Z",
+    "exit_code": 0,
+    "attempts": 1
+  },
+  "changes": [
+    {
+      "path": "docs/ja/projects/prj-0001/controls/project-register/events/pjr-1wnm.yaml",
+      "status": "MM"
+    },
+    {
+      "path": "docs/ja/projects/prj-0001/controls/project-register/pjr-1wnm-frontend-e2e-webkit-firefox.md",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/e2e/DetailedCalculation.spec.ts",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/playwright.config.ts",
+      "status": "M"
+    }
+  ],
+  "attempt_changes": [
+    {
+      "path": "docs/ja/projects/prj-0001/controls/project-register/pjr-1wnm-frontend-e2e-webkit-firefox.md",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/e2e/DetailedCalculation.spec.ts",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/playwright.config.ts",
+      "status": "M"
+    }
+  ],
+  "diff_summary": {
+    "files_changed": 4,
+    "summary": ".../pjr-1wnm-frontend-e2e-webkit-firefox.md        | 42 ++++++++++++++++++----\n 1 file changed, 36 insertions(+), 6 deletions(-)\n[openfisca-japan]\ndashboard/e2e/DetailedCalculation.spec.ts | 6 +++---\n dashboard/playwright.config.ts            | 8 +++++++-\n 2 files changed, 10 insertions(+), 4 deletions(-)"
+  },
+  "validations": [
+    {
+      "source": "executor",
+      "command": "npm run test",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboard、6ファイル・939件成功。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run build",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboard、TypeScript・Vite build成功。500 kB超のchunk警告あり。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run lint",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboard、ESLint成功。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run pretty:check",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboard、全対象の整形検査成功。"
+    },
+    {
+      "source": "executor",
+      "command": "npx prettier --write playwright.config.ts e2e/DetailedCalculation.spec.ts",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboard、変更したTypeScriptを整形。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run pretty > /dev/null",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboard、pre-commit相当の整形成功。追加の変更なし。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run test:e2e -- --list",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboard、3ファイル・5 project・25件を列挙。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run test:ui",
+      "status": "requires_human",
+      "summary": "Storybook設定読み込みで `uv_interface_addresses` のシステムエラー。sandbox外でorchestratorによる再実行が必要。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run test:e2e",
+      "status": "requires_human",
+      "summary": "preview server起動失敗。単独起動でも listen EPERM を確認。sandbox外で全25件を確認する。"
+    },
+    {
+      "source": "executor",
+      "command": "npx prettier --write docs/ja/projects/prj-0001/controls/project-register/pjr-1wnm-frontend-e2e-webkit-firefox.md",
+      "status": "passed",
+      "summary": "個票を整形。"
+    },
+    {
+      "source": "executor",
+      "command": "npx markdownlint docs/ja/projects/prj-0001/controls/project-register/pjr-1wnm-frontend-e2e-webkit-firefox.md",
+      "status": "passed",
+      "summary": "個票のMarkdown検査成功。"
+    },
+    {
+      "source": "executor",
+      "command": "npx specdojo register build --project prj-0001 --dry-run > /dev/null",
+      "status": "passed",
+      "summary": "登録簿生成をdry-runで確認。一覧への書き込みなし。"
+    },
+    {
+      "source": "executor",
+      "command": "git diff --check; git -C ../openfisca-japan diff --check",
+      "status": "passed",
+      "summary": "両リポジトリで差分の空白検査成功。"
+    },
+    {
+      "source": "executor",
+      "command": "specdojo catalog validate",
+      "status": "not_applicable",
+      "summary": "カタログ検査は非適用。",
+      "reason": "prj-0001 に catalog_path の設定がない。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run validate:schema:file",
+      "status": "not_applicable",
+      "summary": "ファイル単位のschema検査は非適用。",
+      "reason": "今回YAMLを編集しておらず、対象リポジトリに当該scriptもない。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run typecheck",
+      "status": "not_applicable",
+      "summary": "独立したtypecheck scriptは非適用。",
+      "reason": "対象package.jsonにtypecheck scriptがない。dashboardのbuildでtscは成功。"
+    },
+    {
+      "source": "executor",
+      "command": "npm test",
+      "status": "not_applicable",
+      "summary": "projectリポジトリのtestは非適用。dashboardの実テストは別途成功。",
+      "reason": "project/package.jsonのtestはnpm init由来の仮置きscript。"
+    }
+  ],
+  "final_message": "openfisca-japan:dashboard/playwright.config.ts に Firefox・WebKit・iPhone 13・Pixel 7 の project を追加。openfisca-japan:dashboard/e2e/DetailedCalculation.spec.ts の年齢・人数入力を getByLabel に変更。個票の作業内容・対応結果に判断、CI差分案、検証結果を記録。result・保護された設定・Git設定は未変更。",
+  "completion_status": "complete",
+  "handoff": [
+    "統合後、orchestrator が openfisca-japan:dashboard で npm run test:ui と、npm run build 後の npm run test:e2e を再実行する。UI は `uv_interface_addresses` のシステムエラー、E2E は preview server の `listen EPERM: operation not permitted 0.0.0.0:30000` により sandbox 内で実行できなかった。全5 project・25件の成功確認が必要。",
+    "保護された openfisca-japan:.github/workflows/test_frontend.yml の変更案（未反映）:\n-      - name: Install Playwright Chromium\n-        run: npx playwright install --with-deps chromium\n+      - name: Install Playwright browsers\n+        run: npx playwright install --with-deps chromium firefox webkit\n         working-directory: ./dashboard\n利用者の承認を得て設定変更の統合時に反映する。現在の CI は Chromium のみ導入するため、未反映では Firefox・WebKit が起動できない。package.json の変更は不要。",
+    "CI は3エンジン・5 project 全件を実行する方針。workers は既存の1を維持し、テスト件数は5件から25件へ増える。ブラウザーとOS依存の取得時間も増えるため、統合後の初回CIでインストール・E2E各stepの時間を確認する。",
+    "スマートフォン project は端末設定と isMobile の数値入力分岐を確認するため採用。金額入力は既存の getByTestId('amount-input') が端末に依存しないため変更不要。.devcontainer/post-create.sh の自動導入追加は取得量と承認待ちを理由に今回は見送る。再作成時は orchestrator が dashboard の依存導入後に npx playwright install --with-deps chromium firefox webkit を実行する。"
+  ],
+  "log_refs": [
+    {
+      "kind": "agent-output-excerpt",
+      "path": "docs/ja/projects/prj-0001/execution/exec/evidence/PJR-1WNM/20261101T134618438Z-44cb7af6/executor.log",
+      "bytes": 5453,
+      "truncated": false
+    }
+  ]
+}
