@@ -31,6 +31,14 @@ specdojo:
 
 - 担当は DEV、期限は 2026-11-30（naoji が会話で指定）。優先度は、既存の不具合で次の項目を止めないため medium とした（specdojo-orchestrator）。
 
+### 2.1. 実行の前提（2026-11-01、specdojo-orchestrator）
+
+- 対象は `feature/frontend-test-upgrade` の先頭（2026-11-01 時点は `700fc34`。PJR-4SM2 で人数の入力欄に `aria-label` を付けた）に積む。依存の追加は要らない見込みである。executor は依存を追加・変更せず、`npm ci` も流さない（ネットワークに出られない）。
+- 今の挙動を固定しているテストは、`dashboard/src/components/questions/template/questionTemplates.test.tsx` と、story・Browser Mode に移したもの（`questionTemplates.stories.tsx` の人数の story など）にある。直したら、これらの期待値も新しい挙動に合わせる。
+- 原因の見込み（effect の依存に `formValidated` がない）は確かめていない。原因を確かめて「5. 対応結果」に書く。
+- ブラウザーのテストをサンドボックスで流せない場合は `requires_human` としてよく、統合のあとに orchestrator が流す。
+- 上流の文書・コードに、登録簿の ID やリンクを書かない。Git の設定と commit には触れない。
+
 ## 3. 影響範囲
 
 | 観点         | 影響                                                                                                |
