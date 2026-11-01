@@ -41,8 +41,8 @@ PJR-1RJE の E2E を流す Playwright の Chromium が、OS のライブラリ�
 | --- | --------------------------------------------------------------------------------------- | --------------------- | ---- | ------------------------------------------------------- |
 | 1   | 今のコンテナで uv・Python 3.11・仮想環境・`make install`・Chromium が動くことを確かめる | specdojo-orchestrator | done | `~/.bashrc` は Claude Code の権限で書き換えられなかった |
 | 2   | `post-create.sh` と `.devcontainer/README.md` を直す                                    | specdojo-orchestrator | done | `f296078`                                               |
-| 3   | devcontainer を作り直し、完了条件の確認を行う                                           | naoji                 | open | ホストでの確認                                          |
-| 4   | 確認の結果を「4. 対応結果」に記録する                                                   | specdojo-orchestrator | open | -                                                       |
+| 3   | devcontainer を作り直し、完了条件の確認を行う                                           | naoji                 | done | ホストでの確認                                          |
+| 4   | 確認の結果を「4. 対応結果」に記録する                                                   | specdojo-orchestrator | done | -                                                       |
 
 ## 4. 対応結果
 
@@ -57,6 +57,21 @@ PJR-1RJE の E2E を流す Playwright の Chromium が、OS のライブラリ�
   - Chromium の本体が入っていなかった。`post-create.sh` で `sudo -E` のまま `npx` を流したため、`~/.npm` に root が持ち主のファイルができ、続く `npx playwright install chromium` が失敗していた。`43eb6e0` で root の HOME を使うように直した。今のコンテナでは `~/.npm` の持ち主を直して入れ直した。
   - `make check-style` が動かなかった（setuptools 84 に `pkg_resources` がない、pycodestyle 2.15 が flake8 3.9 と合わない）。`255f1d6` で `post-create.sh` に setuptools 81 未満・pycodestyle 2.7 系への固定を足した。
 - 次の作り直しで確かめること（完了条件に加える）: Chromium の本体が `~/.cache/ms-playwright` にあり起動すること、`~/.npm` に root が持ち主のファイルがないこと、`../OpenFisca-Japan` で `make check-style` が通ること。
+
+### 作り直したあとの確認（2026-11-01、作り直しは naoji、確認は specdojo-orchestrator）
+
+`43eb6e0`（npm のキャッシュの持ち主）と `255f1d6`（setuptools・pycodestyle の固定）を含む `post-create.sh` で作り直したコンテナで、tmux の中から確かめた。
+
+| 完了条件                                           | 結果                                                                                                                                                                                                                                                                                                                                                               |
+| -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `command -v python` が `.venv` を指し、3.11 である | `/workspaces/openfisca-japan-workspace/OpenFisca-Japan/.venv/bin/python`、Python 3.11.18。`~/.bashrc` の PATH の区画は 1 つだけ                                                                                                                                                                                                                                    |
+| `make test` が通る                                 | 1829 件が通った（`../OpenFisca-Japan` は `develop`）。import 先はワークスペースの `openfisca_japan`                                                                                                                                                                                                                                                                |
+| `make check-style` が通る                          | 通った。setuptools 80.10.2・pycodestyle 2.7.0 に固定されている                                                                                                                                                                                                                                                                                                     |
+| Playwright の Chromium が起動する                  | `~/.cache/ms-playwright` に `chromium-1248`・`chromium_headless_shell-1248` があり、起動してページを開けた                                                                                                                                                                                                                                                         |
+| `~/.npm` に root が持ち主のファイルがない          | なかった                                                                                                                                                                                                                                                                                                                                                           |
+| 作り直す前からある機能                             | `uv`・`docker`・`claude`・`codex`・`opencode`・`agy`・`gh` があり、Docker のデーモンに届く（29.9.2）。`docker compose` は v5.6.1 で、`LOCAL_WORKSPACE_FOLDER` がホストのパスを指し、compose の bind mount もホストのパスになる。`~/.docker/config.json` はない（認証ヘルパーは止まっている）。cron が動き、git の `user.name` と `safe.directory` が設定されている |
+
+- 作業ツリーには、naoji による `post-create.sh`（進み具合とエラーの表示）と `.vscode/extensions.json` の変更が commit されずに残っている。この項目では触れていない。
 
 ## 5. 関連ドキュメント
 
