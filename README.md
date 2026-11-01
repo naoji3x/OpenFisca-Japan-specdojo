@@ -83,11 +83,19 @@ openfisca-japan-workspace/
    git push -u origin feature/frontend-test-foundation
    ```
 
-2. フォークから上流の `develop` へ PR を作る。commit メッセージの `Refs: prj-0001:<PJR-ID>` は消さない。
+2. フォークから上流の `develop` へ PR を作る。commit メッセージの `Refs: prj-0001:<PJR-ID>` は消さない。PR の本文は、上流の `.github/PULL_REQUEST_TEMPLATE.md`（「Pull request前の確認」「概要」「動作確認」）に従って書き、`../OpenFisca-Japan/tmp/pr-<ブランチ名>.md` に置いて `--body-file` で渡す（`tmp/` は上流の `.gitignore` で無視される）。上流の文書と同じく、本文に登録簿の ID やリンクは書かない。
 
    ```bash
    gh pr create --repo project-inclusive/OpenFisca-Japan --base develop \
-     --head naoji3x:feature/frontend-test-foundation
+     --head naoji3x:feature/frontend-test-foundation \\
+     --body-file tmp/pr-feature-frontend-test-foundation.md
+   ```
+
+   出した PR の本文を直すときは、`gh pr edit` を使わない。このコンテナの `gh` 2.46.0 は、廃止された Projects (classic) の情報を問い合わせて `GraphQL: Projects (classic) is being deprecated ...` で失敗するため。REST API で書き換える。
+
+   ```bash
+   gh api -X PATCH repos/project-inclusive/OpenFisca-Japan/pulls/<番号> \\
+     -F body=@tmp/pr-<ブランチ名>.md --jq .html_url
    ```
 
 3. 上流で merge されたら、手元の `develop` を `origin/develop`（フォークを上流と同期した後）に合わせる。
