@@ -38,3 +38,22 @@
     - field: derived_from
       from: ""
       to: '["PJR-KS3C"]'
+- v: 1
+  id: reg_1b795451c0ae4d6191dde8f2bb08dd50
+  ts: "2026-11-01T06:56:59Z"
+  action: close
+  actor: specdojo-orchestrator
+  from_status: open
+  to_status: done
+  reason: ubuntu-latest の Ubuntu 26.04 への移行で失敗していた原因を直し、CI が通ったため
+  changes:
+    - field: status
+      from: open
+      to: done
+    - field: completed
+      from: "-"
+      to: "2026-11-01"
+    - field: conclusion
+      from: "-"
+      to: test_backend.yml の Python を 3.11.18 にし、actions を新しい版に上げ、fork の Actions で Backend の build と test が通ることを確かめた（openfisca-japan の fix/backend-ci-python、0895b48）
+  previous_event_id: reg_c9af0974d299425484bc8fb27959b41f

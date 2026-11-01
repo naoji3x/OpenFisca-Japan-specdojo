@@ -2,17 +2,19 @@
 specdojo:
   id: prj-0001:pjr-zwgp-backend-ci-python-setup
   type: project
-  status: draft
+  status: ready
   rulebook: specdojo:pjr-rulebook
   part_of:
     - prj-0001:pjr-index
   item_type: todo
-  item_status: open
+  item_status: done
   priority: high
   difficulty: easy
   owner: DEV
   registered_at: "2026-11-01T02:31:48Z"
   due_on: "2026-11-30"
+  completed_at: "2026-11-01T06:56:59Z"
+  conclusion: test_backend.yml の Python を 3.11.18 にし、actions を新しい版に上げ、fork の Actions で Backend の build と test が通ることを確かめた（openfisca-japan の fix/backend-ci-python、0895b48）
   derived_from:
     - PJR-KS3C
 ---
