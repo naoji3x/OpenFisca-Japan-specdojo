@@ -12,7 +12,6 @@
     "tamasfe.even-better-toml",
     "anthropic.claude-code",
     "openai.chatgpt",
-    "github.copilot",
     "github.copilot-chat",
     "antfu.slidev"
   ]
