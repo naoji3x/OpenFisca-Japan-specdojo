@@ -37,6 +37,7 @@ make docs     # 制度ドキュメントの生成物（docs/_data）を作り直
 ```
 
 - `dashboard/package.json` の `@playwright/test` を上げたときは、`post-create.sh` の `PLAYWRIGHT_VERSION` も合わせて上げる。ブラウザーの版が合わないと起動しない。
+- `make check-style` が通るよう、仮想環境の setuptools を 81 未満、pycodestyle を 2.7 系に固定している（flake8 3.9 と flake8-commas のため）。そのため `make format-style`（autopep8）は pycodestyle の版が合わず動かない。
 - editable install は `../OpenFisca-Japan` の作業ツリーを指す。exec の worktree（`../OpenFisca-Japan-specdojo-worktrees/` の下）で Python の検査を流しても、worktree のコードではなく `../OpenFisca-Japan` のコードが import される。worktree で流す場合は、その worktree の中で別の仮想環境を作るなどの対処が要る。
 
 ## 注意
