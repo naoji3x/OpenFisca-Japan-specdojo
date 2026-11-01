@@ -38,3 +38,29 @@
     - field: derived_from
       from: ""
       to: '["PJR-BSXA"]'
+- v: 1
+  id: reg_c29e63c76f5f4b999159a6313ec05c4e
+  ts: "2026-11-01T13:46:19Z"
+  action: start
+  actor: sol-executor
+  from_status: open
+  to_status: in-progress
+  reason: work started
+  changes:
+    - field: status
+      from: open
+      to: in-progress
+  previous_event_id: reg_2d7c4bd5d5364678996d9bcf1d4eabfe
+- v: 1
+  id: reg_c4b7f3e4bb42454f9a53c78964c09110
+  ts: "2026-11-01T13:53:38Z"
+  action: review
+  actor: sol-executor
+  from_status: in-progress
+  to_status: review
+  reason: ready for review
+  changes:
+    - field: status
+      from: in-progress
+      to: review
+  previous_event_id: reg_c29e63c76f5f4b999159a6313ec05c4e
