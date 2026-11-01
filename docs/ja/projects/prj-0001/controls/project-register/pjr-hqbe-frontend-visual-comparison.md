@@ -2,17 +2,19 @@
 specdojo:
   id: prj-0001:pjr-hqbe-frontend-visual-comparison
   type: project
-  status: draft
+  status: ready
   rulebook: specdojo:pjr-rulebook
   part_of:
     - prj-0001:pjr-index
   item_type: todo
-  item_status: open
+  item_status: done
   priority: high
   difficulty: medium
   owner: DEV
   registered_at: "2026-11-01T02:31:41Z"
   due_on: "2026-11-30"
+  completed_at: "2026-11-01T02:43:12Z"
+  conclusion: 移行の前（823818e）と後（378eb36）で 13 画面を PC とスマートフォンで撮り、フォントあり・なしの両方で 26 枚すべての画素の差が 0%、要素のスタイルも一致した
   derived_from:
     - PJR-BSXA
 ---
