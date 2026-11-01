@@ -2,17 +2,19 @@
 specdojo:
   id: prj-0001:pjr-4sm2-a11y-form-link-names
   type: project
-  status: draft
+  status: ready
   rulebook: specdojo:pjr-rulebook
   part_of:
     - prj-0001:pjr-index
   item_type: issue
-  item_status: review
+  item_status: done
   priority: high
   difficulty: easy
   owner: DEV
   registered_at: "2026-10-31T21:31:53Z"
   due_on: "2026-11-30"
+  completed_at: "2026-11-01T02:51:46Z"
+  conclusion: 人数の入力欄とトップへ戻るリンクに aria-label を付け、a11y の label と link-name の違反をなくした（openfisca-japan の 700fc34）
   derived_from:
     - PJR-DFWV
 ---

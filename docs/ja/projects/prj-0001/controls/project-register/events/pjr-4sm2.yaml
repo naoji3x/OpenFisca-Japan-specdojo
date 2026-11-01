@@ -64,3 +64,22 @@
       from: in-progress
       to: review
   previous_event_id: reg_3d25eae41933470eacb0093c3b1f0201
+- v: 1
+  id: reg_6394b13c26ae41d2aa8ef720e8951213
+  ts: "2026-11-01T02:51:46Z"
+  action: close
+  actor: specdojo-orchestrator
+  from_status: review
+  to_status: done
+  reason: 統合されたブランチで検査・E2E・a11y の report・見た目の比較を確かめたため
+  changes:
+    - field: status
+      from: review
+      to: done
+    - field: completed
+      from: "-"
+      to: "2026-11-01"
+    - field: conclusion
+      from: "-"
+      to: 人数の入力欄とトップへ戻るリンクに aria-label を付け、a11y の label と link-name の違反をなくした（openfisca-japan の 700fc34）
+  previous_event_id: reg_586a9fcf15624cad861339a8995c8d79
