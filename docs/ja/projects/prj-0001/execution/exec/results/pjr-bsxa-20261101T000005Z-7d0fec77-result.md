@@ -47,3 +47,19 @@ specdojo:
 ## 4. 進め方
 
 1. `errors.stories.tsx`, `questionTemplates.stories.tsx`, `result.stories.tsx` を更新し、キーボード操作および Browser Mode への互換性チェックを追加しました。 2. `uiCompatibility.browser.test.tsx` を作成し、UI 互換性を検証するための基盤となるテストケースを整備しました。 3. `npm run test`, `npm run build`, `npm run lint` 等の検証を実行し、変更後の整合性を確認しました。 4. 詳細な検証手順と結果を `docs/ja/projects/prj-0001/controls/project-register/pjr-bsxa-frontend-chakra-ui-upgrade.md` に記録しました。
+
+## 5. トレーサビリティ
+
+runner がプロダクトリポジトリの処理後に記録した状態と、統合先の commit snapshot です。
+プロジェクトリポジトリの統合は、この result を含む merge commit で確認します。
+その merge commit には `Refs: prj-0001:PJR-BSXA` を付けます。
+`branch-only` の行は未統合です。exec branch を保持し、push と PR 作成はプロダクト側で行います。
+PR が `not applicable` の行では、runner は PR を作成していません。
+
+<!-- markdownlint-disable MD013 -->
+
+| trace key           | repository        | integration branch              | exec branch                          | state  | PR             | commit snapshot                            | recorded at              |
+| ------------------- | ----------------- | ------------------------------- | ------------------------------------ | ------ | -------------- | ------------------------------------------ | ------------------------ |
+| `prj-0001:PJR-BSXA` | `openfisca-japan` | `feature/frontend-test-upgrade` | `feature/frontend-chakra-ui-upgrade` | merged | not applicable | `325df522fe4cd488eb7f0a090137ac5135c29b39` | 2026-11-01T00:10:25.513Z |
+
+<!-- markdownlint-enable MD013 -->
