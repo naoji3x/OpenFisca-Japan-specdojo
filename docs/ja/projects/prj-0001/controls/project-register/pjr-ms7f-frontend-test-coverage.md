@@ -32,6 +32,19 @@ specdojo:
 - 上流の文書・コード・コメントに、登録簿の ID やリンクを書かない。登録簿との対応は commit メッセージの `Refs:` 行だけで取る。
 - 保護された設定（`package.json`、`.github/workflows/**` など）の変更が必要な場合は、変更案を「4. 対応結果」に書き、反映は利用者の承認のもとで行う。依存の追加は、流す前に orchestrator が入れる（exec の executor はネットワークに出られない）。
 
+### 2.1. 実行の前提（2026-11-01、specdojo-orchestrator）
+
+- `@vitest/coverage-v8` 5.0.5（Vitest と同じ版）を `feature/frontend-test-upgrade` に導入済みである（`767f583`）。executor は依存を追加・変更しない。
+- orchestrator が試すと、`npx vitest run --project unit --coverage --coverage.reporter=text-summary` で、単体テスト（unit）の網羅率は Statements 90.91%・Branches 78.53%・Functions 90.37%・Lines 90.88% だった。
+- この項目では、次を行う。
+  - 網羅率の設定（対象と除外、レポートの形式と出力先）を `vite.config.mts` などに書く。出力先は `.gitignore` に入れる。
+  - unit と、story・Browser Mode（`vitest.browser.config.mts`）の網羅率を測る。Browser Mode の網羅率がサンドボックスで測れない場合は `requires_human` とし、統合のあとに orchestrator が測る。
+  - ファイルごとの結果を「4. 対応結果」に書き、網羅率が低く壊れやすいところを洗い出して、テストを足す項目の案を書く。この項目では、網羅率の目標や CI での強制は決めない。
+  - 網羅率を測るスクリプトを足す場合は、`package.json` の変更案を書く。
+- executor はネットワークに出られず、サンドボックスではブラウザーや preview・開発サーバーを起動できないことがある（`listen EPERM`）。流せない検査は `requires_human` としてよく、統合のあとに orchestrator が流す。`npm ci` と `npx playwright install` は流さない。
+- `dashboard/package.json` と `.github/workflows/**` は保護された設定である。executor は書き換えず、変更案（差分）を「4. 対応結果」と報告の `handoff` に書く。変更案は未完了の理由にしない。反映は統合のあとに orchestrator が naoji の承認のもとで行う。
+- 上流の文書・コードに、登録簿の ID やリンクを書かない。Git の設定と commit には触れない。
+
 ## 3. 作業内容
 
 | No  | 作業                               | 担当                  | 状態 | メモ |

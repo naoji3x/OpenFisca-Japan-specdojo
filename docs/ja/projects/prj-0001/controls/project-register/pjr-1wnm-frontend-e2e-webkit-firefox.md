@@ -32,6 +32,20 @@ E2E（Playwright）は Chromium だけで流している。利用者の多いス
 - 上流の文書・コード・コメントに、登録簿の ID やリンクを書かない。登録簿との対応は commit メッセージの `Refs:` 行だけで取る。
 - 保護された設定（`package.json`、`.github/workflows/**` など）の変更が必要な場合は、変更案を「4. 対応結果」に書き、反映は利用者の承認のもとで行う。依存の追加は、流す前に orchestrator が入れる（exec の executor はネットワークに出られない）。
 
+### 2.1. 実行の前提（2026-11-01、specdojo-orchestrator）
+
+- このコンテナに Playwright 1.64.1 の WebKit 27.2（`webkit-2370`）と Firefox 157.0（`firefox-1555`）の本体と OS のライブラリを入れた（Chromium は導入済み）。`.devcontainer/post-create.sh` に足すかは、naoji の承認待ちとする（作り直すたびに数百 MB の取得が増えるため）。
+- orchestrator が試した結果（`feature/frontend-test-upgrade` の `0134bda`、`playwright.config.ts` を一時的に変えて build のあとに 2 回流した）:
+  - `Desktop Firefox` と `Desktop Safari`（WebKit）では、5 件すべてが通った。
+  - `iPhone 13`（WebKit のスマートフォンの表示）では、`DetailedCalculation.spec.ts` が 2 回とも失敗した。年齢の入力欄は、スマートフォンでは `react-device-detect` の `isMobile` で `type="number"` になり、役割が `spinbutton` になる。E2E は `getByRole('textbox', { name: '年齢' })` で探しているため見つからない。アプリの不具合ではなく、テストの書き方の問題である。
+- この項目では、次を行う。
+  - `dashboard/playwright.config.ts` に、`firefox`（`Desktop Firefox`）、`webkit`（`Desktop Safari`）と、スマートフォンの表示の project（`iPhone 13` の WebKit と、`Pixel 7` などの Chromium）を足す。どの project を足すかと理由を「4. 対応結果」に書く。
+  - E2E の入力欄の探し方を、端末によらない形（`getByLabel` など）に直す。金額の入力欄も同じく `isMobile` で `type="number"` になる。
+  - CI（`test_frontend.yml`）で流すブラウザーを決め、変更案を書く（例: `npx playwright install --with-deps chromium firefox webkit`）。CI の時間が延びる点も書く。
+- executor はネットワークに出られず、サンドボックスではブラウザーや preview・開発サーバーを起動できないことがある（`listen EPERM`）。流せない検査は `requires_human` としてよく、統合のあとに orchestrator が流す。`npm ci` と `npx playwright install` は流さない。
+- `dashboard/package.json` と `.github/workflows/**` は保護された設定である。executor は書き換えず、変更案（差分）を「4. 対応結果」と報告の `handoff` に書く。変更案は未完了の理由にしない。反映は統合のあとに orchestrator が naoji の承認のもとで行う。
+- 上流の文書・コードに、登録簿の ID やリンクを書かない。Git の設定と commit には触れない。
+
 ## 3. 作業内容
 
 | No  | 作業                                           | 担当                  | 状態 | メモ           |
