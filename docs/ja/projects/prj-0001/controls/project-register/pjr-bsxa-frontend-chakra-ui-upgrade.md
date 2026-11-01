@@ -2,17 +2,19 @@
 specdojo:
   id: prj-0001:pjr-bsxa-frontend-chakra-ui-upgrade
   type: project
-  status: draft
+  status: ready
   rulebook: specdojo:pjr-rulebook
   part_of:
     - prj-0001:pjr-index
   item_type: todo
-  item_status: review
+  item_status: done
   priority: medium
   difficulty: hard
   owner: DEV
   registered_at: "2026-10-31T05:43:52Z"
   due_on: "2026-11-30"
+  completed_at: "2026-11-01T00:18:44Z"
+  conclusion: Chakra UI 2.10.10・Emotion 11.14・framer-motion 11.18・react-icons 5.7 に上げ、レスポンシブ・キーボード・フォーカスの確認を story と Browser Mode に足した（openfisca-japan の ce8def5・325df52・378eb36）。Chakra UI 3 は PJR-ERDK で行う
   derived_from:
     - PJR-Z7FQ
   depends_on:
