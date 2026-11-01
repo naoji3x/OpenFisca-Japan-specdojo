@@ -1,0 +1,147 @@
+{
+  "schema_version": 1,
+  "task_id": "PJR-14RN",
+  "run_id": "20261101T025227683Z-33228c25",
+  "stage": {
+    "role": "executor",
+    "actor": "sol-executor",
+    "status": "succeeded",
+    "started_at": "2026-11-01T02:52:57.256Z",
+    "completed_at": "2026-11-01T02:55:11.867Z",
+    "exit_code": 0,
+    "attempts": 1
+  },
+  "changes": [
+    {
+      "path": "docs/ja/projects/prj-0001/controls/project-register/events/pjr-14rn.yaml",
+      "status": "MM"
+    },
+    {
+      "path": "docs/ja/projects/prj-0001/controls/project-register/pjr-14rn-person-num-validity.md",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/questions/template/personNumQuestionTemplate.tsx",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/questions/template/questionTemplates.stories.tsx",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/questions/template/questionTemplates.test.tsx",
+      "status": "M"
+    }
+  ],
+  "attempt_changes": [
+    {
+      "path": "docs/ja/projects/prj-0001/controls/project-register/pjr-14rn-person-num-validity.md",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/questions/template/personNumQuestionTemplate.tsx",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/questions/template/questionTemplates.stories.tsx",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/questions/template/questionTemplates.test.tsx",
+      "status": "M"
+    }
+  ],
+  "diff_summary": {
+    "files_changed": 5,
+    "summary": ".../pjr-14rn-person-num-validity.md                | 23 +++++++++++++---------\n 1 file changed, 14 insertions(+), 9 deletions(-)\n[openfisca-japan]\n.../template/personNumQuestionTemplate.tsx         |  2 +-\n .../template/questionTemplates.stories.tsx         |  9 ++++--\n .../questions/template/questionTemplates.test.tsx  | 37 ++++++++++++++++++++++\n 3 files changed, 44 insertions(+), 4 deletions(-)"
+  },
+  "validations": [
+    {
+      "source": "executor",
+      "command": "npm run test",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboard: 6 ファイル・939 テスト成功。新規入力と回答復元の回帰テストを含む。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run build",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboard: TypeScript と Vite build 成功。チャンクサイズ警告あり。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run lint",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboard: ESLint 成功。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run pretty",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboard: hook 所定の整形を実行。変更は対象の3ファイルのみ。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run pretty:check",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboard: 全対象の整形検査成功。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run test:stories -- src/components/questions/template/questionTemplates.stories.tsx",
+      "status": "requires_human",
+      "summary": "openfisca-japan:dashboard: サンドボックスの `uv_interface_addresses` エラーで起動不可。統合後にホスト側で再実行する。"
+    },
+    {
+      "source": "executor",
+      "command": "node tools/specdojo-pre-commit.mjs prettier docs/ja/projects/prj-0001/controls/project-register/pjr-14rn-person-num-validity.md",
+      "status": "passed",
+      "summary": "個票の整形成功。"
+    },
+    {
+      "source": "executor",
+      "command": "node tools/specdojo-pre-commit.mjs markdownlint docs/ja/projects/prj-0001/controls/project-register/pjr-14rn-person-num-validity.md",
+      "status": "passed",
+      "summary": "個票の Markdown 検査成功。"
+    },
+    {
+      "source": "executor",
+      "command": "node node_modules/specdojo/dist/specdojo.js register build --project prj-0001 --dry-run > /tmp/pjr-14rn-register-dry-run.log",
+      "status": "passed",
+      "summary": "登録簿生成を dry-run で確認。登録簿は変更せず、一時ログは削除済み。"
+    },
+    {
+      "source": "executor",
+      "command": "git diff --check",
+      "status": "passed",
+      "summary": "project リポジトリで差分の空白エラーなし。"
+    },
+    {
+      "source": "executor",
+      "command": "git -C ../openfisca-japan diff --check",
+      "status": "passed",
+      "summary": "製品リポジトリで差分の空白エラーなし。"
+    },
+    {
+      "source": "executor",
+      "command": "specdojo catalog validate",
+      "status": "not_applicable",
+      "summary": "カタログ検査は適用外。",
+      "reason": "対象プロジェクトに `catalog_path` が設定されていない。"
+    }
+  ],
+  "final_message": "有効状態を更新する effect の依存に formValidated を追加。openfisca-japan:dashboard/src/components/questions/template/ 配下の personNumQuestionTemplate.tsx、questionTemplates.test.tsx、questionTemplates.stories.tsx と、個票 docs/ja/projects/prj-0001/controls/project-register/pjr-14rn-person-num-validity.md を更新した。",
+  "completion_status": "complete",
+  "handoff": [
+    "原因は、有効状態を更新する effect の依存配列に formValidated がなく、「はい」のまま空欄にした際の変更が Recoil に反映されなかったこと。個票の対応結果に記録済み。",
+    "`requires_human`: 統合後、openfisca-japan:dashboard で npm run test:stories -- src/components/questions/template/questionTemplates.stories.tsx を再実行する。サンドボックスでは Storybook の設定読み込み時に os.networkInterfaces() が `uv_interface_addresses` エラーを返し、起動できなかった。"
+  ],
+  "log_refs": [
+    {
+      "kind": "agent-output-excerpt",
+      "path": "docs/ja/projects/prj-0001/execution/exec/evidence/PJR-14RN/20261101T025227683Z-33228c25/executor.log",
+      "bytes": 3467,
+      "truncated": false
+    }
+  ]
+}
