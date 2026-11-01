@@ -2,17 +2,19 @@
 specdojo:
   id: prj-0001:pjr-krn8-devcontainer-gh-cli-latest
   type: project
-  status: draft
+  status: ready
   rulebook: specdojo:pjr-rulebook
   part_of:
     - prj-0001:pjr-index
   item_type: todo
-  item_status: open
+  item_status: done
   priority: medium
   difficulty: easy
   owner: ARC
   registered_at: "2026-11-01T12:00:52Z"
   due_on: "2026-11-30"
+  completed_at: "2026-11-01T13:36:46Z"
+  conclusion: gh を GitHub CLI の公式の apt リポジトリから入れるようにし（221ee21）、作り直したコンテナで 2.103.3 が入り、gh pr edit が動くことを確かめた。README の PR の直し方も gh pr edit に戻した
   derived_from:
     - PJR-DT81
 ---

@@ -38,3 +38,22 @@
     - field: derived_from
       from: ""
       to: '["PJR-DT81"]'
+- v: 1
+  id: reg_944121cfbfba49e8819d225e22c4f314
+  ts: "2026-11-01T13:36:46Z"
+  action: close
+  actor: specdojo-orchestrator
+  from_status: open
+  to_status: done
+  reason: 完了条件をすべて確かめた。gh pr edit の確認と作り直しは naoji、ほかの確認は specdojo-orchestrator
+  changes:
+    - field: status
+      from: open
+      to: done
+    - field: completed
+      from: "-"
+      to: "2026-11-01"
+    - field: conclusion
+      from: "-"
+      to: gh を GitHub CLI の公式の apt リポジトリから入れるようにし（221ee21）、作り直したコンテナで 2.103.3 が入り、gh pr edit が動くことを確かめた。README の PR の直し方も gh pr edit に戻した
+  previous_event_id: reg_2c5692f56ad04ad7869d4ebf09ce3224
