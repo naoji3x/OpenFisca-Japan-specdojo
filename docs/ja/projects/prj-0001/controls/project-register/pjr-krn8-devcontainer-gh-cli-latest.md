@@ -39,8 +39,8 @@ specdojo:
 | No  | 作業                                                  | 担当                  | 状態 | メモ                             |
 | --- | ----------------------------------------------------- | --------------------- | ---- | -------------------------------- |
 | 1   | `devcontainer.json` と `post-create.sh` を直す        | specdojo-orchestrator | done | feature ブランチで直して取り込む |
-| 2   | devcontainer を作り直す                               | naoji                 | open | -                                |
-| 3   | 作り直したあとに完了条件を確かめ、README を書き換える | specdojo-orchestrator | open | -                                |
+| 2   | devcontainer を作り直す                               | naoji                 | done | -                                |
+| 3   | 作り直したあとに完了条件を確かめ、README を書き換える | specdojo-orchestrator | done | -                                |
 
 ## 4. 対応結果
 
@@ -54,9 +54,11 @@ specdojo:
 - `gh pr edit 504 --repo project-inclusive/OpenFisca-Japan --title "<今と同じタイトル>"` が、Projects (classic) のエラーにならずに通った。
 - これを受けて、README の「上流への PR」の本文の直し方を `gh pr edit` に戻した（`406a6d3`）。古い `gh` のときの REST API の回避は、補足として残した。
 
-**残っていること**
+**作り直したあとの確認**（2026-11-01、作り直しは naoji、確認は specdojo-orchestrator）
 
-- 作り直したあとに、post-create の 3/9 の段で `gh` が公式の版で入ること（次の作り直しのときに確かめる）。
+- `gh --version` は 2.103.3。`apt-cache policy gh` で、入っている版が `https://cli.github.com/packages stable/main` から来ていることを確かめた。署名の鍵（`/etc/apt/keyrings/githubcli-archive-keyring.gpg`）と `/etc/apt/sources.list.d/github-cli.list` も置かれていた。
+- `gh auth status` は `naoji3x` でログインしたままで、名前付きの volume の認証が残っていた。
+- Python 3.11.18 の仮想環境、`docker`・`claude`・`codex` も今までどおり使えた。
 
 ## 5. 関連ドキュメント
 
