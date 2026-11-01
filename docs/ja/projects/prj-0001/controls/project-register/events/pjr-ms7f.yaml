@@ -38,3 +38,16 @@
     - field: derived_from
       from: ""
       to: '["PJR-BSXA"]'
+- v: 1
+  id: reg_43c12ff623114d4e8a013e7fbd46b5c7
+  ts: "2026-11-01T13:55:41Z"
+  action: start
+  actor: sol-executor
+  from_status: open
+  to_status: in-progress
+  reason: work started
+  changes:
+    - field: status
+      from: open
+      to: in-progress
+  previous_event_id: reg_4dcbb5e1f2e7403db38dcc22561a1a27
