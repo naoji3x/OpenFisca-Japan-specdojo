@@ -1,0 +1,40 @@
+# yaml-language-server: $schema=../../../../../../specdojo/schemas/v1/register-events.schema.yaml
+- v: 1
+  id: reg_9ac98dc1ced147c2b6d07fbd4aa6f4fa
+  ts: "2026-11-01T02:31:44Z"
+  action: add
+  actor: specdojo-orchestrator
+  from_status: null
+  to_status: open
+  reason: フロントエンドの移行の確かめ方の足りない点を埋めるため、naoji の依頼で起票
+  changes:
+    - field: status
+      from: ""
+      to: open
+    - field: title
+      from: ""
+      to: 移行後のアプリを人の目で通しで操作して確かめる
+    - field: description
+      from: ""
+      to: 開発サーバーで、かんたん・くわしく・災害の各モード、共有リンク、規約のダイアログ、エラー画面を通しで操作し、移行の前と比べて問題がないかを確かめる
+    - field: type
+      from: ""
+      to: todo
+    - field: priority
+      from: ""
+      to: high
+    - field: difficulty
+      from: ""
+      to: easy
+    - field: owner
+      from: ""
+      to: DEV
+    - field: registered
+      from: ""
+      to: "2026-11-01"
+    - field: due
+      from: ""
+      to: "2026-11-30"
+    - field: derived_from
+      from: ""
+      to: '["PJR-BSXA"]'
