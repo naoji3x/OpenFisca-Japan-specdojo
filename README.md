@@ -87,14 +87,14 @@ openfisca-japan-workspace/
 
    ```bash
    gh pr create --repo project-inclusive/OpenFisca-Japan --base develop \
-     --head naoji3x:feature/frontend-test-foundation \\
+     --head naoji3x:feature/frontend-test-foundation \
      --body-file tmp/pr-feature-frontend-test-foundation.md
    ```
 
    出した PR の本文を直すときは、`gh pr edit` を使わない。このコンテナの `gh` 2.46.0 は、廃止された Projects (classic) の情報を問い合わせて `GraphQL: Projects (classic) is being deprecated ...` で失敗するため。REST API で書き換える。
 
    ```bash
-   gh api -X PATCH repos/project-inclusive/OpenFisca-Japan/pulls/<番号> \\
+   gh api -X PATCH repos/project-inclusive/OpenFisca-Japan/pulls/<番号> \
      -F body=@tmp/pr-<ブランチ名>.md --jq .html_url
    ```
 
