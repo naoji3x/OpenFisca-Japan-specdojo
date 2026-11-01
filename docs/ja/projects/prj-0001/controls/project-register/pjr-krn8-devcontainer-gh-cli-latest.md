@@ -38,13 +38,22 @@ specdojo:
 
 | No  | 作業                                                  | 担当                  | 状態 | メモ                             |
 | --- | ----------------------------------------------------- | --------------------- | ---- | -------------------------------- |
-| 1   | `devcontainer.json` と `post-create.sh` を直す        | specdojo-orchestrator | open | feature ブランチで直して取り込む |
+| 1   | `devcontainer.json` と `post-create.sh` を直す        | specdojo-orchestrator | done | feature ブランチで直して取り込む |
 | 2   | devcontainer を作り直す                               | naoji                 | open | -                                |
 | 3   | 作り直したあとに完了条件を確かめ、README を書き換える | specdojo-orchestrator | open | -                                |
 
 ## 4. 対応結果
 
--
+**実施内容**（2026-11-01、specdojo-orchestrator）
+
+- `221ee21`: `.devcontainer/devcontainer.json` の `apt-packages` の feature から `gh` を外し、`.devcontainer/post-create.sh` に「3/9: installing GitHub CLI from the official apt repository」の段を足した（以降の段の番号を 1 つずつずらした）。署名の鍵を `/etc/apt/keyrings/githubcli-archive-keyring.gpg` に置き、`/etc/apt/sources.list.d/github-cli.list` を作って `gh` を入れる。失敗したときは警告を出して続ける。`shellcheck` と `bash -n` が通る。
+- 今のコンテナで、足した段だけを流した。`gh` は 2.46.0（Debian）から **2.103.3**（公式の apt リポジトリ）に上がった。`gh auth status` は `naoji3x` でログインしたままで、`gh pr view 504` も動いた。
+
+**残っていること**
+
+- `gh pr edit` が Projects (classic) のエラーにならないことの確認（上流の PR への書き込みで、Claude Code の権限の仕組みで止められたため、naoji が行う）。例: `gh pr edit 504 --repo project-inclusive/OpenFisca-Japan --title "<今と同じタイトル>"`。
+- 作り直したあとに、post-create の 3/9 の段で `gh` が公式の版で入ること。
+- 上の 2 つが確かめられたら、README の「上流への PR」の回避の方法の記述を書き換える。
 
 ## 5. 関連ドキュメント
 
