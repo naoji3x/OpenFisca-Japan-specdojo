@@ -2,17 +2,19 @@
 specdojo:
   id: prj-0001:pjr-hw09-frontend-manual-walkthrough
   type: project
-  status: draft
+  status: ready
   rulebook: specdojo:pjr-rulebook
   part_of:
     - prj-0001:pjr-index
   item_type: todo
-  item_status: open
+  item_status: done
   priority: high
   difficulty: easy
   owner: DEV
   registered_at: "2026-11-01T02:31:44Z"
   due_on: "2026-11-30"
+  completed_at: "2026-11-01T11:26:41Z"
+  conclusion: 人は移行の後の版でかんたん見積もりを結果まで通して問題がないことを確かめ、自動のテストで確かめていない災害のモード・共有・画像で保存は、移行の前後で同じ操作をして違いがないことを確かめた
   derived_from:
     - PJR-BSXA
 ---

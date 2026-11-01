@@ -38,3 +38,22 @@
     - field: derived_from
       from: ""
       to: '["PJR-BSXA"]'
+- v: 1
+  id: reg_d393591133b14579afd1609d7378246c
+  ts: "2026-11-01T11:26:41Z"
+  action: close
+  actor: specdojo-orchestrator
+  from_status: open
+  to_status: done
+  reason: 絞った完了条件（最低限の起動の確認は naoji、自動の確認は specdojo-orchestrator）をすべて満たしたため
+  changes:
+    - field: status
+      from: open
+      to: done
+    - field: completed
+      from: "-"
+      to: "2026-11-01"
+    - field: conclusion
+      from: "-"
+      to: 人は移行の後の版でかんたん見積もりを結果まで通して問題がないことを確かめ、自動のテストで確かめていない災害のモード・共有・画像で保存は、移行の前後で同じ操作をして違いがないことを確かめた
+  previous_event_id: reg_9ac98dc1ced147c2b6d07fbd4aa6f4fa
