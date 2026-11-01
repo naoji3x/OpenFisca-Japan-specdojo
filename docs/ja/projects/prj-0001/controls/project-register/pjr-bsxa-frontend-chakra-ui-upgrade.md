@@ -80,12 +80,12 @@ React を更新したあとの構成で、Chakra UI・icons・Emotion・framer-m
 
 前提: [[prj-0001:pjr-0hyv-frontend-react-upgrade|PJR-0HYV]] が完了していることを確かめてから着手する。
 
-| No  | 作業                                                                                       | 担当 | 状態       | メモ                                                                                  |
-| --- | ------------------------------------------------------------------------------------------ | ---- | ---------- | ------------------------------------------------------------------------------------- |
-| 1   | Chakra UI と関連の依存の公式の移行手順、使っている API と影響する画面を整理する            | DEV  | 実施済み   | 公式文書・配布型定義・peer dependencies を確認                                        |
-| 2   | 更新前の story のテストと a11y の検査の結果を記録する                                      | DEV  | 実施済み   | 2.1 節の orchestrator の前後測定を基準として採用                                      |
-| 3   | 関連の依存と、必要なコンポーネントの API・Provider の設定を更新する                        | DEV  | 実施済み   | 導入済みの依存を維持。アプリの API・Provider の変更は不要                             |
-| 4   | すべての回帰テストを流し、更新前の結果と比べ、代表の画面の表示とキーボードの操作を確かめる | DEV  | 引継ぎあり | 非ブラウザー検査は成功。追加したブラウザー検査は sandbox 制限によりホスト側で実行する |
+| No  | 作業                                                                                       | 担当 | 状態       | メモ                                                                                 |
+| --- | ------------------------------------------------------------------------------------------ | ---- | ---------- | ------------------------------------------------------------------------------------ |
+| 1   | Chakra UI と関連の依存の公式の移行手順、使っている API と影響する画面を整理する            | DEV  | 実施済み   | 公式文書・配布型定義・peer dependencies を確認                                       |
+| 2   | 更新前の story のテストと a11y の検査の結果を記録する                                      | DEV  | 実施済み   | 2.1 節の orchestrator の前後測定を基準として採用                                     |
+| 3   | 関連の依存と、必要なコンポーネントの API・Provider の設定を更新する                        | DEV  | 実施済み   | 導入済みの依存を維持。アプリの API・Provider の変更は不要                            |
+| 4   | すべての回帰テストを流し、更新前の結果と比べ、代表の画面の表示とキーボードの操作を確かめる | DEV  | 引継ぎあり | 2.2 節の待機修正を実施。非ブラウザー検査は再成功。ブラウザー検査はホスト側で実行する |
 
 ## 4. 対応結果
 
@@ -141,6 +141,27 @@ Linux arm64、Node v22.23.3、npm 10.9.9、React 18.3.1、Vitest 5.0.5、Playwri
 - `requires_human`: 同じ追加検査を更新前 `8e4b6ca` の検証用 checkout にも適用して流し、390 / 820 / 1440 px のキーボード・フォーカスの結果を比較する。更新後だけの不具合か、以前からの挙動かを区別する。今回追加したテストは型検査と lint のみ確認済みで、通過を主張しない。
 - `requires_human`: sandbox 外で `npm run build` のあと `npm run test:e2e` を実行する。既存設定が build 済み preview を起動し、既存 5 件を削除・skip せず確認する。preview で質問・結果（給付と貸付の展開）・3 種のエラーを 390 / 820 / 1440 px で開き、独自フォントと Tooltip、内容の切れ・重なり・横スクロール、フォーカスの見え方、Modal の開閉時の console の非推奨警告・React 警告が増えないことを確認する。story で検査した通常の操作は重複して手動確認する必要はない。
 - クリーン環境の `npm ci` と親 runner の検証は統合時に orchestrator / runner が実施する。新しい保護設定変更案はない。個票・登録簿のステータス、公開済み CHANGELOG、result は executor では変更しない。
+
+### 4.5. 再実行の対応結果（2026-11-01、executor）
+
+2.2 節の指示に従い、`openfisca-japan:dashboard/src/components/result/result.stories.tsx` の `checkAccordionKeyboard` で、Space による展開後の `await expect(panel).toBeVisible()` を `await waitFor(() => expect(panel).toBeVisible())` に変更した。開くアニメーションによる可視性の変化を待ち、既存のキーボード・フォーカス・閉じる操作の検査を維持する。製品の変更はこの 1 行のみであり、テストの削除・skip、依存・ロックファイル・保護された設定の変更はない。
+
+検証環境は Linux arm64、Node v22.23.3、npm 10.9.9。runner が準備した依存を使い、`npm ci` は実行していない。次表は今回の再実行の結果であり、4.3 節の前回の記録とは区別する。
+
+| 作業ディレクトリ            | コマンド                                                        | 結果                                                                                                            |
+| --------------------------- | --------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `openfisca-japan:dashboard` | `npx prettier --write src/components/result/result.stories.tsx` | 成功                                                                                                            |
+| 同上                        | `npm run test`                                                  | 成功。6 ファイル・937 件、skip なし                                                                             |
+| 同上                        | `npm run build`                                                 | 成功。tsc と Vite build。既存の 500 kB 超 chunk 警告あり                                                        |
+| 同上                        | `npm run lint`                                                  | 成功                                                                                                            |
+| 同上                        | `npm run pretty:check`                                          | 成功                                                                                                            |
+| 同上                        | `npm run test:ui`                                               | `requires_human`。Storybook 設定読込時に `uv_interface_addresses` が sandbox の制限で失敗し、テスト開始前に停止 |
+| 同上                        | `npm run test:e2e`                                              | `requires_human`。build 済み preview の起動失敗によりテスト開始前に停止                                         |
+| 同上                        | `npm run preview -- --strictPort`                               | `listen EPERM 0.0.0.0:30000` を確認。sandbox の待受制限が E2E の起動失敗の原因                                  |
+
+プロジェクト側は、この個票の `npx prettier --write`、`npx markdownlint`、`npx specdojo register build --project prj-0001 --dry-run` が成功した。登録簿への書込み・ステータス変更・result の編集は行っていない。
+
+申し送り: `requires_human` として、統合後に sandbox 外の `dashboard` で `npm run test:ui`（51 件）と `npm run build` 後の `npm run test:e2e`（5 件）を実行する。特に `Benefit Only`・`Loan Only`・`Both` の可視性の失敗が解消したことを確かめる。今回の executor はブラウザーでの成功を確認できていない。2.2 節の一時 worktree での 51 件・2 回成功は orchestrator による事前確認であり、今回の実測ではない。4.4 節の前後比較・a11y・preview の表示確認・クリーン環境の `npm ci`・親 runner 検証の申し送りも引き続き適用する。保護された設定の追加変更案はない。
 
 ## 5. 関連ドキュメント
 
