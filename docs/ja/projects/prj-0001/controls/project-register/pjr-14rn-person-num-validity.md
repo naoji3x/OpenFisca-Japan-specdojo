@@ -2,17 +2,19 @@
 specdojo:
   id: prj-0001:pjr-14rn-person-num-validity
   type: project
-  status: draft
+  status: ready
   rulebook: specdojo:pjr-rulebook
   part_of:
     - prj-0001:pjr-index
   item_type: issue
-  item_status: review
+  item_status: done
   priority: medium
   difficulty: easy
   owner: DEV
   registered_at: "2026-10-31T11:51:17Z"
   due_on: "2026-11-30"
+  completed_at: "2026-11-01T03:00:26Z"
+  conclusion: 有効状態を再計算する effect の依存の配列に formValidated などを加え、人数の入力を空にした直後に有効状態が false になるようにした（openfisca-japan の 0134bda）
   derived_from:
     - PJR-49V3
 ---

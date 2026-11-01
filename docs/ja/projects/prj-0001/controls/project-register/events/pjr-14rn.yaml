@@ -64,3 +64,22 @@
       from: in-progress
       to: review
   previous_event_id: reg_cd278ce8effd47f491b75cb30e61fa2f
+- v: 1
+  id: reg_53daf37903fc41d68d5dd853081fb587
+  ts: "2026-11-01T03:00:26Z"
+  action: close
+  actor: specdojo-orchestrator
+  from_status: review
+  to_status: done
+  reason: 統合されたブランチで検査・E2E・見た目の比較が通り、足したテストが修正を戻すと失敗することを確かめたため
+  changes:
+    - field: status
+      from: review
+      to: done
+    - field: completed
+      from: "-"
+      to: "2026-11-01"
+    - field: conclusion
+      from: "-"
+      to: 有効状態を再計算する effect の依存の配列に formValidated などを加え、人数の入力を空にした直後に有効状態が false になるようにした（openfisca-japan の 0134bda）
+  previous_event_id: reg_53c35c62bef048089829e25b465f5cc0
