@@ -21,28 +21,32 @@ specdojo:
 
 ## 1. 概要
 
-Debian のパッケージの gh 2.46.0 では、gh pr edit・gh pr ready が Projects (classic) の廃止で失敗するため、post-create.sh で GitHub CLI の公式の apt リポジトリから最新を入れる
+このコンテナの `gh` は、`.devcontainer/devcontainer.json` の `apt-packages` の feature で Debian のパッケージから入る 2.46.0 である。この版の `gh pr edit` は、廃止された Projects (classic) の情報（`projectCards`）を問い合わせ、`GraphQL: Projects (classic) is being deprecated ...` で失敗する（2026-11-01、上流の PR の本文を直そうとして発生）。`gh pr ready` など、同じ問い合わせをするほかのコマンドも失敗しうる。今は README に、REST API（`gh api -X PATCH .../pulls/<番号>`）で直す回避の方法を書いている。
 
-## 2. 入力
+## 2. 完了条件
 
-<!-- 対話で得た前提・制約・委任範囲を記録する。完了・回答の判定条件とは分ける。 -->
+- `.devcontainer/devcontainer.json` の `apt-packages` の feature の `packages` から `gh` を外す。
+- `.devcontainer/post-create.sh` で、GitHub CLI の公式の apt リポジトリ（`https://cli.github.com/packages`）の署名の鍵と apt の設定を置き、`gh` を入れる。失敗したときは警告を出して続ける。
+- 作り直したあとに、次を確かめて「4. 対応結果」に記録する。作り直しはコンテナの中からは確かめられないため、作り直しは利用者が行う。
+  - `gh --version` が、公式の apt リポジトリの版になっている。
+  - 名前付きの volume（`~/.config/gh`）の認証が残っており、`gh auth status` が通る。
+  - `gh pr edit` が Projects (classic) のエラーにならない（本文を変えずに、title を同じ値で指定するなど、PR の中身を変えない形で確かめる）。
+- `gh pr edit` が使えるようになったら、README の「上流への PR」の回避の方法の記述を書き換える。
+- `shellcheck` と `bash -n` が `post-create.sh` で通る。
+
+## 3. 作業内容
+
+| No  | 作業                                                  | 担当                  | 状態 | メモ                             |
+| --- | ----------------------------------------------------- | --------------------- | ---- | -------------------------------- |
+| 1   | `devcontainer.json` と `post-create.sh` を直す        | specdojo-orchestrator | open | feature ブランチで直して取り込む |
+| 2   | devcontainer を作り直す                               | naoji                 | open | -                                |
+| 3   | 作り直したあとに完了条件を確かめ、README を書き換える | specdojo-orchestrator | open | -                                |
+
+## 4. 対応結果
 
 -
 
-## 3. 完了条件
+## 5. 関連ドキュメント
 
-- _TODO_: 完了と判断できる具体的な条件を記載する。
-
-## 4. 作業内容
-
-| No  | 作業   | 担当   | 状態 | メモ |
-| --- | ------ | ------ | ---- | ---- |
-| 1   | _TODO_ | _TODO_ | open | -    |
-
-## 5. 対応結果
-
-_TODO_: 完了時に、実施内容・成果物・残課題を記載する。未完了の場合は `-` とする。
-
-## 6. 関連ドキュメント
-
-- _TODO_: 根拠・影響先・追跡先を `[[doc-id]]` 形式で記載する。
+- 由来: [[prj-0001:pjr-dt81-devcontainer-playwright-python|PJR-DT81]]
+- 回避の方法: このリポジトリの `README.md` の「上流への PR」
