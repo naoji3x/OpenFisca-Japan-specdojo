@@ -38,7 +38,7 @@ specdojo:
 | --- | ---------------------------------------------- | ---- | ---- | -------------- |
 | 1   | CI のログで原因を確かめる                      | DEV  | done | -              |
 | 2   | workflow の直し方を決め、変更案を書く          | DEV  | done | 保護された設定 |
-| 3   | 直したあと、Backend の CI が通ることを確かめる | DEV  | open | -              |
+| 3   | 直したあと、Backend の CI が通ることを確かめる | DEV  | done | -              |
 
 ## 4. 対応結果
 
@@ -65,7 +65,8 @@ specdojo:
 **反映**（2026-11-01、naoji の承認のもと specdojo-orchestrator）
 
 - `openfisca-japan` で `develop`（`823818e`）から `fix/backend-ci-python` を切り、`0895b48` で変更案のとおり直した（`python-version` 3.11.18、`actions/checkout@v7`・`actions/setup-python@v7`・`actions/cache@v6`）。YAML として読めることを確かめた。
-- 残り: naoji が `fix/backend-ci-python` を push し、fork の GitHub Actions で `Test Backend Openfisca` の build と test が通ることを確かめる。通ったら close する。
+- naoji が `fix/backend-ci-python` を push し、fork の GitHub Actions の `Test Backend Openfisca`（run `41282709539`、`0895b48`）で、build（52 秒）と test（25 秒）が通った。Node.js 20 の非推奨の annotation は出なくなった（残る annotation は ubuntu-latest の移行の案内だけ）。
+- 注意: `feature/parameter-unit-metadata` など、`develop` から切ったほかのブランチの Backend の CI は、この修正が上流の `develop` に入り、各ブランチに取り込まれるまで失敗し続ける。上流への PR は、この修正を先に出す。
 
 ## 5. 関連ドキュメント
 
