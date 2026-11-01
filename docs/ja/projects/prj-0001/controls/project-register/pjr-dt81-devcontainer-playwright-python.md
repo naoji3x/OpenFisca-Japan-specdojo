@@ -29,7 +29,8 @@ PJR-1RJE の E2E を流す Playwright の Chromium が、OS のライブラリ�
 - devcontainer を作り直したあと、tmux の中で次が通る。作り直しはコンテナの中から確かめられないため、確認は利用者が行い、結果を「4. 対応結果」に記録するまで close しない。
   - `command -v python` が `../OpenFisca-Japan/.venv/bin/python` を指し、`python --version` が 3.11 である。
   - `../OpenFisca-Japan` で `make test` が通る。
-  - Playwright の Chromium が起動する（`npx playwright test` などで確かめる）。
+  - Playwright の Chromium が起動する（`npx playwright test` などで確かめる）。`~/.npm` に root が持ち主のファイルがない。
+  - `../OpenFisca-Japan` で `make check-style` が通る。
   - 作り直す前からある機能（agent の CLI、git の設定、cron、`docker compose`）が今までどおり動く。
 - 使い方と注意を `.devcontainer/README.md` に書く。
 - `shellcheck` と `bash -n` が `post-create.sh` で通る。
@@ -50,6 +51,12 @@ PJR-1RJE の E2E を流す Playwright の Chromium が、OS のライブラリ�
   - uv 0.13.6 で Python 3.11.18 を入れ、`../OpenFisca-Japan/.venv` で `make install` が成功した。`CountryTaxBenefitSystem` が組み立てられ（301 の Variable）、`openfisca test` で YAML のテスト 1 件（6 ケース）が通った。
   - `make install` で、`pendulum 2.1.2` と `python-dateutil 3.0.0` の依存の食い違いの警告が出た（legacy resolver のため）。テストは通っている。
 - `post-create.sh` に足した部分は、`~/.bashrc` を書き換えるため、今のコンテナでは通しで流していない。作り直しで確かめる。
+
+- 2026-11-01 の再起動のあと（specdojo-orchestrator）
+  - `~/.bashrc` の PATH は効き、tmux の `python` は `.venv` の 3.11.18 になっていた。
+  - Chromium の本体が入っていなかった。`post-create.sh` で `sudo -E` のまま `npx` を流したため、`~/.npm` に root が持ち主のファイルができ、続く `npx playwright install chromium` が失敗していた。`43eb6e0` で root の HOME を使うように直した。今のコンテナでは `~/.npm` の持ち主を直して入れ直した。
+  - `make check-style` が動かなかった（setuptools 84 に `pkg_resources` がない、pycodestyle 2.15 が flake8 3.9 と合わない）。`255f1d6` で `post-create.sh` に setuptools 81 未満・pycodestyle 2.7 系への固定を足した。
+- 次の作り直しで確かめること（完了条件に加える）: Chromium の本体が `~/.cache/ms-playwright` にあり起動すること、`~/.npm` に root が持ち主のファイルがないこと、`../OpenFisca-Japan` で `make check-style` が通ること。
 
 ## 5. 関連ドキュメント
 

@@ -37,7 +37,7 @@ specdojo:
 | No  | 作業                                           | 担当 | 状態 | メモ           |
 | --- | ---------------------------------------------- | ---- | ---- | -------------- |
 | 1   | CI のログで原因を確かめる                      | DEV  | done | -              |
-| 2   | workflow の直し方を決め、変更案を書く          | DEV  | open | 保護された設定 |
+| 2   | workflow の直し方を決め、変更案を書く          | DEV  | done | 保護された設定 |
 | 3   | 直したあと、Backend の CI が通ることを確かめる | DEV  | open | -              |
 
 ## 4. 対応結果
@@ -61,6 +61,11 @@ specdojo:
 - 反映するブランチの案: `develop` から `fix/backend-ci-python`（`feature/parameter-unit-metadata` などとは独立に PR にできる）。
 - 反映したあとの確かめ方: そのブランチを push し、fork の GitHub Actions で `Test Backend Openfisca` の build と test が通ることを確かめる。push は利用者が行う。
 - `test_frontend.yml` も `actions/checkout@v3`・`actions/setup-node@v3` を使っているが、今は通っているため、この項目では扱わない。
+
+**反映**（2026-11-01、naoji の承認のもと specdojo-orchestrator）
+
+- `openfisca-japan` で `develop`（`823818e`）から `fix/backend-ci-python` を切り、`0895b48` で変更案のとおり直した（`python-version` 3.11.18、`actions/checkout@v7`・`actions/setup-python@v7`・`actions/cache@v6`）。YAML として読めることを確かめた。
+- 残り: naoji が `fix/backend-ci-python` を push し、fork の GitHub Actions で `Test Backend Openfisca` の build と test が通ることを確かめる。通ったら close する。
 
 ## 5. 関連ドキュメント
 
