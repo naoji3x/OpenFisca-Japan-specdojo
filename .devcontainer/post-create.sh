@@ -2,7 +2,7 @@
 set -Eeuo pipefail
 trap 'echo "[post-create] ERROR: command failed at line ${LINENO}: ${BASH_COMMAND}" >&2' ERR
 
-echo "[post-create] 1/8: preparing user-managed directories"
+echo "[post-create] 1/9: preparing user-managed directories"
 
 # Docker creates named volume mount points as root when the image lacks them. Hand the mount
 # points and their parents back to the container user before git config and agent installers write into them.
@@ -33,7 +33,7 @@ done
 mkdir -p "${HOME}/.local/bin"
 export PATH="${HOME}/.local/bin:${PATH}"
 
-echo "[post-create] 2/8: configuring git and shell environment"
+echo "[post-create] 2/9: configuring git and shell environment"
 
 # Include the host ~/.gitconfig copied by Dev Containers at the top of the volume-backed global
 # config, so identity and other host settings take effect while container-specific settings written
@@ -77,7 +77,28 @@ if command -v fdfind >/dev/null 2>&1 && ! command -v fd >/dev/null 2>&1; then
   sudo ln -s "$(command -v fdfind)" /usr/local/bin/fd
 fi
 
-echo "[post-create] 3/8: installing global JS tooling"
+echo "[post-create] 3/9: installing GitHub CLI from the official apt repository"
+
+# Debian のパッケージの gh（2.46）は、gh pr edit などが廃止された Projects (classic) を問い合わせて失敗する。
+# GitHub CLI の公式の apt リポジトリから最新を入れる。失敗しても後続の準備は続ける。
+install_gh() {
+  local keyring=/etc/apt/keyrings/githubcli-archive-keyring.gpg
+  local tmp
+  tmp="$(mktemp)"
+  curl -fsSL --retry 3 https://cli.github.com/packages/githubcli-archive-keyring.gpg -o "${tmp}" || return 1
+  sudo mkdir -p -m 755 /etc/apt/keyrings
+  sudo install -m 0644 "${tmp}" "${keyring}"
+  rm -f "${tmp}"
+  echo "deb [arch=$(dpkg --print-architecture) signed-by=${keyring}] https://cli.github.com/packages stable main" |
+    sudo tee /etc/apt/sources.list.d/github-cli.list >/dev/null
+  sudo apt-get update -o Dir::Etc::sourcelist=sources.list.d/github-cli.list -o Dir::Etc::sourceparts=- -o APT::Get::List-Cleanup=0 &&
+    sudo apt-get install -y gh
+}
+if ! install_gh; then
+  echo "Warning: Failed to install GitHub CLI from the official apt repository." >&2
+fi
+
+echo "[post-create] 4/9: installing global JS tooling"
 
 sudo npm install --global \
   typescript@6.0.3 \
@@ -107,7 +128,7 @@ echo "$MARKSMAN_SHA256  /tmp/marksman" | sha256sum -c -
 sudo install -m 0755 /tmp/marksman /usr/local/bin/marksman
 rm -f /tmp/marksman
 
-echo "[post-create] 4/8: installing editor dotfiles"
+echo "[post-create] 5/9: installing editor dotfiles"
 
 # Keep dotfiles authoritative: install the bundled defaults only when no supported init file exists.
 if [ ! -f "$HOME/.emacs" ] && \
@@ -130,7 +151,7 @@ if [ ! -f "$HOME/.vimrc" ] && [ ! -f "$HOME/.vim/vimrc" ]; then
   echo "Installed Vim config: $HOME/.vimrc"
 fi
 
-echo "[post-create] 5/8: installing Claude Code and Codex"
+echo "[post-create] 6/9: installing Claude Code and Codex"
 if ! curl -fsSL https://claude.ai/install.sh | bash; then
   echo "Warning: Claude Code installer failed."
 fi
@@ -152,13 +173,13 @@ if ! curl -fsSL https://antigravity.google/cli/install.sh | bash; then
   echo "Warning: Antigravity CLI installer failed."
 fi
 
-echo "[post-create] 6/8: installing workspace npm dependencies"
+echo "[post-create] 7/9: installing workspace npm dependencies"
 npm install
 
 # OpenFisca-Japan の開発に使う Python 3.11 の仮想環境を用意する。
 # OpenFisca-Core 41 は numpy <1.25・pendulum <3 を要し、ベースのイメージの Python 3.13 では入らない。
 # uv のビルド済みの Python 3.11 で ../OpenFisca-Japan/.venv を作り、make install（editable install）を流す。
-echo "[post-create] 7/8: setting up OpenFisca-Japan Python environment"
+echo "[post-create] 8/9: setting up OpenFisca-Japan Python environment"
 if ! command -v uv >/dev/null 2>&1; then
   if ! curl -fsSL https://astral.sh/uv/install.sh | env UV_NO_MODIFY_PATH=1 sh; then
     echo "Warning: uv installer failed." >&2
@@ -196,7 +217,7 @@ fi
 
 # OpenFisca-Japan の dashboard の E2E と Storybook のテストに使う Playwright の Chromium と、その OS のライブラリを入れる。
 # dashboard/package.json の @playwright/test を上げたときは、ブラウザーの版を合わせるためこの値も上げる。
-echo "[post-create] 8/8: installing Playwright Chromium and OS deps"
+echo "[post-create] 9/9: installing Playwright Chromium and OS deps"
 PLAYWRIGHT_VERSION="1.64.1"
 # sudo -E のままだと HOME が引き継がれ、~/.npm に root のファイルができて後の npx が失敗する。root の HOME を使わせる。
 if ! sudo env "PATH=${PATH}" HOME=/root npx -y "playwright@${PLAYWRIGHT_VERSION}" install-deps chromium; then
