@@ -41,3 +41,29 @@
     - field: depends_on
       from: ""
       to: '["PJR-0HYV"]'
+- v: 1
+  id: reg_254d2c46eb25434481c4b17f41445685
+  ts: "2026-11-01T00:00:07Z"
+  action: start
+  actor: sol-executor
+  from_status: open
+  to_status: in-progress
+  reason: work started
+  changes:
+    - field: status
+      from: open
+      to: in-progress
+  previous_event_id: reg_b531dc67e8b54596837d26c850c65281
+- v: 1
+  id: reg_1cfca585ca8943a8a78efaefdb1244a2
+  ts: "2026-11-01T00:10:25Z"
+  action: review
+  actor: sol-executor
+  from_status: in-progress
+  to_status: review
+  reason: ready for review
+  changes:
+    - field: status
+      from: in-progress
+      to: review
+  previous_event_id: reg_254d2c46eb25434481c4b17f41445685

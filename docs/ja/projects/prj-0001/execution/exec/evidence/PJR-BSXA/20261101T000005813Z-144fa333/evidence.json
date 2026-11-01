@@ -1,0 +1,177 @@
+{
+  "schema_version": 1,
+  "task_id": "PJR-BSXA",
+  "run_id": "20261101T000005813Z-144fa333",
+  "stage": {
+    "role": "executor",
+    "actor": "sol-executor",
+    "status": "succeeded",
+    "started_at": "2026-11-01T00:00:41.351Z",
+    "completed_at": "2026-11-01T00:08:07.904Z",
+    "exit_code": 0,
+    "attempts": 1
+  },
+  "changes": [
+    {
+      "path": "docs/ja/projects/prj-0001/controls/project-register/events/pjr-bsxa.yaml",
+      "status": "MM"
+    },
+    {
+      "path": "docs/ja/projects/prj-0001/controls/project-register/pjr-bsxa-frontend-chakra-ui-upgrade.md",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/errors/errors.stories.tsx",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/questions/template/questionTemplates.stories.tsx",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/result/result.stories.tsx",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/layout/uiCompatibility.browser.test.tsx",
+      "status": "??"
+    }
+  ],
+  "attempt_changes": [
+    {
+      "path": "docs/ja/projects/prj-0001/controls/project-register/pjr-bsxa-frontend-chakra-ui-upgrade.md",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/errors/errors.stories.tsx",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/questions/template/questionTemplates.stories.tsx",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/result/result.stories.tsx",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/layout/uiCompatibility.browser.test.tsx",
+      "status": "??"
+    }
+  ],
+  "diff_summary": {
+    "files_changed": 6,
+    "summary": ".../pjr-bsxa-frontend-chakra-ui-upgrade.md         | 65 +++++++++++++++++++---\n 1 file changed, 58 insertions(+), 7 deletions(-)\n[openfisca-japan]\ndashboard/src/components/errors/errors.stories.tsx |  8 ++++--\n .../template/questionTemplates.stories.tsx         |  6 ++++-\n dashboard/src/components/result/result.stories.tsx | 31 +++++++++++++++++++++-\n 3 files changed, 41 insertions(+), 4 deletions(-)"
+  },
+  "validations": [
+    {
+      "source": "executor",
+      "command": "npm run test",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboard。6ファイル・937件成功、skipなし。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run build",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboard。追加TSXを含む型検査とVite build成功。既存のchunkサイズ警告あり。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run lint",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboard。最終版のESLint成功。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run pretty:check",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboard。整形検査成功。"
+    },
+    {
+      "source": "executor",
+      "command": "npx prettier --write src/components/layout/uiCompatibility.browser.test.tsx src/components/questions/template/questionTemplates.stories.tsx src/components/result/result.stories.tsx src/components/errors/errors.stories.tsx",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboard。変更した4ファイルを整形。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run test:ui",
+      "status": "requires_human",
+      "summary": "Storybookのconfig読込時、sandboxがネットワークインターフェース取得を拒否。uv_interface_addressesエラーで起動前に停止。ホストで機能検査とa11yを実行する。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run test:e2e",
+      "status": "requires_human",
+      "summary": "previewサーバー起動に失敗。sandbox外でbuild済みpreviewに対して再実行する。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run preview -- --strictPort",
+      "status": "requires_human",
+      "summary": "listen EPERM 0.0.0.0:30000を確認。ホストで独自テーマを含む画面表示と実行時警告を確認する。"
+    },
+    {
+      "source": "executor",
+      "command": "npx prettier --write docs/ja/projects/prj-0001/controls/project-register/pjr-bsxa-frontend-chakra-ui-upgrade.md",
+      "status": "passed",
+      "summary": "個票を整形。"
+    },
+    {
+      "source": "executor",
+      "command": "npx markdownlint docs/ja/projects/prj-0001/controls/project-register/pjr-bsxa-frontend-chakra-ui-upgrade.md",
+      "status": "passed",
+      "summary": "個票のMarkdown検査成功。"
+    },
+    {
+      "source": "executor",
+      "command": "npx specdojo register build --project prj-0001 --dry-run > /tmp/pjr-bsxa-register.log",
+      "status": "passed",
+      "summary": "登録簿の生成検証成功。書込みなし。一時ログは削除済み。"
+    },
+    {
+      "source": "executor",
+      "command": "git diff --check",
+      "status": "passed",
+      "summary": "project・openfisca-japanの両リポジトリで成功。"
+    },
+    {
+      "source": "executor",
+      "command": "specdojo catalog validate",
+      "status": "not_applicable",
+      "summary": "適用外。",
+      "reason": "対象projectにcatalog_pathが設定されていない。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run validate:schema:file",
+      "status": "not_applicable",
+      "summary": "適用外。",
+      "reason": "executorによるYAML変更がなく、projectに当該scriptもない。"
+    },
+    {
+      "source": "executor",
+      "command": "npm test",
+      "status": "not_applicable",
+      "summary": "project側は適用外。製品の単体テストは実行済み。",
+      "reason": "projectのtestはnpm initの仮置きscriptである。"
+    }
+  ],
+  "final_message": "導入済み UI 依存の互換性を確認し、story のキーボード操作検査と Browser Mode 16 ケースを追加。個票に変更・検証・申し送りを記録した。単体937件・build・lint・整形は成功。ブラウザー検証は sandbox 制限によりホストへ引継ぎ。result・ステータスは未変更。",
+  "completion_status": "complete",
+  "handoff": [
+    "sandbox 外の openfisca-japan:dashboard で npm run test:ui を実行する。期待値は34 story と Browser Mode 17件の計51件。追加検査は型検査・lintのみ確認済み。個票4.4節に詳細を記録した。",
+    "更新前8e4b6caにも追加検査を適用し、390・820・1440pxの表示幅・キーボード・フォーカスを比較する。34 story のaxe結果を個票2.1節の前後測定と比較し、違反増加があれば修正または理由を記録する。",
+    "sandbox 外で npm run build 後に npm run test:e2e を実行し、build済みpreviewに対する既存5件を確認する。previewでは独自テーマ・Tooltip・内容の切れや重なり・フォーカスの見え方・Modal開閉時のconsole警告を確認する。",
+    "統合時のクリーン環境での npm ci と親検証は orchestrator / runner が実施する。依存・保護設定の追加変更案はない。"
+  ],
+  "log_refs": [
+    {
+      "kind": "agent-output-excerpt",
+      "path": "docs/ja/projects/prj-0001/execution/exec/evidence/PJR-BSXA/20261101T000005813Z-144fa333/executor.log",
+      "bytes": 4147,
+      "truncated": false
+    }
+  ]
+}
