@@ -88,6 +88,13 @@ CI では既存の `workers: 1` を維持する。E2E は 5 件から 25 件に�
 - `npm run test:e2e` は preview server の起動失敗で実行できなかった。`npm run preview -- --strictPort` の単独実行で `listen EPERM: operation not permitted 0.0.0.0:30000` を確認した。sandbox の待ち受け制限のため、`requires_human` として統合後に orchestrator が `npm run build` の後に `npm run test:e2e` を実行し、全 25 件の成功を確認する。
 - 上記のブラウザー実行確認と CI 差分の承認・反映を reporter / runner の result に申し送る。executor は result を直接編集しない。
 
+### orchestrator の確認（2026-11-01、specdojo-orchestrator）
+
+- `feature/frontend-test-upgrade`（`ca1723a`）を一時的な worktree に取り出し、`npm ci` から `npm run test`・`build`・`lint`・`pretty:check` が通ることを確かめた。
+- build のあと `npx playwright test` を 2 回流し、5 つの project（`chromium`・`firefox`・`webkit`・`mobile-safari`・`mobile-chromium`）で 25 件が 2 回とも通った（1 回目 15.7 秒、2 回目 13.5 秒）。スマートフォンの表示で失敗していた年齢の入力欄は、`getByLabel` に直って通った。
+- Git の local config は実行の前後で変わっていない。上流の変更に登録簿の ID やリンクはない（commit メッセージの `Refs:` 行を除く）。
+- **注意**: `playwright.config.ts` に Firefox と WebKit を足したため、今の CI（Chromium だけを入れる）では `npm run test:e2e` が失敗する。4.2 の CI の変更案（`npx playwright install --with-deps chromium firefox webkit`）を naoji の承認のもとで反映するまで、この項目は close しない。上流へ PR を出す前に反映する。
+
 ## 5. 関連ドキュメント
 
 - 由来: [[prj-0001:pjr-bsxa-frontend-chakra-ui-upgrade|PJR-BSXA]]（2026-11-01 の、移行の確かめ方の整理）
