@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -Eeuo pipefail
+trap 'echo "[post-create] ERROR: command failed at line ${LINENO}: ${BASH_COMMAND}" >&2' ERR
+
+echo "[post-create] 1/8: preparing user-managed directories"
 
 # Docker creates named volume mount points as root when the image lacks them. Hand the mount
 # points and their parents back to the container user before git config and agent installers write into them.
@@ -29,6 +32,8 @@ done
 # Some installers place binaries under ~/.local/bin. Ensure the directory exists and is on PATH.
 mkdir -p "${HOME}/.local/bin"
 export PATH="${HOME}/.local/bin:${PATH}"
+
+echo "[post-create] 2/8: configuring git and shell environment"
 
 # Include the host ~/.gitconfig copied by Dev Containers at the top of the volume-backed global
 # config, so identity and other host settings take effect while container-specific settings written
@@ -72,6 +77,8 @@ if command -v fdfind >/dev/null 2>&1 && ! command -v fd >/dev/null 2>&1; then
   sudo ln -s "$(command -v fdfind)" /usr/local/bin/fd
 fi
 
+echo "[post-create] 3/8: installing global JS tooling"
+
 sudo npm install --global \
   typescript@6.0.3 \
   typescript-language-server@6.0.1 \
@@ -100,6 +107,8 @@ echo "$MARKSMAN_SHA256  /tmp/marksman" | sha256sum -c -
 sudo install -m 0755 /tmp/marksman /usr/local/bin/marksman
 rm -f /tmp/marksman
 
+echo "[post-create] 4/8: installing editor dotfiles"
+
 # Keep dotfiles authoritative: install the bundled defaults only when no supported init file exists.
 if [ ! -f "$HOME/.emacs" ] && \
    [ ! -f "$HOME/.emacs.el" ] && \
@@ -121,6 +130,7 @@ if [ ! -f "$HOME/.vimrc" ] && [ ! -f "$HOME/.vim/vimrc" ]; then
   echo "Installed Vim config: $HOME/.vimrc"
 fi
 
+echo "[post-create] 5/8: installing Claude Code and Codex"
 if ! curl -fsSL https://claude.ai/install.sh | bash; then
   echo "Warning: Claude Code installer failed."
 fi
@@ -142,11 +152,13 @@ if ! curl -fsSL https://antigravity.google/cli/install.sh | bash; then
   echo "Warning: Antigravity CLI installer failed."
 fi
 
+echo "[post-create] 6/8: installing workspace npm dependencies"
 npm install
 
 # OpenFisca-Japan の開発に使う Python 3.11 の仮想環境を用意する。
 # OpenFisca-Core 41 は numpy <1.25・pendulum <3 を要し、ベースのイメージの Python 3.13 では入らない。
 # uv のビルド済みの Python 3.11 で ../OpenFisca-Japan/.venv を作り、make install（editable install）を流す。
+echo "[post-create] 7/8: setting up OpenFisca-Japan Python environment"
 if ! command -v uv >/dev/null 2>&1; then
   if ! curl -fsSL https://astral.sh/uv/install.sh | env UV_NO_MODIFY_PATH=1 sh; then
     echo "Warning: uv installer failed." >&2
@@ -184,6 +196,7 @@ fi
 
 # OpenFisca-Japan の dashboard の E2E と Storybook のテストに使う Playwright の Chromium と、その OS のライブラリを入れる。
 # dashboard/package.json の @playwright/test を上げたときは、ブラウザーの版を合わせるためこの値も上げる。
+echo "[post-create] 8/8: installing Playwright Chromium and OS deps"
 PLAYWRIGHT_VERSION="1.64.1"
 # sudo -E のままだと HOME が引き継がれ、~/.npm に root のファイルができて後の npx が失敗する。root の HOME を使わせる。
 if ! sudo env "PATH=${PATH}" HOME=/root npx -y "playwright@${PLAYWRIGHT_VERSION}" install-deps chromium; then
@@ -192,3 +205,5 @@ fi
 if ! npx -y "playwright@${PLAYWRIGHT_VERSION}" install chromium; then
   echo "Warning: Failed to install Playwright Chromium." >&2
 fi
+
+echo "[post-create] complete"
