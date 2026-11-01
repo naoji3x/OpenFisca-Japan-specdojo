@@ -7,7 +7,7 @@ specdojo:
   part_of:
     - prj-0001:pjr-index
   item_type: issue
-  item_status: open
+  item_status: review
   priority: medium
   difficulty: easy
   owner: DEV
@@ -41,26 +41,31 @@ specdojo:
 
 ## 3. 影響範囲
 
-| 観点         | 影響                                                                                                |
-| ------------ | --------------------------------------------------------------------------------------------------- |
-| スコープ     | `personNumQuestionTemplate.tsx` の有効状態の再計算と、`questionTemplates.test.tsx` の該当する期待値 |
-| スケジュール | フロントエンドの依存の更新の項目とは独立している                                                    |
-| コスト       | 小さい（effect の依存の修正とテストの期待値の更新）                                                 |
-| 品質         | 人数が空のまま回答が有効と扱われ、次の質問へ進める可能性がある                                      |
-| 関係者       | DEV                                                                                                 |
+| 観点         | 影響                                                                                                                           |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------ |
+| スコープ     | `personNumQuestionTemplate.tsx` の有効状態の再計算と、`questionTemplates.test.tsx`・`questionTemplates.stories.tsx` の回帰検証 |
+| スケジュール | フロントエンドの依存の更新の項目とは独立している                                                                               |
+| コスト       | 小さい（effect の依存の修正とテストの期待値の更新）                                                                            |
+| 品質         | 人数が空のまま回答が有効と扱われ、次の質問へ進める可能性がある                                                                 |
+| 関係者       | DEV                                                                                                                            |
 
 ## 4. 対応方針
 
 | 項目     | 内容                                                                                                                                                                                                                           |
 | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| 原因     | 有効状態を再計算する effect の依存の配列に `formValidated` がないとみられる（PJR-49V3 の executor の分析。未確認）                                                                                                             |
+| 原因     | 有効状態を再計算する effect の依存配列に `formValidated` がないことを確認した。「はい」のまま空欄にすると `boolState` は変わらず、入力側の有効状態の変更が Recoil に反映されなかった                                           |
 | 対応策   | 原因を確かめ、入力を空にした直後に有効状態が `false` になるよう直す                                                                                                                                                            |
 | 依存事項 | なし。`feature/frontend-test-upgrade` の上で直す場合は、項目を流していないときに積む                                                                                                                                           |
 | 完了条件 | 入力を空にした直後に有効状態が `false` になるテストを足し（今の挙動を固定したテストの期待値を直し）、`dashboard` の `npm run test`・`build`・`lint`・`pretty:check` が通る。上流の文書とコードに登録簿の ID やリンクを書かない |
 
 ## 5. 対応結果
 
--
+- 原因確認: `onChange` は空欄で `formValidated` を `false` に更新するが、Recoil の `questionValidatedAtom` を更新する effect は `boolState`・`title`・`initialValue` のみを監視していた。「はい」のまま空欄にするとこれらは変化せず、直前の `true` が残っていた。
+- 実装修正: `openfisca-japan:dashboard/src/components/questions/template/personNumQuestionTemplate.tsx` の effect の依存配列へ `formValidated` と setter を追加した。人数を消すと直ちに無効になり、正の人数を再入力すると有効になる。
+- 回帰テスト: `openfisca-japan:dashboard/src/components/questions/template/questionTemplates.test.tsx` に、初期回答なし・回答復元の 2 ケースを追加した。「はい」を選んで正の人数を入力したあと、再クリックせず空欄で無効化、再入力で有効化、空欄でも「いいえ」なら有効となることと、回答の値を検証した。
+- story 更新: `openfisca-japan:dashboard/src/components/questions/template/questionTemplates.stories.tsx` の `PersonCount` から、再度「はい」を押すまで有効という旧期待値を除き、空欄直後の無効化と再入力での有効化を検証するよう変更した。人数の Browser Mode 専用テストはなく、ブラウザーでの検証はこの story が担当する。
+- 検証: `openfisca-japan:dashboard` で `npm run test`（6 ファイル・939 テスト）、`npm run build`、`npm run lint`、`npm run pretty`、`npm run pretty:check` が成功した。build はチャンクサイズの警告を出したが正常終了した。依存や Git の設定は変更していない。
+- 申し送り（`requires_human`）: `openfisca-japan:dashboard` で `npm run test:stories -- src/components/questions/template/questionTemplates.stories.tsx` を試行したが、Storybook の設定読み込み中、サンドボックスの `os.networkInterfaces()` が `uv_interface_addresses` エラーを返し、テストを起動できなかった。統合後に orchestrator が同じコマンドをホスト側で実行し、`PersonCount` を含む story の成功を確認する。
 
 ## 6. 関連ドキュメント
 
