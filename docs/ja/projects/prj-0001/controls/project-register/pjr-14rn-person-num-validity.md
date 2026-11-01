@@ -67,6 +67,14 @@ specdojo:
 - 検証: `openfisca-japan:dashboard` で `npm run test`（6 ファイル・939 テスト）、`npm run build`、`npm run lint`、`npm run pretty`、`npm run pretty:check` が成功した。build はチャンクサイズの警告を出したが正常終了した。依存や Git の設定は変更していない。
 - 申し送り（`requires_human`）: `openfisca-japan:dashboard` で `npm run test:stories -- src/components/questions/template/questionTemplates.stories.tsx` を試行したが、Storybook の設定読み込み中、サンドボックスの `os.networkInterfaces()` が `uv_interface_addresses` エラーを返し、テストを起動できなかった。統合後に orchestrator が同じコマンドをホスト側で実行し、`PersonCount` を含む story の成功を確認する。
 
+### orchestrator の確認（2026-11-01、specdojo-orchestrator）
+
+- 原因は見込みどおりで、`personNumQuestionTemplate.tsx` の有効状態を再計算する effect の依存の配列に `formValidated` がなかった。`0134bda` で依存の配列に `formValidated` と `setQuestionValidated` を加え、今の挙動を固定していたテストの期待値を直し、入力を空にした直後に有効状態が `false` になるテストを足した。
+- `feature/frontend-test-upgrade`（`0134bda`）を一時的な worktree に取り出し、`npm ci` から `npm run test`（939 件）・`build`・`lint`・`pretty:check`・`build-storybook` が通り、ブラウザーのテスト（51 件）が通り、`npm run test:e2e` は連続 2 回とも 5 件が通った。
+- 直した箇所をわざと元に戻すと、`questionTemplates.test.tsx` の 2 件が失敗した。足したテストは、この不具合を検出できる。確認のあと元に戻した。
+- a11y の report は変わらない（残る違反は `color-contrast` だけ）。PJR-HQBE の仕組みで 13 画面 × 2 の大きさを撮り、`378eb36` と比べて 26 枚すべてで画素の差が 0% だった。
+- Git の local config は実行の前後で変わっていない。上流の変更に登録簿の ID やリンクはない（commit メッセージの `Refs:` 行を除く）。
+
 ## 6. 関連ドキュメント
 
 - 発見元: [[prj-0001:pjr-49v3-frontend-question-regression|PJR-49V3]] の対応結果の申し送り
