@@ -1,0 +1,87 @@
+人数欄とトップへ戻るリンクに `aria-label` を追加し、個票へ対応結果を記録しました。単体テスト 937 件と静的検査は成功。ブラウザー検証は sandbox 制約により統合後の確認が必要です。
+
+<specdojo_executor_evidence>
+{
+  "completion_status": "complete",
+  "final_message": "見た目を変えずに人数欄と共通ホームリンクへ名前を追加し、個票の対応結果を更新した。result は編集していない。",
+  "handoff": [
+    "変更ファイル: openfisca-japan:dashboard/src/components/questions/template/personNumQuestionTemplate.tsx に aria-label=\"人数\"、openfisca-japan:dashboard/src/components/homeButton.tsx に aria-label=\"トップへ戻る\" を追加。見た目を保つため見えない名前を採用した。docs/ja/projects/prj-0001/controls/project-register/pjr-4sm2-a11y-form-link-names.md に実施内容・検証結果・申し送りを記録した。",
+    "統合後、orchestrator が dashboard で npm run test:ui と npm run test:e2e を再実行する。Storybook の a11y report で人数欄の 2 story の label と、ホームリンクの 6 story の link-name が解消したこと、および実画面の表示を確認する。sandbox ではブラウザー検証を起動できず、違反解消は未確認。"
+  ],
+  "validations": [
+    {
+      "command": "npm run test",
+      "status": "passed",
+      "summary": "openfisca-japan/dashboard: 6 ファイル・937 件成功。"
+    },
+    {
+      "command": "npm run build",
+      "status": "passed",
+      "summary": "openfisca-japan/dashboard: 型検査と本番ビルド成功。チャンクサイズ警告あり。"
+    },
+    {
+      "command": "npm run lint",
+      "status": "passed",
+      "summary": "openfisca-japan/dashboard: ESLint 成功。"
+    },
+    {
+      "command": "npm run pretty:check",
+      "status": "passed",
+      "summary": "openfisca-japan/dashboard: 全対象の整形チェック成功。"
+    },
+    {
+      "command": "npm run pretty",
+      "status": "passed",
+      "summary": "openfisca-japan/dashboard: pre-commit 相当の整形成功。追加の差分なし。"
+    },
+    {
+      "command": "npm run test:ui",
+      "status": "requires_human",
+      "summary": "openfisca-japan/dashboard: sandbox 内で Storybook 設定読み込みが `uv_interface_addresses` エラーとなり起動不能。統合後に再実行が必要。"
+    },
+    {
+      "command": "npm run test:e2e",
+      "status": "requires_human",
+      "summary": "openfisca-japan/dashboard: preview サーバー起動不能。同じサーバーコマンドで listen EPERM 0.0.0.0:30000 を確認。統合後に再実行が必要。"
+    },
+    {
+      "command": "npx --no-install prettier --write docs/ja/projects/prj-0001/controls/project-register/pjr-4sm2-a11y-form-link-names.md",
+      "status": "passed",
+      "summary": "個票の整形成功。"
+    },
+    {
+      "command": "npx --no-install markdownlint docs/ja/projects/prj-0001/controls/project-register/pjr-4sm2-a11y-form-link-names.md",
+      "status": "passed",
+      "summary": "個票の Markdown 検査成功。"
+    },
+    {
+      "command": "node node_modules/specdojo/dist/specdojo.js register build --project prj-0001 --dry-run",
+      "status": "passed",
+      "summary": "登録簿の生成処理成功。dry-run により登録簿ファイルへの書き込みなし。"
+    },
+    {
+      "command": "git diff --check",
+      "status": "passed",
+      "summary": "project と openfisca-japan の両リポジトリで成功。"
+    },
+    {
+      "command": "npm run typecheck",
+      "status": "not_applicable",
+      "summary": "独立した typecheck script は適用外。型検査は dashboard の build で成功。",
+      "reason": "dashboard/package.json に typecheck script がない。"
+    },
+    {
+      "command": "npm run validate:schema:file",
+      "status": "not_applicable",
+      "summary": "schema 検査は適用外。",
+      "reason": "executor による YAML ファイルの変更がなく、project/package.json に該当 script もない。"
+    },
+    {
+      "command": "specdojo catalog validate",
+      "status": "not_applicable",
+      "summary": "catalog 検査は適用外。",
+      "reason": "prj-0001 に `catalog_path` が設定されていない。"
+    }
+  ]
+}
+</specdojo_executor_evidence>

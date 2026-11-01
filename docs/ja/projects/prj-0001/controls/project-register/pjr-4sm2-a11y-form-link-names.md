@@ -58,7 +58,12 @@ a11y の検査で、人数の入力欄にラベルがない（label・critical�
 
 ## 5. 対応結果
 
--
+- `openfisca-japan:dashboard/src/components/questions/template/personNumQuestionTemplate.tsx` の人数入力欄に `aria-label="人数"` を追加した。通常入力と復元時、PC のテキスト入力とモバイルの数値入力に共通で適用される。
+- `openfisca-japan:dashboard/src/components/homeButton.tsx` の共通ホームリンクに `aria-label="トップへ戻る"` を追加した。エラー画面・結果画面など、同じコンポーネントを利用する画面へ適用される。既存の文字リンク「トップページに戻る」と区別できる名前にした。
+- 見た目を保つため、両方とも見えない名前を追加した。DOM の配置・スタイル・入力や遷移の処理は変更していない。依存の追加・変更や `npm ci` は行っていない。上流の変更はこの 2 ファイルの属性追加だけであり、登録簿の ID やリンクは含めていない。
+- dashboard で `npm run test`（6 ファイル・937 件）、`npm run build`、`npm run lint`、`npm run pretty:check` が成功した。ビルドではチャンクサイズの警告が出たが、終了コードは 0 だった。
+- `npm run test:ui` は Storybook 設定読み込み中の `uv_interface_addresses` エラーで起動できなかった。`npm run test:e2e` も preview サーバーを起動できず、同じサーバーコマンドで `listen EPERM: operation not permitted 0.0.0.0:30000` を確認した。いずれも sandbox の制約によるため `requires_human` とする。
+- 申し送り: 統合後、orchestrator が dashboard で `npm run test:ui`（storybook project を含む）と `npm run test:e2e` を再実行する。Storybook の a11y report で `questions-templates--person-count`・`restored-person-count` の `label` と、ホームリンクに起因する 6 story の `link-name` が消えたことを確認する。ブラウザー検証が起動できていないため、違反解消と実画面の表示はまだ未確認である。
 
 ## 6. 関連ドキュメント
 
