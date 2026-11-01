@@ -163,6 +163,17 @@ Linux arm64、Node v22.23.3、npm 10.9.9、React 18.3.1、Vitest 5.0.5、Playwri
 
 申し送り: `requires_human` として、統合後に sandbox 外の `dashboard` で `npm run test:ui`（51 件）と `npm run build` 後の `npm run test:e2e`（5 件）を実行する。特に `Benefit Only`・`Loan Only`・`Both` の可視性の失敗が解消したことを確かめる。今回の executor はブラウザーでの成功を確認できていない。2.2 節の一時 worktree での 51 件・2 回成功は orchestrator による事前確認であり、今回の実測ではない。4.4 節の前後比較・a11y・preview の表示確認・クリーン環境の `npm ci`・親 runner 検証の申し送りも引き続き適用する。保護された設定の追加変更案はない。
 
+### orchestrator の確認（2026-11-01、specdojo-orchestrator）
+
+- 1 回目の統合（`325df52`）では、結果画面の story の 3 件が必ず失敗した（2.2）。直し方を個票に書いて流し直し、`378eb36` で Accordion を開くアニメーションを待つ形になった。
+- `feature/frontend-test-upgrade`（`378eb36`）を一時的な worktree に取り出し、`npm ci` から次を確かめた。
+  - `npm run test`（937 件）・`build`・`lint`・`pretty:check`・`build-storybook` が通った。
+  - `npx vitest run --config vitest.browser.config.mts`（story 34 件と、足した `uiCompatibility.browser.test.tsx` を含む Browser Mode）は、2 回とも 51 件が通った。
+  - `npm run test:e2e` は、build のあと連続 2 回とも 5 件が通った。
+- **更新の前と後の a11y**（34 の story）: `landmark-unique` は更新前の 34 story からなくなり、`color-contrast`（21 story・29 要素）・`link-name`（6 story・6 要素）・`label`（2 story・2 要素）は更新前と同じだった。違反は増えていない。残りは [[prj-0001:pjr-4sm2-a11y-form-link-names|PJR-4SM2]] と [[prj-0001:pjr-bn8w-a11y-contrast-landmark|PJR-BN8W]] で扱う。
+- 2 回の実行の前後で、Git の local config は変わっていない。上流の変更に登録簿の ID やリンクはない（commit メッセージの `Refs:` 行を除く）。
+- Chakra UI 3 への移行は [[prj-0001:pjr-erdk-frontend-chakra-ui-v3|PJR-ERDK]] で扱う（naoji の判断、案 A）。
+
 ## 5. 関連ドキュメント
 
 - 方針: [[prj-0001:pjr-z7fq-frontend-test-strategy|PJR-Z7FQ フロントエンドのテストの方針を決める]]
