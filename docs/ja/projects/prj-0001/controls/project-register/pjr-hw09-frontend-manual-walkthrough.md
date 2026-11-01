@@ -59,11 +59,14 @@ cd ../OpenFisca-Japan
 git worktree add --detach ../OpenFisca-Japan-before develop
 cd ../OpenFisca-Japan-before/dashboard
 docker build -t ofj-dashboard-before .
-docker run -d --name ofj-dashboard-before -p 30001:30000 ofj-dashboard-before
+docker run -d --name ofj-dashboard-before -p 30001:30001 ofj-dashboard-before \
+  npx vite --port 30001 --strictPort --host 0.0.0.0
 ```
 
 - 移行の前は `http://localhost:30001`、移行の後は `http://localhost:30000` で開き、左右に並べて同じ操作をする。スマートフォンの大きさで見るときは、両方の開発者ツールで同じ端末の表示にそろえる。
 - どちらも計算 API はブラウザーから `localhost:50000`（compose の `openfisca`）を呼ぶ。
+- 移行の前の開発サーバーは、コンテナの中でも 30001 で起動する。Dockerfile の既定（`npm run dev`、30000）のままだと、HMR の WebSocket がホストの 30000（移行の後の画面）につながろうとして `WebSocket connection to ws://localhost:30000 failed` になるため。
+- ホストのブラウザーでは `localhost` で開く。移行の後の Vite 8 の開発サーバーは、知らないホスト名（`host.docker.internal` など）からのアクセスを 403 で断る（`server.allowedHosts`）。
 - 移行の前の画面は `docker run` で動かす。compose はネットワーク名（`openfisca`）とポート（30000）が決め打ちで、2 つ目を起動するとぶつかるため。ソースは mount しない（build したときの中身で動く）。
 - 片付け: `docker rm -f ofj-dashboard-before`、`docker rmi ofj-dashboard-before`、`../OpenFisca-Japan` で `git worktree remove ../OpenFisca-Japan-before` と `git switch develop`。
 
