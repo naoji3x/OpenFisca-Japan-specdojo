@@ -21,28 +21,29 @@ specdojo:
 
 ## 1. 概要
 
-test_backend.yml が python-version 3.11.6 を決め打ちし、今の ubuntu-latest で Set up Python が失敗して、Backend のテストが CI で流れていない（2026-10-18 までは成功）
+`openfisca-japan:.github/workflows/test_backend.yml` は `actions/setup-python@v4` で `python-version: 3.11.6` を決め打ちしている。2026-10-31 以降に push したすべてのブランチ（`feature/parameter-unit-metadata` など）で「Set up Python」の段が失敗し、Backend のテスト（`make test` など）が CI で流れていない。`develop` では 2026-10-18 まで成功していたので、変更ではなく runner の環境の変化によるとみられる。
 
-## 2. 入力
+## 2. 完了条件
 
-<!-- 対話で得た前提・制約・委任範囲を記録する。完了・回答の判定条件とは分ける。 -->
+- 失敗の原因（runner の OS の版と、`setup-python` が 3.11.6 を用意できないこと）を、CI のログで確かめて記録する。
+- `python-version` の決め打ちを見直す（例: `3.11` にする、`actions/setup-python` を上げる、runner の版を固定する）。キャッシュのキーとの関係（workflow のコメントにある）も確かめ、選んだ理由を記録する。
+- 直した workflow で、`feature/parameter-unit-metadata` などの Backend の CI が通ることを確かめる。
+- `.github/workflows/**` は保護された設定なので、exec で行う場合は変更案を書き、反映は利用者の承認のもとで行う。
+- 上流の文書・コード・コメントに、登録簿の ID やリンクを書かない。登録簿との対応は commit メッセージの `Refs:` 行だけで取る。
+- 保護された設定（`package.json`、`.github/workflows/**` など）の変更が必要な場合は、変更案を「4. 対応結果」に書き、反映は利用者の承認のもとで行う。依存の追加は、流す前に orchestrator が入れる（exec の executor はネットワークに出られない）。
+
+## 3. 作業内容
+
+| No  | 作業                                           | 担当 | 状態 | メモ           |
+| --- | ---------------------------------------------- | ---- | ---- | -------------- |
+| 1   | CI のログで原因を確かめる                      | DEV  | open | -              |
+| 2   | workflow の直し方を決め、変更案を書く          | DEV  | open | 保護された設定 |
+| 3   | 直したあと、Backend の CI が通ることを確かめる | DEV  | open | -              |
+
+## 4. 対応結果
 
 -
 
-## 3. 完了条件
+## 5. 関連ドキュメント
 
-- _TODO_: 完了と判断できる具体的な条件を記載する。
-
-## 4. 作業内容
-
-| No  | 作業   | 担当   | 状態 | メモ |
-| --- | ------ | ------ | ---- | ---- |
-| 1   | _TODO_ | _TODO_ | open | -    |
-
-## 5. 対応結果
-
-_TODO_: 完了時に、実施内容・成果物・残課題を記載する。未完了の場合は `-` とする。
-
-## 6. 関連ドキュメント
-
-- _TODO_: 根拠・影響先・追跡先を `[[doc-id]]` 形式で記載する。
+- 由来: [[prj-0001:pjr-ks3c-parameter-unit-metadata|PJR-KS3C]]（2026-11-01 の、移行の確かめ方の整理）

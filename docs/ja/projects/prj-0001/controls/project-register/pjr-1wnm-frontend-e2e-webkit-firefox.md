@@ -21,28 +21,29 @@ specdojo:
 
 ## 1. 概要
 
-Playwright の WebKit と Firefox でも E2E のスモークを流し、Safari（iPhone）と Firefox での動きを確かめる。CI にも足すかを決める
+E2E（Playwright）は Chromium だけで流している。利用者の多いスマートフォンの Safari（WebKit）と Firefox での動きを確かめる。
 
-## 2. 入力
+## 2. 完了条件
 
-<!-- 対話で得た前提・制約・委任範囲を記録する。完了・回答の判定条件とは分ける。 -->
+- `dashboard/playwright.config.ts` に WebKit と Firefox の project を足し、E2E のスモーク 5 件が 3 つのブラウザーで通る。スマートフォンの大きさ（`devices` の iPhone など）で流す project も足すかを決め、理由を記録する。
+- このコンテナに WebKit と Firefox の本体と OS のライブラリを入れる（orchestrator が行う）。`.devcontainer/post-create.sh` に足すかも決める。
+- CI（`test_frontend.yml`）で 3 つのブラウザーを流すかを決め、流す場合は変更案を書く（保護された設定）。CI の時間が延びる点も記録する。
+- `npm run test`・`test:ui`・`build`・`lint`・`pretty:check` が通る。
+- 上流の文書・コード・コメントに、登録簿の ID やリンクを書かない。登録簿との対応は commit メッセージの `Refs:` 行だけで取る。
+- 保護された設定（`package.json`、`.github/workflows/**` など）の変更が必要な場合は、変更案を「4. 対応結果」に書き、反映は利用者の承認のもとで行う。依存の追加は、流す前に orchestrator が入れる（exec の executor はネットワークに出られない）。
+
+## 3. 作業内容
+
+| No  | 作業                                           | 担当                  | 状態 | メモ           |
+| --- | ---------------------------------------------- | --------------------- | ---- | -------------- |
+| 1   | WebKit と Firefox をコンテナに入れる           | specdojo-orchestrator | open | -              |
+| 2   | Playwright の設定に project を足し、E2E を流す | DEV                   | open | -              |
+| 3   | CI で流すかを決め、変更案を書く                | DEV                   | open | 保護された設定 |
+
+## 4. 対応結果
 
 -
 
-## 3. 完了条件
+## 5. 関連ドキュメント
 
-- _TODO_: 完了と判断できる具体的な条件を記載する。
-
-## 4. 作業内容
-
-| No  | 作業   | 担当   | 状態 | メモ |
-| --- | ------ | ------ | ---- | ---- |
-| 1   | _TODO_ | _TODO_ | open | -    |
-
-## 5. 対応結果
-
-_TODO_: 完了時に、実施内容・成果物・残課題を記載する。未完了の場合は `-` とする。
-
-## 6. 関連ドキュメント
-
-- _TODO_: 根拠・影響先・追跡先を `[[doc-id]]` 形式で記載する。
+- 由来: [[prj-0001:pjr-bsxa-frontend-chakra-ui-upgrade|PJR-BSXA]]（2026-11-01 の、移行の確かめ方の整理）
