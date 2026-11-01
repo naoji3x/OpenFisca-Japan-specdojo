@@ -49,11 +49,14 @@ specdojo:
 - `221ee21`: `.devcontainer/devcontainer.json` の `apt-packages` の feature から `gh` を外し、`.devcontainer/post-create.sh` に「3/9: installing GitHub CLI from the official apt repository」の段を足した（以降の段の番号を 1 つずつずらした）。署名の鍵を `/etc/apt/keyrings/githubcli-archive-keyring.gpg` に置き、`/etc/apt/sources.list.d/github-cli.list` を作って `gh` を入れる。失敗したときは警告を出して続ける。`shellcheck` と `bash -n` が通る。
 - 今のコンテナで、足した段だけを流した。`gh` は 2.46.0（Debian）から **2.103.3**（公式の apt リポジトリ）に上がった。`gh auth status` は `naoji3x` でログインしたままで、`gh pr view 504` も動いた。
 
+**gh pr edit の確認**（2026-11-01、naoji）
+
+- `gh pr edit 504 --repo project-inclusive/OpenFisca-Japan --title "<今と同じタイトル>"` が、Projects (classic) のエラーにならずに通った。
+- これを受けて、README の「上流への PR」の本文の直し方を `gh pr edit` に戻した（`406a6d3`）。古い `gh` のときの REST API の回避は、補足として残した。
+
 **残っていること**
 
-- `gh pr edit` が Projects (classic) のエラーにならないことの確認（上流の PR への書き込みで、Claude Code の権限の仕組みで止められたため、naoji が行う）。例: `gh pr edit 504 --repo project-inclusive/OpenFisca-Japan --title "<今と同じタイトル>"`。
-- 作り直したあとに、post-create の 3/9 の段で `gh` が公式の版で入ること。
-- 上の 2 つが確かめられたら、README の「上流への PR」の回避の方法の記述を書き換える。
+- 作り直したあとに、post-create の 3/9 の段で `gh` が公式の版で入ること（次の作り直しのときに確かめる）。
 
 ## 5. 関連ドキュメント
 
