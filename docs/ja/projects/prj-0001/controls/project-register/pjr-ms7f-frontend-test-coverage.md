@@ -199,6 +199,20 @@ npm run test:browser -- --coverage --coverage.reportsDirectory=coverage/browser
 - 上流の変更に登録簿の ID やリンクはない（commit メッセージの `Refs:` 行を除く）。Git の local config は実行の前後で変わっていない。
 - **残っていること**: 4.4 のテストを足す項目の案（5 件）を登録簿に起票すること。担当と期限が決まっていないため、naoji の判断を待つ。起票したら close する。
 
+### テストを足す項目の起票（2026-11-02、specdojo-orchestrator）
+
+- 4.4 の案のうち、次の 5 件を naoji の承認のもとで起票した。どれも担当は DEV、期限は 2026-11-30、由来は PJR-MS7F で、優先度は 4.4 のとおりである。
+
+  | ID                                                                   | タイトル                                      | 優先度 |
+  | -------------------------------------------------------------------- | --------------------------------------------- | ------ |
+  | [[prj-0001:pjr-8307-frontend-question-screen-tests\|PJR-8307]]       | 質問画面と状態機械の接続を検証する            | high   |
+  | [[prj-0001:pjr-npc4-frontend-result-share-tests\|PJR-NPC4]]          | 結果画面で共有 URL の復元と共有操作を検証する | high   |
+  | [[prj-0001:pjr-n0fe-frontend-helpdesk-benefit-loan-tests\|PJR-N0FE]] | 窓口・給付・貸付のデータ分岐を検証する        | high   |
+  | [[prj-0001:pjr-4mc9-frontend-calculate-endpoint-tests\|PJR-4MC9]]    | 送信先の環境切替を検証する                    | medium |
+  | [[prj-0001:pjr-0p60-frontend-top-terms-entry-tests\|PJR-0P60]]       | トップ・同意・画面入口の操作を検証する        | medium |
+
+- 4.4 の「入力テンプレートの端末依存分岐を検証する」と「共有形式と状態変換の残りの分岐を検証する」（どちらも中）は、orchestrator が承認を求めたときの一覧から漏れていたため、起票していない。起票するかは naoji の判断を待つ。この項目の完了条件（テストを足す項目に分ける）は 4.4 で満たしているため、この 2 件を待たずに close する。
+
 ## 5. 関連ドキュメント
 
 - 由来: [[prj-0001:pjr-bsxa-frontend-chakra-ui-upgrade|PJR-BSXA]]（2026-11-01 の、移行の確かめ方の整理）
