@@ -2,17 +2,19 @@
 specdojo:
   id: prj-0001:pjr-1wnm-frontend-e2e-webkit-firefox
   type: project
-  status: draft
+  status: ready
   rulebook: specdojo:pjr-rulebook
   part_of:
     - prj-0001:pjr-index
   item_type: todo
-  item_status: review
+  item_status: done
   priority: medium
   difficulty: medium
   owner: DEV
   registered_at: "2026-11-01T02:31:46Z"
   due_on: "2026-11-30"
+  completed_at: "2026-11-02T23:13:18Z"
+  conclusion: E2E を Chromium・Firefox・WebKit とスマートフォンの表示の 5 つの project で流すようにし、CI でも 3 つのブラウザーを入れるようにした
   derived_from:
     - PJR-BSXA
 ---

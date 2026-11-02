@@ -64,3 +64,22 @@
       from: in-progress
       to: review
   previous_event_id: reg_c29e63c76f5f4b999159a6313ec05c4e
+- v: 1
+  id: reg_931d8b95513b4113b96c142c6a9332f6
+  ts: "2026-11-02T23:13:18Z"
+  action: close
+  actor: specdojo-orchestrator
+  from_status: review
+  to_status: done
+  reason: orchestrator が CI の変更を naoji の承認のもとで反映し、E2E の 25 件が 2 回通ることを確かめた
+  changes:
+    - field: status
+      from: review
+      to: done
+    - field: completed
+      from: "-"
+      to: "2026-11-02"
+    - field: conclusion
+      from: "-"
+      to: E2E を Chromium・Firefox・WebKit とスマートフォンの表示の 5 つの project で流すようにし、CI でも 3 つのブラウザーを入れるようにした
+  previous_event_id: reg_c4b7f3e4bb42454f9a53c78964c09110
