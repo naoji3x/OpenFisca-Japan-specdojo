@@ -95,6 +95,12 @@ CI では既存の `workers: 1` を維持する。E2E は 5 件から 25 件に�
 - Git の local config は実行の前後で変わっていない。上流の変更に登録簿の ID やリンクはない（commit メッセージの `Refs:` 行を除く）。
 - **注意**: `playwright.config.ts` に Firefox と WebKit を足したため、今の CI（Chromium だけを入れる）では `npm run test:e2e` が失敗する。4.2 の CI の変更案（`npx playwright install --with-deps chromium firefox webkit`）を naoji の承認のもとで反映するまで、この項目は close しない。上流へ PR を出す前に反映する。
 
+### CI の変更の反映（2026-11-02、specdojo-orchestrator）
+
+- naoji の承認のもとで、4.2 の CI の変更案を `feature/frontend-test-upgrade` に反映した。`e3e4e2c` でブラウザーを入れる行を `npx playwright install --with-deps chromium firefox webkit` に変え、`7d4d632` で段の名前を `Install Playwright browsers` に変えた。
+- `.github/workflows/test_frontend.yml` が YAML として読め、E2E の段（`npm run test:e2e`）の前で 3 つのブラウザーを入れることを確かめた。CI の所要時間は、fork か上流で最初に流れたときに確かめる。
+- `.devcontainer/post-create.sh` には Firefox と WebKit を足さない（naoji の承認）。devcontainer を作り直したあとで 5 つの project の E2E を流す場合は、`dashboard` で `npx playwright install --with-deps firefox webkit` を手で流す。
+
 ## 5. 関連ドキュメント
 
 - 由来: [[prj-0001:pjr-bsxa-frontend-chakra-ui-upgrade|PJR-BSXA]]（2026-11-01 の、移行の確かめ方の整理）
