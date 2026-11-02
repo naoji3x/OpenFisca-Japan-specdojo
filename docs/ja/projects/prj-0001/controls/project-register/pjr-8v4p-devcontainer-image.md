@@ -23,24 +23,40 @@ post-create.sh が作り直すたびに apt・npm -g・Python・Playwright を�
 
 ## 2. 入力
 
-<!-- 対話で得た前提・制約・委任範囲を記録する。完了・回答の判定条件とは分ける。 -->
-
--
+- naoji の依頼（2026-11-02）: `post-create.sh` が相当時間がかかるようになったため、一部を Dockerfile や `devcontainer.json` に移す。orchestrator が示した案 A（Dockerfile のイメージの層に移す）を採る。Playwright は WebKit と Firefox も入れる（PJR-1WNM で見送った判断を改める。イメージの層に入れれば作り直しのたびには取ってこないため）。
+- 今の `post-create.sh` は、作り直すたびに gh の apt リポジトリ、`npm -g` の言語サーバー、Marksman、agent の CLI、uv と Python 3.11、`make install`、Playwright の OS のライブラリと Chromium を入れる。
+- 仮想環境 `../OpenFisca-Japan/.venv` はワークスペースにあって作り直しても残るが、その Python はホームの `~/.local/share/uv/python` にあり、作り直すと消える。
+- bubblewrap はベースのイメージ（`mcr.microsoft.com/devcontainers/typescript-node:22`）に入っている。
+- gh は feature の `github-cli` を使うと `devcontainer-lock.json` に項目が増えるため、今と同じ公式の apt リポジトリから Dockerfile で入れる。
+- 担当は ARC（これまでの devcontainer の項目と同じ）。実装は naoji の指示で specdojo-orchestrator が `feature/prj-0001/devcontainer-image` で行う。
 
 ## 3. 完了条件
 
-- _TODO_: 完了と判断できる具体的な条件を記載する。
+- `.devcontainer/Dockerfile` を足し、`devcontainer.json` を `image` から `build` に変える。features・mounts・`containerEnv`・`postCreateCommand` などのほかの設定は変えない。
+- 次をイメージに入れ、`post-create.sh` から消す。
+  - gh（GitHub CLI の公式の apt リポジトリ）
+  - bubblewrap の削除
+  - `npm -g` の言語サーバー（`typescript`・`typescript-language-server`・`yaml-language-server`・`bash-language-server`。版は今のまま）
+  - Marksman（版と SHA256 は今のまま）
+  - uv と Python 3.11（作り直しても消えない `/opt` の下に置く）
+  - Playwright（`PLAYWRIGHT_VERSION` は 1.64.1）の Chromium・Firefox・WebKit と、その OS のライブラリ
+- `post-create.sh` には、ボリュームやワークスペースに関わる処理（ボリュームの所有者、git の設定、`fd` のリンク、エディターの設定ファイル、agent の CLI、`npm install`、仮想環境と `make install`、`~/.bashrc`）だけを残す。仮想環境の Python が使えないときは作り直す。
+- `docker build` が通り、できたイメージで gh・言語サーバー・Marksman・uv の Python 3.11・Playwright の 3 つのブラウザーが使える。`post-create.sh` が `bash -n` と `shellcheck` を通る。
+- `.devcontainer/README.md` を新しい置き場所に合わせて直す（`@playwright/test` を上げたときは Dockerfile の `PLAYWRIGHT_VERSION` を上げる、など）。
+- 作り直したあと、`post-create.sh` が通り、`make test` と dashboard の E2E（5 つの project）が流れることを naoji が確かめる。所要時間も記録する。
 
 ## 4. 作業内容
 
-| No  | 作業   | 担当   | 状態 | メモ |
-| --- | ------ | ------ | ---- | ---- |
-| 1   | _TODO_ | _TODO_ | open | -    |
+| No  | 作業                                                              | 担当                  | 状態 | メモ |
+| --- | ----------------------------------------------------------------- | --------------------- | ---- | ---- |
+| 1   | Dockerfile を足し、`devcontainer.json` と `post-create.sh` を直す | specdojo-orchestrator | open | -    |
+| 2   | `docker build` とイメージの中身を確かめる                         | specdojo-orchestrator | open | -    |
+| 3   | 作り直して、所要時間と `make test`・E2E を確かめる                | naoji                 | open | -    |
 
 ## 5. 対応結果
 
-_TODO_: 完了時に、実施内容・成果物・残課題を記載する。未完了の場合は `-` とする。
+-
 
 ## 6. 関連ドキュメント
 
-- _TODO_: 根拠・影響先・追跡先を `[[doc-id]]` 形式で記載する。
+- 関連: [[prj-0001:pjr-dt81-devcontainer-playwright-python|PJR-DT81]]（Python 3.11 と Chromium を入れた）、[[prj-0001:pjr-krn8-devcontainer-gh-cli-latest|PJR-KRN8]]（gh を公式のリポジトリから入れた）、[[prj-0001:pjr-1wnm-frontend-e2e-webkit-firefox|PJR-1WNM]]（WebKit と Firefox）
