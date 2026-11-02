@@ -64,3 +64,22 @@
       from: in-progress
       to: review
   previous_event_id: reg_43c12ff623114d4e8a013e7fbd46b5c7
+- v: 1
+  id: reg_827a8f9a336e42069b80230a25951d5b
+  ts: "2026-11-02T23:15:11Z"
+  action: close
+  actor: specdojo-orchestrator
+  from_status: review
+  to_status: done
+  reason: orchestrator が統合ブランチで網羅率を測り直して確かめ、テストを足す項目を naoji の承認のもとで起票した
+  changes:
+    - field: status
+      from: review
+      to: done
+    - field: completed
+      from: "-"
+      to: "2026-11-02"
+    - field: conclusion
+      from: "-"
+      to: 網羅率の設定を足して unit（Lines 57.99%）と story・Browser Mode（Lines 27.08%）を測り、テストを足す項目を 5 件起票した
+  previous_event_id: reg_c988b634d0294bafa8c3bf160de7b684

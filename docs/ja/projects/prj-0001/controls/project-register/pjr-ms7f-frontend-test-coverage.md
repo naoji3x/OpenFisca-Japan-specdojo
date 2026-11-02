@@ -2,17 +2,19 @@
 specdojo:
   id: prj-0001:pjr-ms7f-frontend-test-coverage
   type: project
-  status: draft
+  status: ready
   rulebook: specdojo:pjr-rulebook
   part_of:
     - prj-0001:pjr-index
   item_type: todo
-  item_status: review
+  item_status: done
   priority: low
   difficulty: easy
   owner: DEV
   registered_at: "2026-11-01T02:31:50Z"
   due_on: "2026-11-30"
+  completed_at: "2026-11-02T23:15:11Z"
+  conclusion: 網羅率の設定を足して unit（Lines 57.99%）と story・Browser Mode（Lines 27.08%）を測り、テストを足す項目を 5 件起票した
   derived_from:
     - PJR-BSXA
 ---
