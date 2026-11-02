@@ -1,0 +1,43 @@
+# yaml-language-server: $schema=../../../../../../specdojo/schemas/v1/register-events.schema.yaml
+- v: 1
+  id: reg_30e3f6830c174a78aa1a8f6bc5a58e0d
+  ts: "2026-11-02T23:13:58Z"
+  action: add
+  actor: specdojo-orchestrator
+  from_status: null
+  to_status: open
+  reason: PJR-MS7F の網羅率の計測で出たテストを足す項目の案を、naoji の承認のもとで起票する
+  changes:
+    - field: status
+      from: ""
+      to: open
+    - field: title
+      from: ""
+      to: 質問画面と状態機械の接続を検証する
+    - field: description
+      from: ""
+      to: 質問画面（question.tsx）は単体テストの網羅率が 0% で、状態機械の画面への接続を確かめていない。未入力時の抑止・遷移・戻る・完了時の保存を Browser Mode で確かめる。
+    - field: type
+      from: ""
+      to: todo
+    - field: priority
+      from: ""
+      to: high
+    - field: difficulty
+      from: ""
+      to: medium
+    - field: owner
+      from: ""
+      to: DEV
+    - field: registered
+      from: ""
+      to: "2026-11-02"
+    - field: due
+      from: ""
+      to: "2026-11-30"
+    - field: derived_from
+      from: ""
+      to: '["PJR-MS7F"]'
+    - field: commit_type
+      from: ""
+      to: test
