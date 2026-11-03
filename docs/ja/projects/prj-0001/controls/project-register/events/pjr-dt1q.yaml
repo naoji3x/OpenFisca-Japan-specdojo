@@ -1,0 +1,43 @@
+# yaml-language-server: $schema=../../../../../../specdojo/schemas/v1/register-events.schema.yaml
+- v: 1
+  id: reg_c901274abb8a4d78808a0cecf77d3b6c
+  ts: "2026-11-03T06:40:44Z"
+  action: add
+  actor: specdojo-orchestrator
+  from_status: null
+  to_status: open
+  reason: PJR-67TM の統合のあとの確かめで見つかった直すところを、naoji の承認のもとで起票する
+  changes:
+    - field: status
+      from: ""
+      to: open
+    - field: title
+      from: ""
+      to: フロントエンドのテストのレポートを直す
+    - field: description
+      from: ""
+      to: レポートの冒頭に、どのテストで何を確かめているかの節を足す。前からある 4 ファイルのタグを戻して viewpoints.yaml の規則で分類し、未分類・網羅率の判定・但し書き・状態の機械の分かれ道を直す。
+    - field: type
+      from: ""
+      to: todo
+    - field: priority
+      from: ""
+      to: high
+    - field: difficulty
+      from: ""
+      to: medium
+    - field: owner
+      from: ""
+      to: DEV
+    - field: registered
+      from: ""
+      to: "2026-11-03"
+    - field: due
+      from: ""
+      to: "2026-11-30"
+    - field: derived_from
+      from: ""
+      to: '["PJR-67TM"]'
+    - field: commit_type
+      from: ""
+      to: feat
