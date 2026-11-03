@@ -2,17 +2,19 @@
 specdojo:
   id: prj-0001:pjr-8v4p-devcontainer-image
   type: project
-  status: draft
+  status: ready
   rulebook: specdojo:pjr-rulebook
   part_of:
     - prj-0001:pjr-index
   item_type: todo
-  item_status: review
+  item_status: done
   priority: medium
   difficulty: medium
   owner: ARC
   registered_at: "2026-11-02T23:19:33Z"
   due_on: "2026-11-30"
+  completed_at: "2026-11-03T01:41:58Z"
+  conclusion: 版の決まった道具を Dockerfile のイメージに移し、WebKit と Firefox も入れた。作り直しは 3 分 14 秒で通り、make test と E2E の 5 つの project が通った
   commit_type: build
 ---
 
