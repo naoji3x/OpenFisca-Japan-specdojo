@@ -1,0 +1,43 @@
+# yaml-language-server: $schema=../../../../../../specdojo/schemas/v1/register-events.schema.yaml
+- v: 1
+  id: reg_43d853b8b9014b6eb3a6c1b967aa363a
+  ts: "2026-11-03T01:48:11Z"
+  action: add
+  actor: specdojo-orchestrator
+  from_status: null
+  to_status: open
+  reason: PJR-8V4P の作り直しの確認で pip check が食い違いを出したため、naoji の依頼で起票する
+  changes:
+    - field: status
+      from: ""
+      to: open
+    - field: title
+      from: ""
+      to: バックエンドの依存の食い違いを直す
+    - field: description
+      from: ""
+      to: make install で入る依存のうち、python-dateutil 4.0.0 が pendulum 2.1.2 の <3.0 に、numexpr 2.14.2 が OpenFisca-Core の numpy <1.25 に合わない。上限のない指定を直す。
+    - field: type
+      from: ""
+      to: issue
+    - field: priority
+      from: ""
+      to: low
+    - field: difficulty
+      from: ""
+      to: easy
+    - field: owner
+      from: ""
+      to: _TODO_
+    - field: registered
+      from: ""
+      to: "2026-11-03"
+    - field: due
+      from: ""
+      to: _TODO_
+    - field: derived_from
+      from: ""
+      to: '["PJR-8V4P"]'
+    - field: commit_type
+      from: ""
+      to: fix
