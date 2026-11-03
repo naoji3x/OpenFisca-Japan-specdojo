@@ -1,6 +1,6 @@
 {
   "name": "specdojo-agent-env",
-  "image": "mcr.microsoft.com/devcontainers/typescript-node:22",
+  "build": { "dockerfile": "Dockerfile" },
   "remoteUser": "node",
   "init": true,
   "workspaceMount": "source=${localWorkspaceFolder}/..,target=/workspaces/openfisca-japan-workspace,type=bind,consistency=cached",

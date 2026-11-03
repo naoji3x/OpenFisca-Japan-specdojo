@@ -19,16 +19,30 @@ docker compose down            # 止める
 
 `docker-compose.yml` は、`${LOCAL_WORKSPACE_FOLDER}` のソースを bind mount します。ソケットを共有する方式では、bind mount のパスをホストの Docker デーモンがホストのパスとして解決します。そのため、`containerEnv` の `LOCAL_WORKSPACE_FOLDER` に、ホストの `../OpenFisca-Japan` のパスを渡しています。`remoteEnv` ではなく `containerEnv` にしているのは、`remoteEnv` が VS Code の起動するプロセスにしか渡らず、`docker exec` で入る tmux（`remote-host/specdojo-tmux.sh.sample`）には届かないためです。
 
-## Python 3.11 と Playwright の Chromium
+## イメージと post-create.sh の分け方
 
-`post-create.sh` は、OpenFisca-Japan のバックエンドとフロントエンドの検査をこのコンテナで流すため、次を入れます（PJR-DT81）。
+コンテナは `Dockerfile` で作ったイメージから起動し、作成のあとに `post-create.sh` を流します（PJR-8V4P）。版の決まった道具はイメージの層に入れるので、`Dockerfile` を変えないかぎり、作り直しても入れ直しません。
 
-| 入れるもの                                | 場所                                            | 理由                                                                                                                                       |
-| ----------------------------------------- | ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| uv と Python 3.11                         | `~/.local/bin/uv`、uv が管理する Python         | OpenFisca-Core 41 は `numpy <1.25`・`pendulum <3` を要し、ベースのイメージの Python 3.13 では入らない                                      |
-| 仮想環境と `make install`                 | `../OpenFisca-Japan/.venv`（`.gitignore` 済み） | `make test`・`make docs`・`openfisca serve` を流すため。editable install なので、`../OpenFisca-Japan` の作業ツリーのコードが import される |
-| `~/.bashrc` の PATH                       | 仮想環境の `bin` を PATH の先頭に置く           | tmux は `docker exec` で入るため `remoteEnv` が届かない                                                                                    |
-| Playwright の Chromium と OS のライブラリ | `~/.cache/ms-playwright`、apt                   | dashboard の E2E と Storybook のテストを流すため                                                                                           |
+| 置き場所         | 入れるもの                                                                                                                                                                                                                                |
+| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Dockerfile`     | gh（GitHub CLI の公式の apt リポジトリ）、言語サーバー、Marksman、uv と Python 3.11、Playwright の Chromium・Firefox・WebKit と OS のライブラリ                                                                                           |
+| `post-create.sh` | ボリュームの所有者、git の設定、エディターの設定ファイル、bubblewrap の削除（feature の `docker-outside-of-docker` が入れるため）、agent の CLI（自分で更新する）、ワークスペースの `npm install`、仮想環境と `make install`、`~/.bashrc` |
+
+- 「Rebuild Container」は、Docker のキャッシュを使うので速い。「Rebuild Without Cache」はイメージを最初から作るので、時間がかかる。
+- `Dockerfile` の版（`PLAYWRIGHT_VERSION`・`UV_VERSION` など）を変えると、その層から下だけを作り直す。
+
+## Python 3.11 と Playwright のブラウザー
+
+OpenFisca-Japan のバックエンドとフロントエンドの検査をこのコンテナで流すため、次を入れます（PJR-DT81・PJR-8V4P）。
+
+| 入れるもの                                                 | 場所                                              | 理由                                                                                                                                       |
+| ---------------------------------------------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| uv と Python 3.11                                          | `/usr/local/bin/uv`、`/opt/uv/python`（イメージ） | OpenFisca-Core 41 は `numpy <1.25`・`pendulum <3` を要し、ベースのイメージの Python 3.13 では入らない                                      |
+| 仮想環境と `make install`                                  | `../OpenFisca-Japan/.venv`（`.gitignore` 済み）   | `make test`・`make docs`・`openfisca serve` を流すため。editable install なので、`../OpenFisca-Japan` の作業ツリーのコードが import される |
+| `~/.bashrc` の PATH                                        | 仮想環境の `bin` を PATH の先頭に置く             | tmux は `docker exec` で入るため `remoteEnv` が届かない                                                                                    |
+| Playwright の Chromium・Firefox・WebKit と OS のライブラリ | `~/.cache/ms-playwright`、apt（イメージ）         | dashboard の E2E（5 つの project）と Storybook のテストを流すため                                                                          |
+
+仮想環境はワークスペースにあるので、作り直しても残ります。`post-create.sh` は、仮想環境の Python が使えないとき（初めての作成や、前のイメージの Python を指しているとき）だけ作り直し、そのあと `make install` を流します。
 
 ```bash
 cd ../OpenFisca-Japan
@@ -36,7 +50,7 @@ make test     # バックエンドのテスト
 make docs     # 制度ドキュメントの生成物（docs/_data）を作り直す
 ```
 
-- `dashboard/package.json` の `@playwright/test` を上げたときは、`post-create.sh` の `PLAYWRIGHT_VERSION` も合わせて上げる。ブラウザーの版が合わないと起動しない。
+- `dashboard/package.json` の `@playwright/test` を上げたときは、`Dockerfile` の `PLAYWRIGHT_VERSION` も合わせて上げる。ブラウザーの版が合わないと起動しない。
 - `make check-style` が通るよう、仮想環境の setuptools を 81 未満、pycodestyle を 2.7 系に固定している（flake8 3.9 と flake8-commas のため）。そのため `make format-style`（autopep8）は pycodestyle の版が合わず動かない。
 - editable install は `../OpenFisca-Japan` の作業ツリーを指す。exec の worktree（`../OpenFisca-Japan-specdojo-worktrees/` の下）で Python の検査を流しても、worktree のコードではなく `../OpenFisca-Japan` のコードが import される。worktree で流す場合は、その worktree の中で別の仮想環境を作るなどの対処が要る。
 
