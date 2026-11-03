@@ -2,17 +2,19 @@
 specdojo:
   id: prj-0001:pjr-67tm-frontend-test-report
   type: project
-  status: draft
+  status: ready
   rulebook: specdojo:pjr-rulebook
   part_of:
     - prj-0001:pjr-index
   item_type: todo
-  item_status: review
+  item_status: done
   priority: medium
   difficulty: medium
   owner: DEV
   registered_at: "2026-11-03T03:01:38Z"
   due_on: "2026-11-30"
+  completed_at: "2026-11-03T07:22:46Z"
+  conclusion: tools/test_report と make test-report で、テストの構成・観点×条件・状況・網羅率・不足をまとめるレポートを作れるようにした
   commit_type: feat
 ---
 
