@@ -214,6 +214,7 @@ npm run test:browser -- --coverage --coverage.reportsDirectory=coverage/browser
   | [[prj-0001:pjr-0p60-frontend-top-terms-entry-tests\|PJR-0P60]]       | トップ・同意・画面入口の操作を検証する        | medium |
 
 - 4.4 の「入力テンプレートの端末依存分岐を検証する」と「共有形式と状態変換の残りの分岐を検証する」（どちらも中）は、orchestrator が承認を求めたときの一覧から漏れていたため、起票していない。起票するかは naoji の判断を待つ。この項目の完了条件（テストを足す項目に分ける）は 4.4 で満たしているため、この 2 件を待たずに close する。
+- 2026-11-03 に、この 2 件を naoji の承認のもとで起票した（担当は DEV、期限は 2026-11-30、優先度は medium）: [[prj-0001:pjr-7kay-frontend-input-template-device-tests|PJR-7KAY]]（入力テンプレートの端末依存分岐）、[[prj-0001:pjr-2ky8-frontend-share-state-branch-tests|PJR-2KY8]]（共有形式と状態変換の残りの分岐）。
 
 ## 5. 関連ドキュメント
 
