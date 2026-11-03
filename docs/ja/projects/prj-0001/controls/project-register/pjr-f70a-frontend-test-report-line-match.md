@@ -2,17 +2,19 @@
 specdojo:
   id: prj-0001:pjr-f70a-frontend-test-report-line-match
   type: project
-  status: draft
+  status: ready
   rulebook: specdojo:pjr-rulebook
   part_of:
     - prj-0001:pjr-index
   item_type: todo
-  item_status: review
+  item_status: done
   priority: high
   difficulty: easy
   owner: DEV
   registered_at: "2026-11-03T07:11:18Z"
   due_on: "2026-11-30"
+  completed_at: "2026-11-03T07:22:38Z"
+  conclusion: 名前の行でも宣言を照合するようにし、実際の UI の一覧で未分類が 0 件になった。網羅率の見出しの二重を直した
   derived_from:
     - PJR-DT1Q
   commit_type: fix

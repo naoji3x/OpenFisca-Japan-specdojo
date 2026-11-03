@@ -67,3 +67,22 @@
       from: in-progress
       to: review
   previous_event_id: reg_921440ff6e4c417b9808f7798090c0a6
+- v: 1
+  id: reg_ef897e52f4c441b3b611512693f0e85e
+  ts: "2026-11-03T07:22:38Z"
+  action: close
+  actor: specdojo-orchestrator
+  from_status: review
+  to_status: done
+  reason: orchestrator が統合のあとに実際の一覧と結果で make test-report を流し、完了条件を確かめた
+  changes:
+    - field: status
+      from: review
+      to: done
+    - field: completed
+      from: "-"
+      to: "2026-11-03"
+    - field: conclusion
+      from: "-"
+      to: 名前の行でも宣言を照合するようにし、実際の UI の一覧で未分類が 0 件になった。網羅率の見出しの二重を直した
+  previous_event_id: reg_80c65c45935a4248917ae20c12ae154d
