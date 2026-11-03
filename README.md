@@ -67,12 +67,13 @@ openfisca-japan-workspace/
 
 区切りは次を目安にします。
 
-| 区切り                                                                  | PR に入る項目        | 最後の commit | PR 用のブランチ                         |
-| ----------------------------------------------------------------------- | -------------------- | ------------- | --------------------------------------- |
-| 1. テストの基盤がそろったとき（PJR-1RJE の close の後）                 | PJR-49V3・BZGG・1RJE | `60ed52d`     | `feature/frontend-test-foundation`      |
-| 2. ビルドの道具を上げ、Storybook を入れたとき（PJR-DFWV の close の後） | PJR-PP9D・DFWV       | `3f5eaaa`     | `feature/frontend-vite8-storybook`      |
-| 3. 依存の更新が終わったとき（PJR-BSXA の close の後）                   | PJR-2CSW・0HYV・BSXA | `378eb36`     | `feature/frontend-react-chakra-upgrade` |
-| 4. a11y と人数の入力の不具合を直したとき（PJR-14RN の close の後）      | PJR-4SM2・14RN       | `0134bda`     | `feature/frontend-a11y-person-num`      |
+| 区切り                                                                                         | PR に入る項目        | 最後の commit | PR 用のブランチ                          |
+| ---------------------------------------------------------------------------------------------- | -------------------- | ------------- | ---------------------------------------- |
+| 1. テストの基盤がそろったとき（PJR-1RJE の close の後）                                        | PJR-49V3・BZGG・1RJE | `60ed52d`     | `feature/frontend-test-foundation`       |
+| 2. ビルドの道具を上げ、Storybook を入れたとき（PJR-DFWV の close の後）                        | PJR-PP9D・DFWV       | `3f5eaaa`     | `feature/frontend-vite8-storybook`       |
+| 3. 依存の更新が終わったとき（PJR-BSXA の close の後）                                          | PJR-2CSW・0HYV・BSXA | `378eb36`     | `feature/frontend-react-chakra-upgrade`  |
+| 4. a11y と人数の入力の不具合を直したとき（PJR-14RN の close の後）                             | PJR-4SM2・14RN       | `0134bda`     | `feature/frontend-a11y-person-num`       |
+| 5. E2E を 3 つのブラウザーで流し、網羅率を測れるようにしたとき（PJR-1WNM・MS7F の close の後） | PJR-1WNM・MS7F       | `7d4d632`     | `feature/frontend-e2e-browsers-coverage` |
 
 1. 区切りの項目を close したら、区切りの最後の commit を指す **PR 用のブランチ**を作り、push する。`feature/frontend-test-upgrade` からは PR を出さない（理由は下記）。
 
