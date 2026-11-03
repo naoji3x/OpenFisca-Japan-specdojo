@@ -41,3 +41,29 @@
     - field: commit_type
       from: ""
       to: feat
+- v: 1
+  id: reg_3bf9499d4ccc4ae9a4f1b929754e5d30
+  ts: "2026-11-03T06:42:53Z"
+  action: start
+  actor: sol-executor
+  from_status: open
+  to_status: in-progress
+  reason: work started
+  changes:
+    - field: status
+      from: open
+      to: in-progress
+  previous_event_id: reg_c901274abb8a4d78808a0cecf77d3b6c
+- v: 1
+  id: reg_e7f69a2a478b4c1da0021c15362136fe
+  ts: "2026-11-03T07:04:51Z"
+  action: review
+  actor: sol-executor
+  from_status: in-progress
+  to_status: review
+  reason: ready for review
+  changes:
+    - field: status
+      from: in-progress
+      to: review
+  previous_event_id: reg_3bf9499d4ccc4ae9a4f1b929754e5d30
