@@ -32,7 +32,7 @@ make install で入る依存のうち、python-dateutil 4.0.0 が pendulum 2.1.2
   - `autopep8 1.7.0 has requirement pycodestyle>=2.9.1, but you have pycodestyle 2.7.0.`（`.devcontainer/post-create.sh` の pycodestyle の固定によるもので、この項目では扱わない）
 - 上流の `setup.py` の dev extras に `"python-dateutil > 2.8.1"`（上限なし）がある。pendulum 2.1.2 は `python-dateutil (>=2.6,<3.0)` を求める。
 - OpenFisca-Core 41.5.7 は `numexpr<3.0,>=2.8.4`・`numpy<1.25,>=1.24.2`・`pendulum<3.0.0,>=2.1.2` を求める。numexpr のどの版から `numpy>=1.26` を求めるかは、まだ確かめていない。
-- naoji の依頼で起票した（2026-11-03）。担当と期限は未定。
+- naoji の依頼で起票した（2026-11-03）。担当は DEV、期限は 2026-11-30（naoji が決めた）。
 
 ## 3. 影響範囲
 
