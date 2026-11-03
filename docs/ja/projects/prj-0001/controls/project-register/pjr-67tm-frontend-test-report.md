@@ -7,7 +7,7 @@ specdojo:
   part_of:
     - prj-0001:pjr-index
   item_type: todo
-  item_status: open
+  item_status: review
   priority: medium
   difficulty: medium
   owner: DEV
@@ -20,7 +20,7 @@ specdojo:
 
 ## 1. 概要
 
-dashboard のテストの観点×条件・件数・網羅率・不足を、テストコードとテストの一覧・網羅率の出力から Markdown のレポートにまとめる道具を tools/test_report に作る。
+dashboard のテストの観点×条件・件数・網羅率・不足を、テストコードとテストの一覧・網羅率の出力から Markdown のレポートにまとめる道具を `tools/test_report` に作る。
 
 ## 2. 入力
 
@@ -58,17 +58,69 @@ dashboard のテストの観点×条件・件数・網羅率・不足を、テ�
 
 ## 4. 作業内容
 
-| No  | 作業                                                                  | 担当 | 状態 | メモ |
-| --- | --------------------------------------------------------------------- | ---- | ---- | ---- |
-| 1   | 今のテストと画面を読み、観点・条件の型・対象の挙げ方を決める          | DEV  | open | -    |
-| 2   | タグを定義してテストに付け、名前をそろえる                            | DEV  | open | -    |
-| 3   | `tools/test_report/` の道具・`viewpoints.yaml`・pytest のテストを作る | DEV  | open | -    |
-| 4   | `Makefile` の target と README を足す                                 | DEV  | open | -    |
-| 5   | `make test-report` を流し、件数と不足を照合する                       | DEV  | open | -    |
+| No  | 作業                                                                  | 担当 | 状態 | メモ                                                     |
+| --- | --------------------------------------------------------------------- | ---- | ---- | -------------------------------------------------------- |
+| 1   | 今のテストと画面を読み、観点・条件の型・対象の挙げ方を決める          | DEV  | done | YAML を正本にした 8 観点、153 対象                       |
+| 2   | タグを定義してテストに付け、名前をそろえる                            | DEV  | done | 14 ファイル、前からある 4 ファイルの名前・検証内容は維持 |
+| 3   | `tools/test_report/` の道具・`viewpoints.yaml`・pytest のテストを作る | DEV  | done | 小さな入力と実際の定義の整合検査                         |
+| 4   | `Makefile` の target と README を足す                                 | DEV  | done | 一覧の収集と結果の読み込みを分離                         |
+| 5   | `make test-report` を流し、件数と不足を照合する                       | DEV  | done | unit 939 件、E2E 25 件。UI の実測照合は `requires_human` |
 
 ## 5. 対応結果
 
--
+### 実装と判断
+
+- プロダクトに `tools/test_report/report.py`、`source_index.mjs`、`viewpoints.yaml`、日本語の `README.md`、pytest を追加し、`Makefile` に `test-report` を追加した。結果ファイルの編集と commit は executor の対象外として行っていない。
+- 正本は `viewpoints.yaml` とした。入力・遷移・通信・アクセシビリティ・表示・互換・共有・状態の 8 観点は、既存の入力正規化、質問遷移、HTTP の失敗、キー操作、表示幅、共有互換、世帯変換を別々に調べるために選んだ。条件は各観点の `conditions`、対象への適用は `applicability`・`file_cells`、テストとの対応は `bindings` で人が編集できる。
+- `dashboard/testReportTags.ts` を YAML から生成する `--write-tags` を用意した。Vitest の unit・Browser Mode 両設定の `test.tags` と Playwright の `metadata.reportTags` に設定し、生成時に YAML との不一致・未知タグ・存在しない対象・理由のない対象外をエラーにする。Playwright の実行時の未知タグ検証はレポート生成が担う。
+- 14 テストファイルにタグを付けた。前からある `shareLink.test.ts`・`convert.test.ts`・`progress.test.ts`・`questionState.test.ts` はタグ追加と必要な整形のみ。ほかの 10 ファイルでは条件が読める日本語の名前にそろえ、story は export 名を保って `name` を明示した。TypeScript の構文木を元のコードと比較し、テスト本文・期待値・ケース数、前からある 4 ファイルの名前が変わっていないことを確認した。
+- 対象はルート 8、質問 55、入力テンプレート 8、モード 3、結果の種類 3、送信先の環境 3、共有形式 3、エラー画面 3、端末 5、実装ファイル 62 の計 153。構文・ファイルから抽出し、環境の else と共有形式は意味上の同値クラスのため、理由付きの手動定義にした。質問の状態機械と画面の接続は別の対象にしている。
+- 説明だけの 4 部品と `src/main.tsx`、説明のみの `/privacypolicy` は承認済みの対象外として理由を入れた。選択式の部品に自由入力の IME を求めないなど、責務に合わない組み合わせも理由付きで除外した。
+- `make test-report` は一覧だけを新規収集し、`tmp/test-report/frontend.md` を生成する。テスト実行は時間・ブラウザー環境を要するので README の別コマンドに分けた。任意の実行結果を読み、成功・失敗・スキップ、一覧との件数差、未実行を示す。段階は YAML の `stages` に追加できる。
+- 網羅率は unit・UI を別々に読み、全体とファイルごとの 4 指標を出す。不足候補の基準は既定 80% 未満、`--low-coverage` で変更可能。調査先を絞る目安であり合否条件ではない。分母 0・`n/a` は低網羅率とせず、両方 0% は Statements の分母があるファイルで判定する。
+- 上流のコード・文書・コメントに登録簿 ID を書いていない。依存・`dashboard/package.json`・保護された CI 設定の変更はない。CI への追加提案も今回の範囲には含めていない。
+
+### 一覧・タグの確認と検証
+
+- ローカルの Vitest 5.0.5 で `vitest list --json` はタグを出さず、標準の静的解析では `each` が展開されず unit 919 件になることを実出力で確認した。`--no-static-parse --includeTaskLocation` を採用してテスト本体を実行せず登録処理だけを行い、unit 939 件を得た。単体の実行結果も成功 939、失敗 0 で一致した。
+- Vitest JSON reporter は `assertionResults[].tags` を出すことを実際の unit 結果で確認した。Playwright の一覧 JSON は `specs[].tags` を出し、この版では先頭の `@` は除去済みだった。Playwright の通常の一覧も 3 ファイル・25 件、各 project 5 件を維持した。
+- Vitest の一覧ではタグが出ないため、TypeScript の構文解析で宣言のタグを読み、ファイルと行番号に対応づける。複数行の `each` は宣言の開始行と呼び出し行の両方に対応する。story は明示した名前で対応づけ、生成された行番号を元の別 story と誤認しないようにした。Browser Mode の project 名に付く `(chromium)` も扱う。
+- `python -m pytest tools/test_report`、`flake8 tools/test_report`、`ruff check tools/test_report`、`make check-syntax-errors`、dashboard の `npm run test -- --reporter=json --outputFile=../tmp/test-report/unit.results.json`・`npm run build`・`npm run lint`・`npm run pretty:check` が通った。pytest は 12 件すべて成功し、一覧・結果・網羅率、対象抽出、空きと対象外、タグ不一致、Markdown、一覧失敗時の古いデータ削除、Browser Mode の project 名と story 名の対応を検証する。
+- `make -o encode-jananese-filename check-style` で標準の flake8・ruff 本体を通した。`encode-jananese-filename` は `git config --local` を実行するため、Git 設定変更禁止の pipeline 指示に従ってこの前提 target だけを除外した。未追跡の新規 Python ファイルは上記の個別 flake8・ruff でも検査した。
+- `npm run test:ui` と UI の `vitest list --config vitest.browser.config.mts --no-static-parse --includeTaskLocation --json` は Storybook の設定読み込みで `uv_interface_addresses` が拒否されるため `requires_human`。統合後にホストで両方を実行し、タグの対応・UI 件数とレポートを照合する。UI の JSON reporter のタグ出力も同時に確認する。UI の件数を構文から推定して実測値としては扱っていない。
+- 一覧を取得できない段階はレポートに「未取得」を表示し、古い一覧を削除する。今回の UI を含む不足候補は暫定値。網羅率はこの実行では未計測なので、低網羅率・両方 0% は判定保留として再計測コマンドを出した。
+
+### レポートの抜粋
+
+`make test-report` と実際の一覧を照合した。取得できた一覧は計 964 件。出力の主要部分は次のとおり。
+
+```text
+単体: 6 ファイル / 939 件
+コンポーネント（story・Browser Mode）: 未取得
+E2E（モック応答の smoke）: 3 ファイル / 25 件
+chromium / firefox / webkit / mobile-safari / mobile-chromium: 各 5 件
+単体の結果: 成功 939 / 失敗 0 / スキップ 0
+網羅率: unit・UI とも未計測
+理由のない空きのます: 226
+未分類: 1（再描画時の Recoil・DOM の分離を検証するテスト用コードの確認）
+不足例: environment:production / communication:environment
+不足例: file:src/components/questions/question.tsx / input:empty
+不足例: file:src/components/result/result.tsx / sharing:copy
+```
+
+### 起票済み 7 件との照合
+
+| 項目                                                                 | レポートに出る不足候補                                                                               | 現在の定義で個別には出ないもの・次の確認                                                                                                                         |
+| -------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [[prj-0001:pjr-8307-frontend-question-screen-tests\|PJR-8307]]       | 質問画面の `input:empty`、`transition:back`・`restore`・`save`・`member`、各モードの保存・世帯員切替 | 状態機械の unit が埋まっても画面接続のますは埋めない。UI 取得後に再確認する                                                                                      |
+| [[prj-0001:pjr-npc4-frontend-result-share-tests\|PJR-NPC4]]          | 結果画面の `sharing:roundtrip`・`invalid`・`copy`・`qr`・`image`                                     | 共有 URL からのモード保持、コピーの成功と拒否は独立した条件をまだ持たない。共有の条件を細分化して確認する                                                        |
+| [[prj-0001:pjr-n0fe-frontend-helpdesk-benefit-loan-tests\|PJR-N0FE]] | 窓口の地域・URL・HIV、給付の金額範囲、貸付の単位                                                     | 地図と電話の URL や金額の並びは広い `display:url`・`range` に含まれ、独立した不足名には出ない                                                                    |
+| [[prj-0001:pjr-4mc9-frontend-calculate-endpoint-tests\|PJR-4MC9]]    | `production`・`branch`・その他の `communication:environment`                                         | 環境ごとに正常・500・ネットワークのケースを重複要求しない                                                                                                        |
+| [[prj-0001:pjr-0p60-frontend-top-terms-entry-tests\|PJR-0P60]]       | トップの同意・入口、ルート、トップの部品の表示                                                       | 同意の取り消し・再表示と URL の直接表示は独立した条件ではない。UI の既存モーダル操作と突き合わせて細分化する                                                     |
+| [[prj-0001:pjr-7kay-frontend-input-template-device-tests\|PJR-7KAY]] | 数値テンプレートの `input:ime`・`mobile`、復元と未入力の空き                                         | Windows Chromium と Safari の組み合わせまでは要求しない。既存 unit が埋めた未入力条件にも残る分岐は網羅率の HTML で確認する                                      |
+| [[prj-0001:pjr-2ky8-frontend-share-state-branch-tests\|PJR-2KY8]]    | 共有の `defaults`・`unknown`、進捗の `state:optional`                                                | 変換の未回答条件や旧形式は既存テストで埋まるため、残りの分岐はこの表だけでは検出できない。履歴なし・人数既定値も個別名はない。網羅率を再計測して HTML と照合する |
+
+7 件に直接含まれない候補は、災害モードの E2E 導線、各入力の不正値・キーボード・ラベル・フォーカス、各ルートの復帰とキー操作、共有データの破損、その他の実装ファイルの表示など。これらは期待表の過大な要求も含むため、新規起票を自動では行わない。UI 一覧と網羅率を採取してから、実装の責務と assertion を確認し、対象外理由の追加またはテスト追加の要否を判断する。UI が未取得なので「アクセシビリティのテストのない観点」も暫定であり、既存 UI テストがないという判定ではない。
 
 ## 6. 関連ドキュメント
 
