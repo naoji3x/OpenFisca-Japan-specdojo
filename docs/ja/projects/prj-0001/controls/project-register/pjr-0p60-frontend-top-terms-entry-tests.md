@@ -31,12 +31,14 @@ App.tsx・topPage.tsx・TermsModal.tsx は網羅率 0%。同意の取り消し�
 - executor はネットワークに出られず、サンドボックスではブラウザーや preview・開発サーバーを起動できないことがある（`listen EPERM`）。流せない検査は `requires_human` としてよく、統合のあとに orchestrator が流す。`npm ci` と `npx playwright install` は流さない。依存は足さない。
 - 網羅率の目標と CI での強制は、この項目では決めない（PJR-MS7F の判断を引き継ぐ）。
 - 計測の結果: `App.tsx`・`topPage.tsx`・`TermsModal.tsx` は unit で 0%。Chakra UI と React Router の移行で導線が変わりやすい。
+- 2026-11-03 の測り直し（orchestrator）: `App.tsx`（5 行）・`top/topPage.tsx`（25 行）と、トップの部品 `top/feature.tsx`・`top/linkButton.tsx`・`top/links.tsx`（2〜3 行）は、unit でも UI でも 0%。`TermsModal.tsx` は unit で 0% だが、UI で Lines 81.0%・Branches 50.0%。naoji の承認で、トップの部品 3 つもこの項目の対象に入れる。
 
 ## 3. 完了条件
 
 - Browser Mode で、次を確かめるテストを足す。
   - 同意の画面での取り消しと、もう一度開いたときの表示。
   - トップページから各モードへの入口。
+  - トップページの部品（`top/feature.tsx`・`top/linkButton.tsx`・`top/links.tsx`）の表示とリンク先。
   - ルーティング（各画面の URL を直接開いたとき）。
 - 今の Browser Mode にあるモーダルのフォーカスの確認と、E2E の同意済みの導線と重なる確認は足さない。
 - 静的な説明や設定のデータの網羅率を上げるだけのテストは足さない。

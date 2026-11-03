@@ -40,7 +40,7 @@ dashboard のテストの観点×条件・件数・網羅率・不足を、テ�
 - **タグの読み取り**: `vitest list --json`・JSON の reporter・`playwright test --list --reporter=json` にタグが出るかを確かめ、結果を「5. 対応結果」に書く。出ない場合は、テストの名前に観点を入れるなど、別の決まった方法に切り替え、理由を書く。
 - **観点の定義**: `tools/test_report/viewpoints.yaml` に、観点（名前・説明）と、観点ごとの条件の型（例: 入力＝正常・境界値・空・不正、遷移＝進む・戻る・復元、通信＝成功・500・ネットワークのエラー、a11y＝キーボード・ラベル・フォーカス、表示＝画面幅、互換＝ブラウザーと端末）を書く。タグの定義とこのファイルのどちらを正とするかは executor が決め、二重の定義が食い違ったら道具が知らせるようにする。最初の観点と条件の型は、今のテストと画面を読んで executor が決め、理由を書く。
 - **テストの対象**: 道具が、アプリのコードから確かめるべき対象を機械的に挙げる（画面（ルーティング）、質問（質問の定義）、入力テンプレートの種類、3 つのモード、結果の種類（給付・貸付・窓口）、送信先の環境、共有 URL の形式、エラーの画面、ブラウザーと端末（Playwright の project））。機械的に挙げられない対象は `viewpoints.yaml` に手で書き、理由を書く。テストがどの対象を確かめているかの対応の付け方（ファイルの場所、タグなど）は executor が決め、理由を書く。
-- **対象外**: テストの要らない組み合わせは、`viewpoints.yaml` に「対象外」と理由を書けるようにする。
+- **対象外**: テストの要らない組み合わせは、`viewpoints.yaml` に「対象外」と理由を書けるようにする。説明の文を出すだけの部品（`src/components/PrivacyPolicy.tsx`・`src/components/Description.tsx`・`src/components/questions/description.tsx`・`src/components/questions/descriptions/spouseExistsButSingleParent.tsx`）とアプリの起動の入口（`src/main.tsx`）は、最初から「対象外」として理由を書く（naoji の承認、2026-11-03）。
 - **レポート**: `make test-report` で `tmp/test-report/frontend.md`（`/tmp` は上流の `.gitignore` で無視される）を作る。次の節を入れる。
   - 概要: テストの段階（単体・コンポーネント（story・Browser Mode）・E2E（smoke））ごとのファイル数と件数。E2E は project ごとの件数も出す。段階は、PJR-XBTJ の契約テストを後から足せる形にする。
   - 観点×条件: 対象 × 観点・条件の表。各ますに、確かめているテスト（段階とテストの名前）を出す。
