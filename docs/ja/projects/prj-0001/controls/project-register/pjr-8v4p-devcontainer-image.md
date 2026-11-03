@@ -55,7 +55,20 @@ post-create.sh が作り直すたびに apt・npm -g・Python・Playwright を�
 
 ## 5. 対応結果
 
--
+### 5.1. 実施内容（2026-11-03、specdojo-orchestrator）
+
+- `feature/prj-0001/devcontainer-image` で `31f4e01` を commit し、`project/prj-0001/develop` へ `--no-ff` で merge した（`afe2430`）。
+- `.devcontainer/Dockerfile` を足し、gh（公式の apt リポジトリ）・言語サーバー・Marksman・uv 0.13.6 と Python 3.11（`/opt/uv/python`、`UV_PYTHON_INSTALL_DIR`）・Playwright 1.64.1 の Chromium・Firefox・WebKit と OS のライブラリをイメージに入れた。`devcontainer.json` は `image` を `build` に変えただけで、ほかの設定は変えていない。
+- `post-create.sh` は 9 段から 6 段にした。仮想環境の Python が 3.11 として動かないときだけ `uv venv --clear` で作り直す。
+- 完了条件から変えた点: bubblewrap の削除は `post-create.sh` に残した。Dockerfile で消しても、そのあとに当たる feature の `docker-outside-of-docker` が bubblewrap を名前で指定して入れ直すため（作ったイメージの `/var/log/apt/history.log` で確かめた）。
+- `.devcontainer/README.md` と `README.md` を、新しい置き場所に合わせて直した。
+
+### 5.2. 検証結果
+
+- `docker build`（Dockerfile だけ、キャッシュなし）が 164 秒で通った。`@devcontainers/cli` 0.90.0 の `devcontainer build`（features を含む）が、Dockerfile を直したあとのキャッシュなしの層で 204 秒で通った。`devcontainer-lock.json` は変わっていない。
+- できたイメージで、node のユーザーとして次を確かめた: gh 2.103.3、`tsc` 6.0.3・言語サーバー、Marksman、features の道具（docker・rg・tmux など）、`uv venv --python 3.11` で作った仮想環境の `home` が `/opt/uv/python/cpython-3.11-linux-aarch64-gnu/bin` を指す、Playwright 1.64.1 で Chromium 156・Firefox 157・WebKit 27.2 が起動してページを表示する。
+- `post-create.sh` が `bash -n` と `shellcheck` を通った。`post-create.sh` そのものは、ワークスペースとボリュームが要るため、作り直しで確かめる。
+- **残っていること**: naoji が作り直して、`post-create.sh` が通ることと所要時間を確かめる。そのあと orchestrator が `make test` と dashboard の E2E（5 つの project）を流す。今の仮想環境は消える `~/.local/share/uv` の Python を指しているため、1 回目の作り直しでは仮想環境の作り直しと `make install` の入れ直しが入る。
 
 ## 6. 関連ドキュメント
 
