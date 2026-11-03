@@ -1,0 +1,43 @@
+# yaml-language-server: $schema=../../../../../../specdojo/schemas/v1/register-events.schema.yaml
+- v: 1
+  id: reg_23fcee0796d647efa696d0c44591a8e4
+  ts: "2026-11-03T00:18:42Z"
+  action: add
+  actor: specdojo-orchestrator
+  from_status: null
+  to_status: open
+  reason: PJR-MS7F の網羅率の計測で出たテストを足す項目の案のうち、承認の一覧から漏れていた 2 件を naoji の承認のもとで起票する
+  changes:
+    - field: status
+      from: ""
+      to: open
+    - field: title
+      from: ""
+      to: 入力テンプレートの端末依存分岐を検証する
+    - field: description
+      from: ""
+      to: 年齢・金額・子の年齢・人数の入力の分岐は 41.46%・39.47%・56.62%・63.04%。IME の変換中の重複の抑止・スマートフォンの入力の属性・初期値とクリア後の有効性を確かめる。
+    - field: type
+      from: ""
+      to: todo
+    - field: priority
+      from: ""
+      to: medium
+    - field: difficulty
+      from: ""
+      to: medium
+    - field: owner
+      from: ""
+      to: DEV
+    - field: registered
+      from: ""
+      to: "2026-11-03"
+    - field: due
+      from: ""
+      to: "2026-11-30"
+    - field: derived_from
+      from: ""
+      to: '["PJR-MS7F"]'
+    - field: commit_type
+      from: ""
+      to: test
