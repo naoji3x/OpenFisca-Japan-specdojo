@@ -127,6 +127,10 @@ specdojo:
   - 「網羅率が低いファイル」の見出しが 2 回出る。
 - orchestrator の誤り: この個票の「2. 入力」に、9 件は「タグがない」と書いたが、実際にはタグは付いており、対応先の期待する条件と合っていなかった（executor の記録のとおり）。
 
+### 残りの手直し（2026-11-03、specdojo-orchestrator）
+
+- 上の「直っていないこと」の 2 つ（未分類の 9 件、見出しの二重）は、[[prj-0001:pjr-f70a-frontend-test-report-line-match|PJR-F70A]]（`d9fa763`）で直り、orchestrator が実際の UI の一覧で確かめた。
+
 ## 6. 関連ドキュメント
 
 - 由来: [[prj-0001:pjr-67tm-frontend-test-report|PJR-67TM]]（レポートの道具。この項目と一緒に close する）

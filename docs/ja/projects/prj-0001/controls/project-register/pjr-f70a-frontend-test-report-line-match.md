@@ -60,6 +60,13 @@ Browser Mode の一覧がテストの名前の行を返すため、it.each の�
 - 申し送り（`requires_human`）: 統合後に orchestrator がサンドボックス外で `make test-report` を実行し、UI を含め一覧未取得が0段階、未分類が0件であることと、3種類のエラーのますに各画面幅のテストが入ること、見出しが1回であることを確認する。
 - `dashboard` のテスト・アプリのコード、依存関係は変更していない。result は pipeline の reporter / runner が記入する。
 
+### orchestrator の確認（2026-11-03、specdojo-orchestrator）
+
+- `feature/frontend-test-upgrade`（`d9fa763`）を一時的な worktree に取り出し、`npm ci` のあと、遷移の記録を取る unit の実行・`test:ui`・build と E2E・unit と UI の網羅率を流してから `make test-report` を流した。一覧は 1,015 件、取れなかった一覧は 0。
+- 実際の UI の一覧で、未分類は 0 件になった。`uiCompatibility.browser.test.tsx` の 9 件は、`error:GenericError`・`error:NotFoundError`・`error:FormResponseError` のますに入った（例: `error:GenericError` × `a11y:keyboard` に 3 つの幅の 3 件）。「網羅率が低いファイル」の見出しは 1 回になった。
+- `python -m pytest tools/test_report`（30 件）、`make check-syntax-errors`、`make -o encode-jananese-filename check-style`、dashboard の `lint`・`pretty:check` が通った。変更は `tools/test_report/` の 4 ファイルだけで、上流の変更に登録簿の ID やリンクはない。
+- 照合は、名前の行・呼び出しの行・宣言の行の順で最初に一致した宣言のタグを採る形になった。同じ行に複数の宣言がある場合は、ソースの中の順で先のものを採る（前は一意でなければタグを空にしていた）。同じ行に 2 つのテストを書くことは今のテストにはない。
+
 ## 6. 関連ドキュメント
 
 - 由来: [[prj-0001:pjr-dt1q-frontend-test-report-fixes|PJR-DT1Q]]（統合のあとの確かめで見つかった残り）

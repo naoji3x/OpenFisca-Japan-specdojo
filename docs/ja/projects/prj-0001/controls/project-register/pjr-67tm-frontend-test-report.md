@@ -134,6 +134,10 @@ chromium / firefox / webkit / mobile-safari / mobile-chromium: 各 5 件
   - 「網羅率が低いファイル」は段階ごとに出すため、unit で十分に通っている `src/state/convert.ts` なども、UI で 0% として出る。
   - `make check-style` の前提の target `encode-jananese-filename` は `git config --local core.quotepath false` を実行する。プロダクトリポジトリの local の設定に `core.quotepath=false` があり、orchestrator の確かめの実行で入ったか、前からあったかは区別できない（global の設定と同じ値）。
 
+### 手直しのあとの確認（2026-11-03、specdojo-orchestrator）
+
+- 上の「気づいたこと」は、[[prj-0001:pjr-dt1q-frontend-test-report-fixes|PJR-DT1Q]]（`28057e7`）と [[prj-0001:pjr-f70a-frontend-test-report-line-match|PJR-F70A]]（`d9fa763`）で直った。前からある 4 ファイルは `7d4d632` と同じ内容に戻り、観点は `viewpoints.yaml` の規則で当てている。レポートの冒頭に「テストの構成」の節ができ、未分類は 0 件になった。
+
 ## 6. 関連ドキュメント
 
 - 関連: [[prj-0001:pjr-ms7f-frontend-test-coverage|PJR-MS7F]]（網羅率の設定と計測、テストを足す項目の案）、[[prj-0001:pjr-xbtj-frontend-backend-contract-tests|PJR-XBTJ]]（契約テスト。この項目の後に行い、レポートに足す）、[[prj-0001:pjr-r2hj-backend-test-report|PJR-R2HJ]]（バックエンドのレポート。この項目の道具に足す）
