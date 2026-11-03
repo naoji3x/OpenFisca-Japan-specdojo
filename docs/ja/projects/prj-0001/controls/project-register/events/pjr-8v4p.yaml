@@ -38,3 +38,16 @@
     - field: commit_type
       from: ""
       to: build
+- v: 1
+  id: reg_0c02a43b5bda438abf35d54b3d87e866
+  ts: "2026-11-03T00:11:23Z"
+  action: review
+  actor: specdojo-orchestrator
+  from_status: open
+  to_status: review
+  reason: orchestrator が実装してイメージを確かめた。作り直しでの確認を naoji に依頼する
+  changes:
+    - field: status
+      from: open
+      to: review
+  previous_event_id: reg_4d8c0213386847aa86560ff75f1817f8
