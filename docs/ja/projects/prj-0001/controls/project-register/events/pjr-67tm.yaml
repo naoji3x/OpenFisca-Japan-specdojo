@@ -1,0 +1,40 @@
+# yaml-language-server: $schema=../../../../../../specdojo/schemas/v1/register-events.schema.yaml
+- v: 1
+  id: reg_898b668f5d684a5aa97da8a99f8f4d1f
+  ts: "2026-11-03T03:01:38Z"
+  action: add
+  actor: specdojo-orchestrator
+  from_status: null
+  to_status: open
+  reason: naoji の依頼で、テストの観点×条件・状況・網羅率・不足をテストコードから自動でまとめるレポートの項目を起票する
+  changes:
+    - field: status
+      from: ""
+      to: open
+    - field: title
+      from: ""
+      to: フロントエンドのテストのレポートを自動で作る
+    - field: description
+      from: ""
+      to: dashboard のテストの観点×条件・件数・網羅率・不足を、テストコードとテストの一覧・網羅率の出力から Markdown のレポートにまとめる道具を tools/test\_report に作る。
+    - field: type
+      from: ""
+      to: todo
+    - field: priority
+      from: ""
+      to: medium
+    - field: difficulty
+      from: ""
+      to: medium
+    - field: owner
+      from: ""
+      to: _TODO_
+    - field: registered
+      from: ""
+      to: "2026-11-03"
+    - field: due
+      from: ""
+      to: _TODO_
+    - field: commit_type
+      from: ""
+      to: feat
