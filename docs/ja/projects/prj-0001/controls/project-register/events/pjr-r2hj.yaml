@@ -1,0 +1,43 @@
+# yaml-language-server: $schema=../../../../../../specdojo/schemas/v1/register-events.schema.yaml
+- v: 1
+  id: reg_5fdc5761abea44a78052c2471fc7d1be
+  ts: "2026-11-03T03:01:45Z"
+  action: add
+  actor: specdojo-orchestrator
+  from_status: null
+  to_status: open
+  reason: naoji の依頼で、バックエンドのテストのレポートをフロントエンドとは別に、後で行う項目として起票する
+  changes:
+    - field: status
+      from: ""
+      to: open
+    - field: title
+      from: ""
+      to: バックエンドのテストのレポートを自動で作る
+    - field: description
+      from: ""
+      to: OpenFisca の YAML のテストから、制度×出力の変数×入力の条件の表と、テストのない変数の一覧を作り、tools/test\_report のレポートに足す。
+    - field: type
+      from: ""
+      to: todo
+    - field: priority
+      from: ""
+      to: medium
+    - field: difficulty
+      from: ""
+      to: medium
+    - field: owner
+      from: ""
+      to: _TODO_
+    - field: registered
+      from: ""
+      to: "2026-11-03"
+    - field: due
+      from: ""
+      to: _TODO_
+    - field: depends_on
+      from: ""
+      to: '["PJR-67TM"]'
+    - field: commit_type
+      from: ""
+      to: feat
