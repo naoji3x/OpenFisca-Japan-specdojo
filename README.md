@@ -97,7 +97,7 @@ openfisca-japan-workspace/
    gh pr edit <番号> --repo project-inclusive/OpenFisca-Japan --body-file tmp/pr-<ブランチ名>.md
    ```
 
-   `gh` 2.46.0（Debian のパッケージ）では、`gh pr edit` が廃止された Projects (classic) の情報を問い合わせて `GraphQL: Projects (classic) is being deprecated ...` で失敗した。今のコンテナは、`post-create.sh` で GitHub CLI の公式の apt リポジトリから新しい `gh` を入れている（PJR-KRN8）。古い `gh` で同じエラーが出たときは、REST API で書き換える（`gh api -X PATCH repos/project-inclusive/OpenFisca-Japan/pulls/<番号> -F body=@tmp/pr-<ブランチ名>.md`）。
+   `gh` 2.46.0（Debian のパッケージ）では、`gh pr edit` が廃止された Projects (classic) の情報を問い合わせて `GraphQL: Projects (classic) is being deprecated ...` で失敗した。今のコンテナは、`.devcontainer/Dockerfile` で GitHub CLI の公式の apt リポジトリから新しい `gh` を入れている（PJR-KRN8・PJR-8V4P）。古い `gh` で同じエラーが出たときは、REST API で書き換える（`gh api -X PATCH repos/project-inclusive/OpenFisca-Japan/pulls/<番号> -F body=@tmp/pr-<ブランチ名>.md`）。
 
 3. 上流で merge されたら、手元の `develop` を `origin/develop`（フォークを上流と同期した後）に合わせる。
    - merge commit で取り込まれた場合は、そのまま `feature/frontend-test-upgrade` に次の項目を積んでよい。

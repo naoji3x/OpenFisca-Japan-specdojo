@@ -2,7 +2,7 @@
 set -Eeuo pipefail
 trap 'echo "[post-create] ERROR: command failed at line ${LINENO}: ${BASH_COMMAND}" >&2' ERR
 
-echo "[post-create] 1/9: preparing user-managed directories"
+echo "[post-create] 1/6: preparing user-managed directories"
 
 # Docker creates named volume mount points as root when the image lacks them. Hand the mount
 # points and their parents back to the container user before git config and agent installers write into them.
@@ -33,7 +33,7 @@ done
 mkdir -p "${HOME}/.local/bin"
 export PATH="${HOME}/.local/bin:${PATH}"
 
-echo "[post-create] 2/9: configuring git and shell environment"
+echo "[post-create] 2/6: configuring git and shell environment"
 
 # Include the host ~/.gitconfig copied by Dev Containers at the top of the volume-backed global
 # config, so identity and other host settings take effect while container-specific settings written
@@ -77,58 +77,9 @@ if command -v fdfind >/dev/null 2>&1 && ! command -v fd >/dev/null 2>&1; then
   sudo ln -s "$(command -v fdfind)" /usr/local/bin/fd
 fi
 
-echo "[post-create] 3/9: installing GitHub CLI from the official apt repository"
+# gh・言語サーバー・Marksman・uv と Python 3.11・Playwright のブラウザーは、Dockerfile でイメージに入れている。
 
-# Debian のパッケージの gh（2.46）は、gh pr edit などが廃止された Projects (classic) を問い合わせて失敗する。
-# GitHub CLI の公式の apt リポジトリから最新を入れる。失敗しても後続の準備は続ける。
-install_gh() {
-  local keyring=/etc/apt/keyrings/githubcli-archive-keyring.gpg
-  local tmp
-  tmp="$(mktemp)"
-  curl -fsSL --retry 3 https://cli.github.com/packages/githubcli-archive-keyring.gpg -o "${tmp}" || return 1
-  sudo mkdir -p -m 755 /etc/apt/keyrings
-  sudo install -m 0644 "${tmp}" "${keyring}"
-  rm -f "${tmp}"
-  echo "deb [arch=$(dpkg --print-architecture) signed-by=${keyring}] https://cli.github.com/packages stable main" |
-    sudo tee /etc/apt/sources.list.d/github-cli.list >/dev/null
-  sudo apt-get update -o Dir::Etc::sourcelist=sources.list.d/github-cli.list -o Dir::Etc::sourceparts=- -o APT::Get::List-Cleanup=0 &&
-    sudo apt-get install -y gh
-}
-if ! install_gh; then
-  echo "Warning: Failed to install GitHub CLI from the official apt repository." >&2
-fi
-
-echo "[post-create] 4/9: installing global JS tooling"
-
-sudo npm install --global \
-  typescript@6.0.3 \
-  typescript-language-server@6.0.1 \
-  yaml-language-server@1.24.0 \
-  bash-language-server@5.8.1
-
-MARKSMAN_VERSION="2026-02-08"
-case "$(dpkg --print-architecture)" in
-  amd64)
-    MARKSMAN_ARCH="x64"
-    MARKSMAN_SHA256="be5098e8213219269c47fc0d916a66fa31ce0602ec967475c722260aabf26087"
-    ;;
-  arm64)
-    MARKSMAN_ARCH="arm64"
-    MARKSMAN_SHA256="db8e124527f7f8048e3e6c91821b9c52ef173d92c01e47d221bf1337afd962fb"
-    ;;
-  *)
-    echo "Unsupported architecture for Marksman: $(dpkg --print-architecture)" >&2
-    exit 1
-    ;;
-esac
-curl -fsSL --retry 3 \
-  "https://github.com/artempyanykh/marksman/releases/download/$MARKSMAN_VERSION/marksman-linux-$MARKSMAN_ARCH" \
-  -o /tmp/marksman
-echo "$MARKSMAN_SHA256  /tmp/marksman" | sha256sum -c -
-sudo install -m 0755 /tmp/marksman /usr/local/bin/marksman
-rm -f /tmp/marksman
-
-echo "[post-create] 5/9: installing editor dotfiles"
+echo "[post-create] 3/6: installing editor dotfiles"
 
 # Keep dotfiles authoritative: install the bundled defaults only when no supported init file exists.
 if [ ! -f "$HOME/.emacs" ] && \
@@ -151,11 +102,13 @@ if [ ! -f "$HOME/.vimrc" ] && [ ! -f "$HOME/.vim/vimrc" ]; then
   echo "Installed Vim config: $HOME/.vimrc"
 fi
 
-echo "[post-create] 6/9: installing Claude Code and Codex"
+echo "[post-create] 4/6: installing Claude Code and Codex"
 if ! curl -fsSL https://claude.ai/install.sh | bash; then
   echo "Warning: Claude Code installer failed."
 fi
 
+# Codex のサンドボックスの起動を妨げる bubblewrap を消す。feature の docker-outside-of-docker が入れるため、
+# features のあとに流れるこの段で消す（Dockerfile では消せない）。
 if dpkg-query -W -f='${Status}' bubblewrap 2>/dev/null | grep -qx 'install ok installed'; then
   if ! sudo apt-get remove -y bubblewrap; then
     echo "Warning: Failed to remove system bubblewrap; Codex sandbox may not start." >&2
@@ -173,32 +126,27 @@ if ! curl -fsSL https://antigravity.google/cli/install.sh | bash; then
   echo "Warning: Antigravity CLI installer failed."
 fi
 
-echo "[post-create] 7/9: installing workspace npm dependencies"
+echo "[post-create] 5/6: installing workspace npm dependencies"
 npm install
 
 # OpenFisca-Japan の開発に使う Python 3.11 の仮想環境を用意する。
 # OpenFisca-Core 41 は numpy <1.25・pendulum <3 を要し、ベースのイメージの Python 3.13 では入らない。
-# uv のビルド済みの Python 3.11 で ../OpenFisca-Japan/.venv を作り、make install（editable install）を流す。
-echo "[post-create] 8/9: setting up OpenFisca-Japan Python environment"
-if ! command -v uv >/dev/null 2>&1; then
-  if ! curl -fsSL https://astral.sh/uv/install.sh | env UV_NO_MODIFY_PATH=1 sh; then
-    echo "Warning: uv installer failed." >&2
-  fi
-fi
-
+# Python 3.11 は Dockerfile で /opt/uv/python に入れている。仮想環境はワークスペースにあって作り直しても残るので、
+# その Python が使えないとき（初めての作成や、前の版のイメージの Python を指しているとき）だけ作り直す。
+echo "[post-create] 6/6: setting up OpenFisca-Japan Python environment"
 OPENFISCA_JAPAN_DIR="${WORKSPACE_PARENT}/OpenFisca-Japan"
+OPENFISCA_JAPAN_VENV="${OPENFISCA_JAPAN_DIR}/.venv"
 if command -v uv >/dev/null 2>&1 && [ -f "${OPENFISCA_JAPAN_DIR}/setup.py" ]; then
-  uv python install 3.11
-  if [ ! -x "${OPENFISCA_JAPAN_DIR}/.venv/bin/python" ]; then
-    uv venv --python 3.11 --seed "${OPENFISCA_JAPAN_DIR}/.venv"
+  if ! "${OPENFISCA_JAPAN_VENV}/bin/python" -c 'import sys; sys.exit(sys.version_info[:2] != (3, 11))' 2>/dev/null; then
+    uv venv --clear --python 3.11 --seed "${OPENFISCA_JAPAN_VENV}"
   fi
-  if ! PATH="${OPENFISCA_JAPAN_DIR}/.venv/bin:${PATH}" make -C "${OPENFISCA_JAPAN_DIR}" install; then
+  if ! PATH="${OPENFISCA_JAPAN_VENV}/bin:${PATH}" make -C "${OPENFISCA_JAPAN_DIR}" install; then
     echo "Warning: make install for OpenFisca-Japan failed." >&2
   fi
   # make check-style は flake8 3.9 と flake8-commas を使う。flake8-commas は pkg_resources を import するため
   # setuptools を 81 未満に、flake8 3.9 は pycodestyle 2.7 系を要するためそれに合わせる。
   # （上流で flake8-commas を外す修正が入れば、この固定は要らなくなる）
-  if ! "${OPENFISCA_JAPAN_DIR}/.venv/bin/pip" install "setuptools<81" "pycodestyle>=2.7.0,<2.8.0"; then
+  if ! "${OPENFISCA_JAPAN_VENV}/bin/pip" install "setuptools<81" "pycodestyle>=2.7.0,<2.8.0"; then
     echo "Warning: Failed to pin setuptools and pycodestyle for make check-style." >&2
   fi
 fi
@@ -213,18 +161,6 @@ if [ -d "${OPENFISCA_JAPAN_DIR}/.venv/bin" ]; then
 fi
 # <<< OpenFisca-Japan venv (specdojo post-create) <<<
 EOF
-fi
-
-# OpenFisca-Japan の dashboard の E2E と Storybook のテストに使う Playwright の Chromium と、その OS のライブラリを入れる。
-# dashboard/package.json の @playwright/test を上げたときは、ブラウザーの版を合わせるためこの値も上げる。
-echo "[post-create] 9/9: installing Playwright Chromium and OS deps"
-PLAYWRIGHT_VERSION="1.64.1"
-# sudo -E のままだと HOME が引き継がれ、~/.npm に root のファイルができて後の npx が失敗する。root の HOME を使わせる。
-if ! sudo env "PATH=${PATH}" HOME=/root npx -y "playwright@${PLAYWRIGHT_VERSION}" install-deps chromium; then
-  echo "Warning: Failed to install OS dependencies for Playwright Chromium." >&2
-fi
-if ! npx -y "playwright@${PLAYWRIGHT_VERSION}" install chromium; then
-  echo "Warning: Failed to install Playwright Chromium." >&2
 fi
 
 echo "[post-create] complete"
