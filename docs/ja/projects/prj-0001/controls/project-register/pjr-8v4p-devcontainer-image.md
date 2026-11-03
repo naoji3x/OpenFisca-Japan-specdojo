@@ -71,6 +71,18 @@ post-create.sh が作り直すたびに apt・npm -g・Python・Playwright を�
 - `post-create.sh` が `bash -n` と `shellcheck` を通った。`post-create.sh` そのものは、ワークスペースとボリュームが要るため、作り直しで確かめる。
 - **残っていること**: naoji が作り直して、`post-create.sh` が通ることと所要時間を確かめる。そのあと orchestrator が `make test` と dashboard の E2E（5 つの project）を流す。今の仮想環境は消える `~/.local/share/uv` の Python を指しているため、1 回目の作り直しでは仮想環境の作り直しと `make install` の入れ直しが入る。
 
+### 5.3. 作り直しの確認（2026-11-03）
+
+- naoji が「Rebuild Container」で作り直し、`post-create.sh` が通った。所要時間は 3 分 14 秒（今のイメージの 1 回目の作り直しで、仮想環境の作り直しと `make install` を含む）。
+- 途中で pip が `autopep8 1.7.0 requires pycodestyle>=2.9.1, but you have pycodestyle 2.7.0` を出した。`make check-style` のための pycodestyle の固定によるもので、入れる処理は成功している（`make format-style` が動かないことは `.devcontainer/README.md` に書いてある）。
+- orchestrator が作り直したコンテナで確かめた（specdojo-orchestrator）:
+  - gh 2.103.3・Marksman・uv がイメージから使え、bubblewrap は入っていない。
+  - `../OpenFisca-Japan/.venv` の `home` が `/opt/uv/python/cpython-3.11-linux-aarch64-gnu/bin` を指し、Python は 3.11.18。
+  - `~/.cache/ms-playwright` に Chromium・Firefox・WebKit がある。
+  - `make test`（1829 件）と `make check-style` が通った。
+  - `feature/frontend-test-upgrade`（`7d4d632`）の一時的な worktree で `npm ci` と build のあと、E2E の 5 つの project・25 件が 2 回とも通った（9.6 秒・8.3 秒）。
+- 気づいたこと: `pip check` で、autopep8 のほかに `pendulum 2.1.2` と `python-dateutil 4.0.0`、`numexpr 2.14.2` と `numpy 1.24.4` の食い違いが出た。`make install` が上流の `setup.py` に従って入れた結果で、この項目の変更によるものではない。テストは通っている。
+
 ## 6. 関連ドキュメント
 
 - 関連: [[prj-0001:pjr-dt81-devcontainer-playwright-python|PJR-DT81]]（Python 3.11 と Chromium を入れた）、[[prj-0001:pjr-krn8-devcontainer-gh-cli-latest|PJR-KRN8]]（gh を公式のリポジトリから入れた）、[[prj-0001:pjr-1wnm-frontend-e2e-webkit-firefox|PJR-1WNM]]（WebKit と Firefox）
