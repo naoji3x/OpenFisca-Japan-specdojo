@@ -43,15 +43,22 @@ Browser Mode の一覧がテストの名前の行を返すため、it.each の�
 
 ## 4. 作業内容
 
-| No  | 作業                             | 担当 | 状態 | メモ |
-| --- | -------------------------------- | ---- | ---- | ---- |
-| 1   | 名前の行でも照合できるようにする | DEV  | open | -    |
-| 2   | 見出しの二重を直す               | DEV  | open | -    |
-| 3   | 実際の一覧の形で pytest を足す   | DEV  | open | -    |
+| No  | 作業                             | 担当 | 状態 | メモ                                                                   |
+| --- | -------------------------------- | ---- | ---- | ---------------------------------------------------------------------- |
+| 1   | 名前の行でも照合できるようにする | DEV  | done | `nameLine` を記録し、照合の優先順位と同順位の採用規則を追加した。      |
+| 2   | 見出しの二重を直す               | DEV  | done | 現在の実装は既に1か所だったため、出力が1回になる回帰テストを追加した。 |
+| 3   | 実際の一覧の形で pytest を足す   | DEV  | done | Browser Mode の名前行を指す9件についてタグ・ます・生成結果を確認した。 |
 
 ## 5. 対応結果
 
--
+- `openfisca-japan:tools/test_report/source_index.mjs` に第1引数の開始行 `nameLine` を追加し、`report.py` の `source_tags` がその行でも照合するようにした。
+- 複数候補の採用規則は `nameLine` → `callLine` → `line` の優先順、同順位は構文の走査順で先の宣言とした。名前の開始行がテストを最も直接指し、`each` の呼び出しの末尾行と開始行も従来の一覧に必要なためである。同順位でもタグを空にせず、別の宣言のタグを混ぜない。行番号がない・一致しない場合は空を維持し、story は従来の名前照合を維持する。規則はプロダクトの `tools/test_report/README.md` にも記載した。
+- `openfisca-japan:tools/test_report/test_report.py` に実際の `ui.list.json` と同じ形の9件（3画面幅×3エラー、`location.line: 157`、`projectName: browser (chromium)`）を追加した。実ファイルの構文情報と照合し、タグが取得でき、`error:GenericError`・`error:NotFoundError`・`error:FormResponseError` の表示・戻る・キーボード・フォーカスの各ますに3件ずつ入ることと、オフライン生成で未分類が0件になることを確認した。
+- 「網羅率が低いファイル」は変更前の `render` でも出力箇所が既に1か所だった。網羅率がある入力と未計測の入力の両方で、生成物の見出しが厳密に1回となる回帰テストを加えた。
+- `python -m pytest tools/test_report` は30件成功した。既存の unit の宣言行・呼び出し行、story の名前照合のテストも成功した。`make check-syntax-errors`、`make -o encode-jananese-filename check-style` も成功した。
+- `make test-report` は終了コード0で964件・153対象のレポートを生成し、取得できた一覧の未分類は0件、該当見出しは1回だった。ただし UI は Storybook 設定読込時の `uv_interface_addresses` エラーにより一覧未取得となったため、実際の UI の9件を確認できたとは扱わない。
+- 申し送り（`requires_human`）: 統合後に orchestrator がサンドボックス外で `make test-report` を実行し、UI を含め一覧未取得が0段階、未分類が0件であることと、3種類のエラーのますに各画面幅のテストが入ること、見出しが1回であることを確認する。
+- `dashboard` のテスト・アプリのコード、依存関係は変更していない。result は pipeline の reporter / runner が記入する。
 
 ## 6. 関連ドキュメント
 

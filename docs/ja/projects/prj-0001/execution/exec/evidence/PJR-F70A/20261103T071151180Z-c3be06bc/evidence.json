@@ -1,0 +1,170 @@
+{
+  "schema_version": 1,
+  "task_id": "PJR-F70A",
+  "run_id": "20261103T071151180Z-c3be06bc",
+  "stage": {
+    "role": "executor",
+    "actor": "sol-executor",
+    "status": "succeeded",
+    "started_at": "2026-11-03T07:12:44.276Z",
+    "completed_at": "2026-11-03T07:17:38.841Z",
+    "exit_code": 0,
+    "attempts": 1
+  },
+  "changes": [
+    {
+      "path": "docs/ja/projects/prj-0001/controls/project-register/events/pjr-f70a.yaml",
+      "status": "MM"
+    },
+    {
+      "path": "docs/ja/projects/prj-0001/controls/project-register/pjr-f70a-frontend-test-report-line-match.md",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:tools/test_report/README.md",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:tools/test_report/report.py",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:tools/test_report/source_index.mjs",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:tools/test_report/test_report.py",
+      "status": "M"
+    }
+  ],
+  "attempt_changes": [
+    {
+      "path": "docs/ja/projects/prj-0001/controls/project-register/pjr-f70a-frontend-test-report-line-match.md",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:tools/test_report/README.md",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:tools/test_report/report.py",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:tools/test_report/source_index.mjs",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:tools/test_report/test_report.py",
+      "status": "M"
+    }
+  ],
+  "diff_summary": {
+    "files_changed": 6,
+    "summary": ".../pjr-f70a-frontend-test-report-line-match.md       | 19 +++++++++++++------\n 1 file changed, 13 insertions(+), 6 deletions(-)\n[openfisca-japan]\ntools/test_report/README.md        |  2 ++\n tools/test_report/report.py        | 13 +++++++---\n tools/test_report/source_index.mjs |  2 ++\n tools/test_report/test_report.py   | 50 +++++++++++++++++++++++++++++++++++++-\n 4 files changed, 63 insertions(+), 4 deletions(-)"
+  },
+  "validations": [
+    {
+      "source": "executor",
+      "command": "cd ../openfisca-japan && python -m pytest tools/test_report",
+      "status": "passed",
+      "summary": "30件成功。実一覧形式の9件、競合時の選択、既存の unit・story 照合、見出し1回を確認。"
+    },
+    {
+      "source": "executor",
+      "command": "cd ../openfisca-japan && make check-syntax-errors",
+      "status": "passed",
+      "summary": "終了コード0。"
+    },
+    {
+      "source": "executor",
+      "command": "cd ../openfisca-japan && make -o encode-jananese-filename check-style",
+      "status": "passed",
+      "summary": "flake8・ruff とも成功。"
+    },
+    {
+      "source": "executor",
+      "command": "cd ../openfisca-japan/dashboard && npx --no-install prettier --write ../tools/test_report/source_index.mjs ../tools/test_report/README.md",
+      "status": "passed",
+      "summary": "整形成功。README の最終文言調整後も整形済み。"
+    },
+    {
+      "source": "executor",
+      "command": "npx --no-install prettier --write docs/ja/projects/prj-0001/controls/project-register/pjr-f70a-frontend-test-report-line-match.md",
+      "status": "passed",
+      "summary": "個票の整形成功。"
+    },
+    {
+      "source": "executor",
+      "command": "npx --no-install markdownlint docs/ja/projects/prj-0001/controls/project-register/pjr-f70a-frontend-test-report-line-match.md",
+      "status": "passed",
+      "summary": "個票の Markdown 検査成功。"
+    },
+    {
+      "source": "executor",
+      "command": "npx --no-install specdojo register build --project prj-0001 --dry-run",
+      "status": "passed",
+      "summary": "生成検査成功。登録簿を書き換えず確認。"
+    },
+    {
+      "source": "executor",
+      "command": "cd ../openfisca-japan && make test-report",
+      "status": "requires_human",
+      "summary": "終了コード0で964件・153対象を生成。取得分は未分類0件、見出し1回。UI は `uv_interface_addresses` エラーで一覧未取得のため、統合後にサンドボックス外で再確認が必要。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run validate:schema:file",
+      "status": "not_applicable",
+      "summary": "スキーマ検査は非適用。",
+      "reason": "プロジェクトの package.json に該当 script がない。"
+    },
+    {
+      "source": "executor",
+      "command": "npx specdojo catalog validate --project prj-0001",
+      "status": "not_applicable",
+      "summary": "カタログ検査は非適用。",
+      "reason": "対象プロジェクトに `catalog_path` が設定されていない。"
+    },
+    {
+      "source": "executor",
+      "command": "cd ../openfisca-japan && npm run typecheck",
+      "status": "not_applicable",
+      "summary": "ルートの npm 型検査は非適用。",
+      "reason": "プロダクトのルートに package.json がなく、該当 script がない。"
+    },
+    {
+      "source": "executor",
+      "command": "cd ../openfisca-japan && npm run test:unit",
+      "status": "not_applicable",
+      "summary": "ルートの npm 単体テストは非適用。",
+      "reason": "プロダクトのルートに package.json がない。変更したレポートツールは pytest で検証した。"
+    },
+    {
+      "source": "executor",
+      "command": "cd ../openfisca-japan && npx markdownlint tools/test_report/README.md",
+      "status": "not_applicable",
+      "summary": "プロダクト文書の markdownlint は非適用。",
+      "reason": "プロダクトに markdownlint の直接依存が宣言されていない。"
+    },
+    {
+      "source": "executor",
+      "command": "git diff --check",
+      "status": "passed",
+      "summary": "両リポジトリで差分の空白検査に成功。"
+    }
+  ],
+  "final_message": "名前行の照合と候補の採用規則を追加し、9件の分類・見出し1回を回帰テストで確認した。変更ファイル: openfisca-japan:tools/test_report/source_index.mjs、openfisca-japan:tools/test_report/report.py、openfisca-japan:tools/test_report/test_report.py、openfisca-japan:tools/test_report/README.md、および個票 docs/ja/projects/prj-0001/controls/project-register/pjr-f70a-frontend-test-report-line-match.md。",
+  "completion_status": "complete",
+  "handoff": [
+    "統合後、orchestrator がサンドボックス外で `make test-report` を実行し、UI を含め一覧未取得が0段階、未分類が0件、3種類のエラーのますに各画面幅のテストが入り、見出しが1回であることを確認する。今回の実行は Storybook 設定読込時の `uv_interface_addresses` エラーで UI 一覧を取得できなかった。個票にも記録済み。"
+  ],
+  "log_refs": [
+    {
+      "kind": "agent-output-excerpt",
+      "path": "docs/ja/projects/prj-0001/execution/exec/evidence/PJR-F70A/20261103T071151180Z-c3be06bc/executor.log",
+      "bytes": 4241,
+      "truncated": false
+    }
+  ]
+}
