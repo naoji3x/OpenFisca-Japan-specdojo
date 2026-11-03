@@ -12,6 +12,7 @@ specdojo:
   difficulty: medium
   owner: ARC
   registered_at: "2026-11-02T23:19:33Z"
+  due_on: "2026-11-30"
   commit_type: build
 ---
 
