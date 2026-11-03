@@ -67,3 +67,22 @@
       from: in-progress
       to: review
   previous_event_id: reg_3bf9499d4ccc4ae9a4f1b929754e5d30
+- v: 1
+  id: reg_d4bbdf7b943f4cc2956edc549bb1d7e1
+  ts: "2026-11-03T07:22:42Z"
+  action: close
+  actor: specdojo-orchestrator
+  from_status: review
+  to_status: done
+  reason: orchestrator が統合のあとに実際の一覧と結果で make test-report を流し、完了条件を確かめた
+  changes:
+    - field: status
+      from: review
+      to: done
+    - field: completed
+      from: "-"
+      to: "2026-11-03"
+    - field: conclusion
+      from: "-"
+      to: 冒頭にテストの構成の節を置き、前からある 4 ファイルを戻して規則で分類し、網羅率の判定・但し書き・状態の機械の遷移（330 のうち 269 を通過）を直した
+  previous_event_id: reg_e7f69a2a478b4c1da0021c15362136fe

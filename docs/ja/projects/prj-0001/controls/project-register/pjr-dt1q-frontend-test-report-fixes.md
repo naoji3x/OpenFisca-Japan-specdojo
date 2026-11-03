@@ -2,17 +2,19 @@
 specdojo:
   id: prj-0001:pjr-dt1q-frontend-test-report-fixes
   type: project
-  status: draft
+  status: ready
   rulebook: specdojo:pjr-rulebook
   part_of:
     - prj-0001:pjr-index
   item_type: todo
-  item_status: review
+  item_status: done
   priority: high
   difficulty: medium
   owner: DEV
   registered_at: "2026-11-03T06:40:43Z"
   due_on: "2026-11-30"
+  completed_at: "2026-11-03T07:22:42Z"
+  conclusion: 冒頭にテストの構成の節を置き、前からある 4 ファイルを戻して規則で分類し、網羅率の判定・但し書き・状態の機械の遷移（330 のうち 269 を通過）を直した
   derived_from:
     - PJR-67TM
   commit_type: feat
