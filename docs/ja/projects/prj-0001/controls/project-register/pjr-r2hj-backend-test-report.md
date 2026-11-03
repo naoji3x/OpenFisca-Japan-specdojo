@@ -10,7 +10,9 @@ specdojo:
   item_status: open
   priority: medium
   difficulty: medium
+  owner: DEV
   registered_at: "2026-11-03T03:01:45Z"
+  due_on: "2026-11-30"
   depends_on:
     - PJR-67TM
   commit_type: feat
