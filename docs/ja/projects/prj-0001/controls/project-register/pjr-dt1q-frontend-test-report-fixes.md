@@ -116,6 +116,17 @@ specdojo:
 - `requires_human`: UIの一覧取得と `npm run test:ui` はStorybook起動時の `uv_interface_addresses` エラーで実行できなかった。統合後にホストでUI一覧51件・UI実行51件を確認し、UI網羅率を採取して `make test-report` を再実行する。9件のUIエラーが未分類に残らず、全体の未分類が0、対象外5ファイルが不足候補から外れ、unitで十分な `convert.ts` がUIの0%だけで低網羅率にならないことを確認する。未取得を0件・成功としては扱っていない。
 - ブラウザーが必要な確認は本個票の許容に従って人へ引き継ぐ。登録簿一覧・個票のステータス・result・保護設定・Git設定は変更しない。resultには本節の実施内容・変更ファイル・検証結果・人手確認をreporterが反映する。
 
+### orchestrator の確認（2026-11-03、specdojo-orchestrator）
+
+- `feature/frontend-test-upgrade`（`28057e7`）を一時的な worktree に取り出し、`npm ci` から `npm run test`（939 件）・`lint`・`pretty:check`・`build`・`test:ui`（51 件）・`build-storybook` が通ることを確かめた。E2E は 25 件が 2 回とも通った。件数は変わっていない。
+- 前からある 4 ファイルは、`7d4d632` と同じ内容だった（`git diff --quiet`）。
+- README の手順で、遷移の記録を取る unit の実行・UI と E2E の結果・unit と UI の網羅率を作ってから `make test-report` を流した。一覧は 1,015 件、取れなかった一覧は 0。`python -m pytest tools/test_report`（28 件）、`make check-syntax-errors`、`make -o encode-jananese-filename check-style` が通った。
+- 冒頭の「テストの構成」の節と全体の受け持ちの表ができ、ファイルごとの説明は orchestrator が確かめた受け持ちと合っていた。`questionState.test.ts` の観点の内訳（状態 162・遷移 384）は PJR-67TM のタグの数と一致した。節の順番、但し書き、網羅率の判定（両方の段階を見る）、対象外のファイルの除外も直っていた。状態の機械の遷移は 330 で、テストが通した遷移が 269、通していない遷移が 61 と出た。
+- **直っていないこと**:
+  - 未分類が 9 件残った。`uiCompatibility.browser.test.tsx` の「画面幅ごとに、… エラーが収まりキーボードで復帰できる」（3 つの幅 × 3 つのエラー）。原因は、`source_index.mjs` が `it.each(errors)(` の行（156 行目）で宣言を記録するのに対し、Browser Mode の一覧はテストの名前の行（157 行目）を返し、`report.py` の `source_tags` が行の番号で一致しないため、タグが空として扱われること。executor はサンドボックスで実際の UI の一覧を取れず、小さな入力の pytest だけで確かめていた。
+  - 「網羅率が低いファイル」の見出しが 2 回出る。
+- orchestrator の誤り: この個票の「2. 入力」に、9 件は「タグがない」と書いたが、実際にはタグは付いており、対応先の期待する条件と合っていなかった（executor の記録のとおり）。
+
 ## 6. 関連ドキュメント
 
 - 由来: [[prj-0001:pjr-67tm-frontend-test-report|PJR-67TM]]（レポートの道具。この項目と一緒に close する）
