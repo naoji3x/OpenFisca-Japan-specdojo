@@ -122,6 +122,18 @@ chromium / firefox / webkit / mobile-safari / mobile-chromium: 各 5 件
 
 7 件に直接含まれない候補は、災害モードの E2E 導線、各入力の不正値・キーボード・ラベル・フォーカス、各ルートの復帰とキー操作、共有データの破損、その他の実装ファイルの表示など。これらは期待表の過大な要求も含むため、新規起票を自動では行わない。UI 一覧と網羅率を採取してから、実装の責務と assertion を確認し、対象外理由の追加またはテスト追加の要否を判断する。UI が未取得なので「アクセシビリティのテストのない観点」も暫定であり、既存 UI テストがないという判定ではない。
 
+### orchestrator の確認（2026-11-03、specdojo-orchestrator）
+
+- `feature/frontend-test-upgrade`（`f9f55a4`）を一時的な worktree に取り出し、`npm ci` から `npm run test`（939 件）・`lint`・`pretty:check`・`build`・`test:ui`（51 件）・`build-storybook` が通ることを確かめた。E2E は 25 件が 2 回とも通った（9.8 秒・9.0 秒）。件数は統合の前（`7d4d632`）と同じ。
+- unit・UI・E2E の結果の JSON と、unit・UI の網羅率を作ってから `make test-report` を流した。一覧は 1,015 件（単体 939・コンポーネント 51・E2E 25）で、取れなかった一覧は 0。結果は 3 段階とも失敗 0。対象は 153、理由のない空きのますは 172、未分類のテストは 10 件だった。
+- `python -m pytest tools/test_report`（12 件）、`make check-syntax-errors`、`make check-style` が通った。上流の変更に登録簿の ID やリンクはない（commit メッセージの `Refs:` 行を除く）。
+- 前からある 4 ファイル（`shareLink.test.ts`・`convert.test.ts`・`progress.test.ts`・`questionState.test.ts`）は、`{ tags: [...] }` を取り除いて prettier で整形し直すと、統合の前のファイルと 1 行も違わなかった。テストの名前と中身は変わっていない。ただし、テストごとにタグを足して行が折り返し直されたため、差分は大きい（空白を除いても `questionState.test.ts` は 3,299 行の追加・1,126 行の削除、`convert.test.ts` は 2,010 行の追加・759 行の削除）。
+- 気づいたこと:
+  - 未分類の 10 件のうち 9 件は、`uiCompatibility.browser.test.tsx` の「画面幅ごとに、… エラーが収まりキーボードで復帰できる」（3 つの幅 × 3 つのエラー）で、タグがない。
+  - 「unit と UI の両方で 0% のファイル」に、対象外とした `PrivacyPolicy.tsx`・`main.tsx` などが出る。
+  - 「網羅率が低いファイル」は段階ごとに出すため、unit で十分に通っている `src/state/convert.ts` なども、UI で 0% として出る。
+  - `make check-style` の前提の target `encode-jananese-filename` は `git config --local core.quotepath false` を実行する。プロダクトリポジトリの local の設定に `core.quotepath=false` があり、orchestrator の確かめの実行で入ったか、前からあったかは区別できない（global の設定と同じ値）。
+
 ## 6. 関連ドキュメント
 
 - 関連: [[prj-0001:pjr-ms7f-frontend-test-coverage|PJR-MS7F]]（網羅率の設定と計測、テストを足す項目の案）、[[prj-0001:pjr-xbtj-frontend-backend-contract-tests|PJR-XBTJ]]（契約テスト。この項目の後に行い、レポートに足す）、[[prj-0001:pjr-r2hj-backend-test-report|PJR-R2HJ]]（バックエンドのレポート。この項目の道具に足す）
