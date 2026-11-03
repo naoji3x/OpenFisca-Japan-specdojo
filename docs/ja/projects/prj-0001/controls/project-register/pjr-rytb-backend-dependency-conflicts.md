@@ -10,7 +10,9 @@ specdojo:
   item_status: open
   priority: low
   difficulty: easy
+  owner: DEV
   registered_at: "2026-11-03T01:48:11Z"
+  due_on: "2026-11-30"
   derived_from:
     - PJR-8V4P
   commit_type: fix
