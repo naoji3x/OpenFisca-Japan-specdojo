@@ -120,6 +120,12 @@ specdojo:
 - `docs/dev_note.md` の分担の表に、上流の文書では働かない登録簿のリンク（`[[prj-0001:…]]`）が入っていたため、説明の文に置き換えた（`9933fbc`）。原因は、この個票の完了条件をリンクの形で書いたことである。
 - 申し送りの `personNum` の既存の不具合は、別の issue として起票した。
 
+### 上流の PR #507 での直し（2026-11-04、specdojo-orchestrator）
+
+- 区切り 1 の PR（#507、`feature/frontend-test-foundation`）で、Netlify のプレビューのデプロイが失敗した。この項目で `vite.config.ts` が `defineConfig` を `'vitest/config'` から読み込むようにしたため、Vitest が持つ ES Module だけの Vite（7.3.1）が build のときにも読み込まれ、Node.js 18 では `ERR_REQUIRE_ESM` で build が失敗する。Netlify のプレビューと、GitHub Pages にデプロイする workflow（`develop.yml`・`jekyll-gh-pages.yml`）は Node.js 18 で build している。Docker の Node.js 18・20・22 で再現し、18 のときだけ失敗することを確かめた（`develop` は 18 でも通る）。
+- naoji の指示で、`d3475d0`（`fix(dashboard): …`）を `feature/frontend-test-foundation` に積んだ。`defineConfig` は `'vite'` から読み込み、Vitest の設定の型は `import type` で使う。今の `develop` に取り込んだ状態で、`npm run test`（967 件）・`lint`・`pretty:check`・`build`、E2E（5 件を 2 回）、Node.js 18・22 での `npm ci` と build が通った。build の出力は、圧縮した変数の名前の割り当てを除いて `develop` と同じ。
+- 区切り 2 以降は Vite 8 のため Node.js 20.19 以上が要る。Cloudflare Pages（上流の `docs/dev_note.md` によると本番と開発版の配信先）と Netlify の Node.js の版は、上流の管理者に確かめる必要がある。区切り 2 以降のブランチには、`develop` を merge するときに `vite.config.ts` の衝突を解く（区切り 2 の設定を採る）。
+
 ## 5. 関連ドキュメント
 
 - 方針: [[prj-0001:pjr-z7fq-frontend-test-strategy|PJR-Z7FQ フロントエンドのテストの方針を決める]]
