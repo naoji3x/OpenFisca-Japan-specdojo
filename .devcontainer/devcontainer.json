@@ -1,5 +1,5 @@
 {
-  "name": "specdojo-agent-env",
+  "name": "OpenFisca-Japan-env",
   "build": { "dockerfile": "Dockerfile" },
   "remoteUser": "node",
   "init": true,
