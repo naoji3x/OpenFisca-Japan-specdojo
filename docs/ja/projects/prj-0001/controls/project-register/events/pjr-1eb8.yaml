@@ -1,0 +1,31 @@
+# yaml-language-server: $schema=../../../../../../specdojo/schemas/v1/register-events.schema.yaml
+- v: 1
+  id: reg_3c64a5e1ee274ff386ed46b7318fe8dc
+  ts: "2026-11-10T22:53:43Z"
+  action: add
+  actor: specdojo-orchestrator
+  from_status: null
+  to_status: open
+  reason: naoji の依頼で、区切りごとの現行保証を 1 つの note に追記して残す
+  changes:
+    - field: status
+      from: ""
+      to: open
+    - field: title
+      from: ""
+      to: 上流への PR の区切りごとの現行保証
+    - field: description
+      from: ""
+      to: フロントエンドの上流への PR（区切り 1〜6）ごとに、変わったこと、何がどのテストや確かめで保証されているか、保証できていないことを記録する。区切りの PR を準備するたびに追記する。
+    - field: type
+      from: ""
+      to: note
+    - field: priority
+      from: ""
+      to: medium
+    - field: owner
+      from: ""
+      to: _TODO_
+    - field: registered
+      from: ""
+      to: "2026-11-10"
