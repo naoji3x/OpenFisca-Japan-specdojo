@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "task_id": "PJR-YVA9",
+  "run_id": "20261110T231235300Z-f6e9a16f",
+  "updated_at": "2026-11-10T23:26:31.758Z",
+  "stages": {
+    "executor": {
+      "status": "succeeded",
+      "actor": "sol-executor",
+      "attempts": 1,
+      "started_at": "2026-11-10T23:13:42.639Z",
+      "completed_at": "2026-11-10T23:22:41.532Z",
+      "artifact_ref": "docs/ja/projects/prj-0001/execution/exec/evidence/PJR-YVA9/20261110T231235300Z-f6e9a16f/evidence.json"
+    },
+    "reporter": {
+      "status": "succeeded",
+      "actor": "gemma-reporter",
+      "attempts": 1,
+      "started_at": "2026-11-10T23:22:41.542Z",
+      "completed_at": "2026-11-10T23:25:33.958Z",
+      "artifact_ref": "docs/ja/projects/prj-0001/execution/exec/results/pjr-yva9-20261110T231235Z-37cbf413-result.md"
+    },
+    "integrate": {
+      "status": "succeeded",
+      "actor": "gemma-reporter",
+      "attempts": 2,
+      "started_at": "2026-11-10T23:26:24.898Z",
+      "completed_at": "2026-11-10T23:26:31.758Z",
+      "artifact_ref": null,
+      "repos": {
+        "project": {
+          "status": "merged",
+          "commit": null,
+          "merged_at": "2026-11-10T23:26:30.286Z"
+        },
+        "openfisca-japan": {
+          "status": "merged",
+          "commit": "ef2f63c6d03ab46da1118715153182e0d4be9473",
+          "merged_at": "2026-11-10T23:26:30.284Z"
+        }
+      }
+    }
+  },
+  "artifacts": {
+    "plan_ref": "docs/ja/projects/prj-0001/execution/exec/plans/pjr-yva9-20261110T231235Z-37cbf413-plan.md",
+    "result_ref": "docs/ja/projects/prj-0001/execution/exec/results/pjr-yva9-20261110T231235Z-37cbf413-result.md"
+  },
+  "integration_branches": {
+    "openfisca-japan": "feature/frontend-vite8-storybook"
+  }
+}

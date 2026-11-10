@@ -7,13 +7,12 @@ specdojo:
   part_of:
     - prj-0001:pjr-index
   item_type: todo
-  item_status: waiting
+  item_status: review
   priority: high
   difficulty: hard
   owner: DEV
   registered_at: "2026-11-10T22:59:14Z"
   due_on: "2026-11-30"
-  block_reason: "integrate failed: project: Result Markdown notation violation before commit: docs/ja/projects/prj-0001/execution/exec/results/pjr-yva9-20261110T231235Z-37cbf413-result.md:37:1208 error MD038/no-space-…"
   derived_from:
     - PJR-1EB8
     - PJR-X4PS
@@ -54,16 +53,87 @@ specdojo:
 
 ## 4. 作業内容
 
-| No  | 作業                                                                | 担当                  | 状態 | メモ |
-| --- | ------------------------------------------------------------------- | --------------------- | ---- | ---- |
-| 1   | 撮る条件と画面を `capture.mjs` から移し、比較のテストを書く         | DEV                   | open | -    |
-| 2   | 見た目の設定、撮る・比べるコマンド、`docs/dev_note.md` の手順を書く | DEV                   | open | -    |
-| 3   | CI の変更案を書く                                                   | DEV                   | open | -    |
-| 4   | 期待値を `develop` から撮って commit し、区切り 2 で比べる          | specdojo-orchestrator | open | -    |
+| No  | 作業                                            | 担当                  | 状態 | メモ                                                  |
+| --- | ----------------------------------------------- | --------------------- | ---- | ----------------------------------------------------- |
+| 1   | 撮影条件と13画面を移し、画像・ARIA の比較を書く | DEV                   | done | PC・スマートフォンの26件、画素差0・ARIA の deep-equal |
+| 2   | 専用設定・Docker コマンド・開発手順を書く       | DEV                   | done | develop の commit を archive して独立に build する    |
+| 3   | CI の変更案を書く                               | DEV                   | done | 下記差分。保護設定への反映は統合後                    |
+| 4   | develop から撮影・commit し、区切り2で比較する  | specdojo-orchestrator | open | `requires_human`。naoji の承認後にホストで行う        |
 
 ## 5. 対応結果
 
--
+### 実装と変更ファイル
+
+- `openfisca-japan:dashboard/e2e/visual/screens.spec.ts`: 元の `capture.mjs` の13画面・操作・固定応答・撮影条件を移した。画像は全ページの `toHaveScreenshot`、構造は body の `toMatchAriaSnapshot` で比較する。同じケースの両方の差を残すため soft assertion を使う。結果画面はURLの到達も確認する。
+- `openfisca-japan:dashboard/playwright.visual.config.ts`: Chromium、PC 1280×800・スマートフォン390×844の26件。`deviceScaleFactor: 1`、`reducedMotion: 'reduce'`、`ja-JP`・`Asia/Tokyo`、固定日時、Google Fonts・計測通信の遮断、アニメーション停止CSS、400ms・結果後800msの待機を採用。`threshold: 0`・`maxDiffPixels: 0`、ARIA は `deep-equal`。撮影と比較を同じDocker・CPUアーキテクチャで行うので、期待値名にOSを含めない。比較時は `updateSnapshots: 'none'`。
+- `openfisca-japan:dashboard/e2e/visual/baselines.ts`: 期待値のないときにPNG・ARIAの不足パスと撮影手順を示して失敗させる。撮影以外のCLIによる更新指定もテスト側で拒否する。
+- `openfisca-japan:dashboard/e2e/visual/docker.sh`: `compare` は現在のソースをbuild、`capture` は既定で `6e5a6c6` の `dashboard` を `git archive` で取り出し、そのlockfileで独立にinstall・buildする。旧buildを新しいテストで撮影するため、区切り2の出力が初回の期待値に混ざらない。同じ公式イメージ・`linux/amd64`・コンテナ専用の依存volumeを使い、Playwrightの実版も1.64.1か検査する。撮影成功後は `snapshots/source.json` に出典commit・イメージ・版・platformを記録する。executor はスクリプト内のinstall・Docker実行を行っていない。
+- `openfisca-japan:dashboard/playwright.config.ts`: `testIgnore: '**/visual/**'` を追加し、通常E2Eの5件を維持。`openfisca-japan:dashboard/e2e/tsconfig.json` は専用設定も型検査する。
+- `openfisca-japan:docs/dev_note.md`: 旧developからの撮影、比較、見た目を変えるPRでcommitを指定して撮り直す運用、差分レビュー、出典、失敗時の画像・ARIA・trace・HTML reportの場所を追記。既存のstoryに関する記述も適用範囲を明確にした。
+- この個票の作業内容・対応結果を更新した。本番の `dashboard/src`、依存、lockfile、保護設定、登録簿一覧、個票のステータス、result、Git設定・commitは変更していない。
+
+### 検証
+
+- `dashboard` の `npm run test` は6ファイル・937件成功。`npm run lint`・`npm run pretty:check`・pre-commit相当の `npm run pretty`・`npm run build` は成功。buildには従来どおり500kB超chunkの警告がある。
+- `npx --no-install tsc --project e2e/tsconfig.json` と `bash -n e2e/visual/docker.sh` が成功。見た目用 `--list` は13画面×2の26件、通常の `--list` は3ファイル・5件を確認した。
+- 期待値不足は、`tmp/` の一時設定で元の設定から `webServer` だけを無効化し、desktop の top を実行して検証した。終了コード1、不足するPNGとARIAのパス、撮影コマンド、ブラウザー起動前の失敗を確認するassertionが成功。期待値は生成されていない。一時設定とログは削除した。
+- 個票のPrettier・markdownlint、登録簿buildのdry-run、両リポジトリの `git diff --check` が成功した。`catalog_path` がないためcatalog検査は非適用、executorのYAML変更がないためschema検査は非適用。projectには適用可能なtest・typecheck scriptがなく、productルートにはMarkdown検査用のpackage定義がない。
+
+### 保護設定の変更案
+
+`dashboard/package.json` の変更は不要。依存を足さず、実行コマンドは `bash e2e/visual/docker.sh capture` と `bash e2e/visual/docker.sh compare` として用意した。
+
+`.github/workflows/test_frontend.yml` に次のjobを追加する案。既存のtest jobを維持し、同じ公式イメージ内で比較し、失敗時に画像・ARIAの差分、trace、HTML reportをartifactとして残す。反映は統合後に orchestrator が naoji の承認のもとで行う。
+
+```diff
+--- a/.github/workflows/test_frontend.yml
++++ b/.github/workflows/test_frontend.yml
+@@ -39,3 +39,37 @@
+       - name: Playwright smoke
+         run: npm run test:e2e
+         working-directory: ./dashboard
++
++  visual:
++    runs-on: ubuntu-latest
++    container:
++      image: mcr.microsoft.com/playwright:v1.64.1-noble
++      options: --ipc=host
++    defaults:
++      run:
++        working-directory: dashboard
++    env:
++      HUSKY: '0'
++    steps:
++      - name: Checkout
++        uses: actions/checkout@v4
++      - name: Set up Node
++        uses: actions/setup-node@v4
++        with:
++          node-version: 26.4.0
++      - name: Install packages
++        run: npm ci
++      - name: Check Playwright version
++        run: node -e "require('node:assert/strict').equal(require('@playwright/test/package.json').version, '1.64.1')"
++      - name: Build
++        run: npm run build
++      - name: Compare visual and ARIA snapshots
++        run: npx --no-install playwright test --config playwright.visual.config.ts
++      - name: Upload visual differences
++        if: failure()
++        uses: actions/upload-artifact@v4
++        with:
++          name: playwright-visual-differences
++          path: tmp/playwright-visual/
++          if-no-files-found: warn
++          retention-days: 14
+```
+
+### 統合後の申し送り
+
+- `requires_human`: 実際のDocker撮影・比較はsandboxでは行わない。orchestrator は `--integration-branch openfisca-japan=feature/frontend-vite8-storybook` で統合した後、ホストの `dashboard` で `bash e2e/visual/docker.sh capture` を実行する。出典が旧developの `6e5a6c6` であることを `snapshots/source.json` で確認し、PNG26枚・ARIA26件と出典をレビューして、naoji の承認のもとで区切り2のブランチへcommitする。その後 `bash e2e/visual/docker.sh compare` で差がないことを確認する。`build.target` 指定は先行タスクで統合済み。
+- 差が出た場合は期待値や許容値を黙って変更せず、内容を [[prj-0001:pjr-1eb8-frontend-pr-assurance|PJR-1EB8]] に記録して naoji と扱いを決める。通常E2Eの実走もホストで確認する。
+- 上のCI差分を naoji の承認後に反映し、期待値を含むPRでvisual jobが通ること、意図した画面差分を加えた場合に失敗してartifactにexpected・actual・diffが残ることを確認する。画像とARIAの実際の差分検出は期待値撮影後の人間側検証に含める。
+- reporter / runner は本節とexecutor evidenceをresultに反映する。executorはresultを直接編集しない。
 
 ## 6. 関連ドキュメント
 
