@@ -9,6 +9,7 @@ specdojo:
   item_type: note
   item_status: open
   priority: medium
+  owner: DEV
   registered_at: "2026-11-10T22:53:43Z"
   due_on: null
 ---

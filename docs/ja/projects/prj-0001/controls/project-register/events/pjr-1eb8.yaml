@@ -29,3 +29,16 @@
     - field: registered
       from: ""
       to: "2026-11-10"
+- v: 1
+  id: reg_2a2bafbd8ad0477bad092d6309165aa3
+  ts: "2026-11-10T22:59:02Z"
+  action: update
+  actor: specdojo-orchestrator
+  from_status: open
+  to_status: open
+  reason: naoji が担当を DEV に決めた
+  changes:
+    - field: owner
+      from: _TODO_
+      to: DEV
+  previous_event_id: reg_3c64a5e1ee274ff386ed46b7318fe8dc
