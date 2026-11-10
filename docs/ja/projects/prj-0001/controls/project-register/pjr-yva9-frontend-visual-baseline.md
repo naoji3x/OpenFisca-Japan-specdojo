@@ -7,13 +7,12 @@ specdojo:
   part_of:
     - prj-0001:pjr-index
   item_type: todo
-  item_status: waiting
+  item_status: in-progress
   priority: high
   difficulty: hard
   owner: DEV
   registered_at: "2026-11-10T22:59:14Z"
   due_on: "2026-11-30"
-  block_reason: "integrate failed: project: Result Markdown notation violation before commit: docs/ja/projects/prj-0001/execution/exec/results/pjr-yva9-20261110T231235Z-37cbf413-result.md:37:1208 error MD038/no-space-…"
   derived_from:
     - PJR-1EB8
     - PJR-X4PS

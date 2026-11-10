@@ -1,0 +1,113 @@
+画像・ARIAの比較テスト26件とDocker実行手順を追加しました。単体テスト937件、lint、整形、build、型検査は成功しています。期待値の撮影とCI反映は統合後の申し送りです。
+
+<specdojo_executor_evidence>
+{
+  "completion_status": "complete",
+  "final_message": "13画面×2の画像・ARIA比較、専用設定、旧developからのDocker撮影・比較コマンド、開発手順を実装し、個票に検証結果とCI変更案を記録した。通常E2Eは5件を維持した。",
+  "handoff": [
+    "統合先は `--integration-branch openfisca-japan=feature/frontend-vite8-storybook`。統合後、orchestratorがホストのdashboardで `bash e2e/visual/docker.sh capture` を実行する。旧developの `6e5a6c6` を独立にbuildして撮影する。PNG26枚・ARIA26件・出典の `snapshots/source.json` をレビューし、naojiの承認後にcommitする。その後 `bash e2e/visual/docker.sh compare` で差がないことを確認する。差が出た場合はPJR-1EB8に記録し、naojiと扱いを決める。",
+    "保護設定の `dashboard/package.json` は変更不要。`.github/workflows/test_frontend.yml` への追加案は次の差分。個票の「5. 対応結果」にも記録済み。反映は統合後にnaojiの承認のもとで行う。\n```diff\n--- a/.github/workflows/test_frontend.yml\n+++ b/.github/workflows/test_frontend.yml\n@@ -39,3 +39,37 @@\n       - name: Playwright smoke\n         run: npm run test:e2e\n         working-directory: ./dashboard\n+\n+  visual:\n+    runs-on: ubuntu-latest\n+    container:\n+      image: mcr.microsoft.com/playwright:v1.64.1-noble\n+      options: --ipc=host\n+    defaults:\n+      run:\n+        working-directory: dashboard\n+    env:\n+      HUSKY: '0'\n+    steps:\n+      - name: Checkout\n+        uses: actions/checkout@v4\n+      - name: Set up Node\n+        uses: actions/setup-node@v4\n+        with:\n+          node-version: 26.4.0\n+      - name: Install packages\n+        run: npm ci\n+      - name: Check Playwright version\n+        run: node -e \"require('node:assert/strict').equal(require('@playwright/test/package.json').version, '1.64.1')\"\n+      - name: Build\n+        run: npm run build\n+      - name: Compare visual and ARIA snapshots\n+        run: npx --no-install playwright test --config playwright.visual.config.ts\n+      - name: Upload visual differences\n+        if: failure()\n+        uses: actions/upload-artifact@v4\n+        with:\n+          name: playwright-visual-differences\n+          path: tmp/playwright-visual/\n+          if-no-files-found: warn\n+          retention-days: 14\n```",
+    "期待値撮影後、画像・ARIAの実際の差分検出、CI失敗時のexpected・actual・diff画像とtrace・HTML reportのartifact保存、通常E2Eの実走をホスト側で確認する。",
+    "変更ファイルは `openfisca-japan:dashboard/e2e/visual/{screens.spec.ts,baselines.ts,docker.sh}`、`openfisca-japan:dashboard/playwright.visual.config.ts`、`openfisca-japan:dashboard/playwright.config.ts`、`openfisca-japan:dashboard/e2e/tsconfig.json`、`openfisca-japan:docs/dev_note.md`、projectの対象個票。reporter / runnerが個票と本報告をresultへ反映する。executorはresultを編集していない。"
+  ],
+  "validations": [
+    {
+      "command": "npm run test",
+      "status": "passed",
+      "summary": "dashboardで6ファイル・937件成功。"
+    },
+    {
+      "command": "npm run lint",
+      "status": "passed",
+      "summary": "dashboardで成功。"
+    },
+    {
+      "command": "npm run pretty",
+      "status": "passed",
+      "summary": "dashboardのpre-commit相当の整形が成功。"
+    },
+    {
+      "command": "npm run pretty:check",
+      "status": "passed",
+      "summary": "dashboardで成功。"
+    },
+    {
+      "command": "npm run build",
+      "status": "passed",
+      "summary": "dashboardで成功。既存の500kB超chunk警告あり。"
+    },
+    {
+      "command": "npx --no-install tsc --project e2e/tsconfig.json",
+      "status": "passed",
+      "summary": "専用設定とE2Eコードの型検査が成功。"
+    },
+    {
+      "command": "bash -n e2e/visual/docker.sh",
+      "status": "passed",
+      "summary": "シェル構文検査が成功。"
+    },
+    {
+      "command": "npx --no-install playwright test --config playwright.visual.config.ts --list",
+      "status": "passed",
+      "summary": "13画面×2の26件を確認。"
+    },
+    {
+      "command": "npx --no-install playwright test --list",
+      "status": "passed",
+      "summary": "通常E2Eは3ファイル・5件。"
+    },
+    {
+      "command": "npx --no-install playwright test --config ../tmp/visual-preflight.config.ts --project desktop --grep 'top$' --max-failures=1",
+      "status": "passed",
+      "summary": "サーバーを無効にした一時設定で、期待値不足による終了コード1、PNG・ARIAの不足パス、撮影コマンド、ブラウザー起動前の失敗を確認。期待値は生成せず、一時ファイルは削除済み。"
+    },
+    {
+      "command": "npx --no-install prettier --write docs/ja/projects/prj-0001/controls/project-register/pjr-yva9-frontend-visual-baseline.md",
+      "status": "passed",
+      "summary": "個票の整形が成功。"
+    },
+    {
+      "command": "npx --no-install markdownlint docs/ja/projects/prj-0001/controls/project-register/pjr-yva9-frontend-visual-baseline.md",
+      "status": "passed",
+      "summary": "個票のMarkdown検査が成功。"
+    },
+    {
+      "command": "npx --no-install specdojo register build --project prj-0001 --dry-run",
+      "status": "passed",
+      "summary": "登録簿を書き換えず生成検証が成功。"
+    },
+    {
+      "command": "git diff --check",
+      "status": "passed",
+      "summary": "projectとopenfisca-japanの両方で成功。"
+    },
+    {
+      "command": "specdojo catalog validate",
+      "status": "not_applicable",
+      "summary": "非適用。",
+      "reason": "対象projectに `catalog_path` の設定がない。"
+    },
+    {
+      "command": "npm run validate:schema:file",
+      "status": "not_applicable",
+      "summary": "非適用。",
+      "reason": "該当scriptがなく、executorによるYAML変更もない。"
+    },
+    {
+      "command": "bash e2e/visual/docker.sh capture",
+      "status": "requires_human",
+      "summary": "Docker・ブラウザー・サーバー・ネットワークが必要なため、指定どおり統合後にorchestratorが旧developから撮影する。"
+    },
+    {
+      "command": "bash e2e/visual/docker.sh compare",
+      "status": "requires_human",
+      "summary": "期待値撮影後、同じ公式Dockerイメージ内で区切り2との差がないことを確認する。"
+    },
+    {
+      "command": "npm run test:e2e",
+      "status": "requires_human",
+      "summary": "ブラウザーとpreviewサーバーを伴う実走は統合後にホスト側で確認する。"
+    }
+  ]
+}
+</specdojo_executor_evidence>
