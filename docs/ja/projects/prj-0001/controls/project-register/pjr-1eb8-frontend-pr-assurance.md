@@ -51,7 +51,7 @@ specdojo:
 保証できていないこと:
 
 - ~~対応するブラウザーの範囲~~: Vite の既定の build の `target` が 8.3 で上がる問題は、[[prj-0001:pjr-fbvp-frontend-build-target|PJR-FBVP]]（`938caa0`）で `build.target` を Vite 2.9 と同じ値に指定して直した。出力の JS が ES2019 として読めることを確かめた（2026-11-10）。bundle は約 1.3% 大きくなった。
-- 区切り 2 だけを当てた状態の見た目（区切り 3 のあとの状態で比べた）。
+- ~~区切り 2 だけを当てた状態の見た目~~: [[prj-0001:pjr-yva9-frontend-visual-baseline|PJR-YVA9]] で、更新の前の `develop`（`6e5a6c6`）から撮った期待値（13 画面 × PC・スマートフォンの画像と ARIA スナップショット）と、区切り 2（`ef2f63c`、`build.target` の指定のあと）を Playwright の Docker イメージの中で比べ、26 件すべてが一致した（2026-11-10）。期待値の commit は naoji の承認待ち。
 - story に移した 30 件が移す前と同じことを確かめているか（executor が移すときに記録した。orchestrator は 1 件ずつは突き合わせていない）。
 - Cloudflare Pages での実際の build と配信（取り込む前にはプレビューがない）。取り込んだあとに開発版のページで確かめる。
 - a11y: story の検査で全 story に違反がある（Chakra UI のトーストのランドマークの重複、コントラスト、リンクの名前）。前からあったもので、区切り 4 と [[prj-0001:pjr-bn8w-a11y-contrast-landmark\|PJR-BN8W]] で扱う。

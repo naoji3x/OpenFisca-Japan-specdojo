@@ -135,6 +135,15 @@ specdojo:
 - 上のCI差分を naoji の承認後に反映し、期待値を含むPRでvisual jobが通ること、意図した画面差分を加えた場合に失敗してartifactにexpected・actual・diffが残ることを確認する。画像とARIAの実際の差分検出は期待値撮影後の人間側検証に含める。
 - reporter / runner は本節とexecutor evidenceをresultに反映する。executorはresultを直接編集しない。
 
+### orchestrator の確認（2026-11-10、specdojo-orchestrator）
+
+- 1 回目の run は、reporter の結果の Markdown の MD038（コードの書式の閉じる記号の前の空白）で統合の前に止まった。空白を 1 つ取って `--resume` し、`ef2f63c` で統合された。
+- `e2e/visual/docker.sh` は、リポジトリをホストの Docker に bind mount する。このコンテナは docker-outside-of-docker のため bind mount のパスがホストから見えず、そのままは流せない。同じ手順を、`git archive` で取り出したファイルを `docker cp` でコンテナに渡す形で再現した（`--platform linux/amd64`、`mcr.microsoft.com/playwright:v1.64.1-noble`、イメージの Node.js は 26.13.0）。
+- **期待値を撮った**: `develop`（`6e5a6c66853386ba689bbc7b2ab986dbe81517c3`）の `dashboard` をその版の lockfile で `npm ci` と build し、区切り 2 のテスト（`ef2f63c`）で撮った。26 件が通り（約 4 分）、PNG 26 枚・`.aria.yml` 26 個・`source.json` の 53 ファイル（2.8 MB）ができた。トップ（PC）と結果の両方（スマートフォン）の画像を目で見て、日本語のフォントで正しい画面になっていることを確かめた。
+- **区切り 2 で比べた**: 同じイメージで `ef2f63c` を `npm ci` と build し、比べた。26 件すべてで、画像は差 0 画素、ARIA スナップショットも一致した（約 2 分）。
+- **比べ方が違いを見つけることを確かめた**: コンテナの中のコピーで `src/config/app_config.json` の「安心」を「安全」に変えて比べると、トップ（PC・スマートフォン）と同意の画面（スマートフォン。後ろにトップが見える）で、画像と ARIA スナップショットの比較が失敗した。
+- 期待値の commit と CI の変更は、naoji の承認を待つ。CI の変更案の `setup-node`（26.4.0）は、イメージの Node.js（26.13.0）で確かめたことと合わせるため、外すことを提案する。
+
 ## 6. 関連ドキュメント
 
 - 由来: [[prj-0001:pjr-1eb8-frontend-pr-assurance|PJR-1EB8]]（区切り 2 の見た目の保証）、[[prj-0001:pjr-x4ps-frontend-visual-regression-upstream|PJR-X4PS]]（見た目の回帰テストを上流に入れる）
