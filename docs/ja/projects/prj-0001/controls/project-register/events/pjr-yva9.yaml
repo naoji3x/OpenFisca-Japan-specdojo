@@ -44,3 +44,32 @@
     - field: commit_type
       from: ""
       to: test
+- v: 1
+  id: reg_1688176c5e6444d898e11b4938100f8b
+  ts: "2026-11-10T23:12:38Z"
+  action: start
+  actor: sol-executor
+  from_status: open
+  to_status: in-progress
+  reason: work started
+  changes:
+    - field: status
+      from: open
+      to: in-progress
+  previous_event_id: reg_2e481cc947604380b4ee227832f2921c
+- v: 1
+  id: reg_70e4db3612eb4369a055f9a0fd325dc7
+  ts: "2026-11-10T23:25:39Z"
+  action: wait
+  actor: sol-executor
+  from_status: in-progress
+  to_status: waiting
+  reason: "integrate failed: project: Result Markdown notation violation before commit: docs/ja/projects/prj-0001/execution/exec/results/pjr-yva9-20261110T231235Z-37cbf413-result.md:37:1208 error MD038/no-space-…"
+  changes:
+    - field: status
+      from: in-progress
+      to: waiting
+    - field: block_reason
+      from: "-"
+      to: "integrate failed: project: Result Markdown notation violation before commit: docs/ja/projects/prj-0001/execution/exec/results/pjr-yva9-20261110T231235Z-37cbf413-result.md:37:1208 error MD038/no-space-…"
+  previous_event_id: reg_1688176c5e6444d898e11b4938100f8b
