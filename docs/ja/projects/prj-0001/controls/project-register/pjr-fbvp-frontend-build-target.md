@@ -44,14 +44,34 @@ Vite 8 は既定の build の target を Chrome 111・Safari 16.4・iOS 16.4 な
 
 ## 4. 作業内容
 
-| No  | 作業                                               | 担当 | 状態 | メモ |
-| --- | -------------------------------------------------- | ---- | ---- | ---- |
-| 1   | `build.target`（と必要なら `cssTarget`）を指定する | DEV  | open | -    |
-| 2   | 出力の構文と大きさを確かめる                       | DEV  | open | -    |
+| No  | 作業                                               | 担当 | 状態 | メモ                                                       |
+| --- | -------------------------------------------------- | ---- | ---- | ---------------------------------------------------------- |
+| 1   | `build.target`（と必要なら `cssTarget`）を指定する | DEV  | done | JS・CSS とも旧 target になることを解決済み設定で確認       |
+| 2   | 出力の構文と大きさを確かめる                       | DEV  | done | 通常・GitHub Pages 用 build の構文・サイズ・パスを確認済み |
 
 ## 5. 対応結果
 
--
+- `openfisca-japan:dashboard/vite.config.mts` の `build.target` に `['es2019', 'edge88', 'firefox78', 'chrome87', 'safari13.1']` を指定し、Vite 8 が既定値を引き上げたため Vite 2.9 の対応範囲を維持する旨をコメントに記載した。
+- CSS の追加指定は不要。インストール済み Vite 8.3.5 の `dist/node/index.d.ts` は `cssTarget` の既定を `target` と定義し、`dist/node/chunks/node.js` の `resolveBuildEnvironmentOptions` も `cssTarget: merged.cssTarget ?? merged.target` と解決する。既定の CSS transformer は `postcss` で、CSS minification は `config.build.cssTarget` を使う。`resolveConfig({}, 'build')` で JS・CSS の target がどちらも上記配列になることを assert で確認した。
+- 開発用の `server`・`optimizeDeps`、plugins、環境変数に応じた `base` は変更していない。`resolveConfig({}, 'serve')` で `base: '/'` と既定 port 5173 を確認し、`dev` script の port 30000・host 指定も維持されている。変更は build 設定だけであり、開発サーバーの設定には影響しない。
+- `dashboard` の `npm run test`（6 ファイル・937 テスト）、`npm run lint`、`npm run pretty:check`、pre-commit 相当の `npm run pretty`、変更前後の `npm run build` が成功した。`GITHUB_PAGES=true npm run build` も成功した。500 kB 超の chunk 警告は変更前後に出るが、build は成功している。
+- 構文の検証には既存のローカル依存 Acorn 8.11.2 を使用した。通常 build と GitHub Pages 用 build が出力した `dist/assets/*.js` 全件（各 1 ファイル）を `sourceType: 'module'`・`ecmaVersion: 2019` で解析し、両方で成功した。さらに最新版構文の AST を走査した結果、変更前に optional chaining 444 件・nullish coalescing 241 件・論理代入 89 件あったものが、変更後はすべて 0 件になった。文字列・コメントを誤検出するテキスト検索を避け、ES2019 を超える構文の残存も検出するため、この方法を採用した。
+- GitHub Pages 用 `dist/index.html` の `src`・`href` にある `/assets/` への参照 5 件が、すべて `/OpenFisca-Japan/assets/…` で始まり、参照先ファイルも存在することを assert で確認した。
+- 個票の Prettier・markdownlint と両リポジトリの `git diff --check` が成功した。登録簿一覧を書き換えないよう、pre-commit の register build 相当は `npx --no-install specdojo register build --project prj-0001 --dry-run` で検証し、成功した。`catalog_path` がないため catalog 検証は非適用、YAML の変更がないため schema 検証も非適用。
+
+通常 build の JS bundle の比較（gzip は両方とも Node.js `gzipSync` の既定設定で圧縮し、同一条件で計測）:
+
+| 条件                | ファイル名          | JS bytes  | gzip bytes |
+| ------------------- | ------------------- | --------- | ---------- |
+| 変更前              | `index-C0B8qMKR.js` | 991,792   | 307,086    |
+| target 指定後       | `index-DJ7MYRBo.js` | 1,004,500 | 310,683    |
+| 差分                | -                   | +12,708   | +3,597     |
+| GitHub Pages 指定後 | `index-VvnOJk73.js` | 1,004,564 | 310,716    |
+
+JS は約 1.28%、gzip は約 1.17% 増えた。構文の書き換えによる想定内の増加である。
+
+- 申し送り: `npm run test:ui` と `npm run test:e2e` は `requires_human`。ブラウザー起動と preview サーバーの listen を伴うため、統合後に orchestrator がホスト側の `dashboard` で実行する。通常の build・AST 解析・パス検証は sandbox 内で完了している。
+- 保護設定の変更案はない。`dashboard/package.json`・`.github/workflows/**` の変更や依存追加は不要。登録簿一覧・個票のステータス・Git 設定・commit・result は変更していない。result への記録は reporter / runner が本節と executor evidence を反映する。
 
 ## 6. 関連ドキュメント
 
