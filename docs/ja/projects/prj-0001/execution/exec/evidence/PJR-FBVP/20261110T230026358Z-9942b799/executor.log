@@ -1,0 +1,116 @@
+<specdojo_executor_evidence>
+{
+  "completion_status": "complete",
+  "final_message": "Vite 2.9 と同じ build.target と理由コメントを追加しました。CSS も同じ target を継承すること、ES2019 構文、GitHub Pages のパスを確認し、個票に結果を記録しました。",
+  "handoff": [
+    "変更ファイル: `openfisca-japan:dashboard/vite.config.mts`、`docs/ja/projects/prj-0001/controls/project-register/pjr-fbvp-frontend-build-target.md`。result は reporter / runner が記入する。",
+    "result への記録事項: `build.cssTarget` は `build.target` を継承するため追加指定不要。通常・GitHub Pages 用の全出力 JS を Acorn 8.11.2 で ES2019 として解析でき、optional chaining・nullish coalescing・論理代入はいずれも 0 件。通常 bundle は 991,792 → 1,004,500 bytes（約 1.28% 増）、同一条件の gzip は 307,086 → 310,683 bytes（約 1.17% 増）。",
+    "統合後、orchestrator がホスト側の `dashboard` で `npm run test:ui` と `npm run test:e2e` を実行する。両検査はブラウザー・サーバー起動を必要とするため `requires_human`。保護設定の変更案はない。"
+  ],
+  "validations": [
+    {
+      "command": "npm run test",
+      "status": "passed",
+      "summary": "product の dashboard で 6 ファイル・937 テスト成功。"
+    },
+    {
+      "command": "npm run lint",
+      "status": "passed",
+      "summary": "product の dashboard で成功。"
+    },
+    {
+      "command": "npm run pretty:check",
+      "status": "passed",
+      "summary": "product の dashboard で成功。"
+    },
+    {
+      "command": "npm run pretty",
+      "status": "passed",
+      "summary": "product の pre-commit 相当。意図した設定以外の差分なし。"
+    },
+    {
+      "command": "npm run build",
+      "status": "passed",
+      "summary": "product の dashboard で変更前後とも成功。"
+    },
+    {
+      "command": "GITHUB_PAGES=true npm run build",
+      "status": "passed",
+      "summary": "GitHub Pages 用 build 成功。"
+    },
+    {
+      "command": "node --input-type=module",
+      "status": "passed",
+      "summary": "Vite の解決済み設定で JS・CSS の target が指定配列と一致。開発用 base・port も確認。"
+    },
+    {
+      "command": "node tmp/pjr-fbvp/check-bundle.cjs before latest /",
+      "status": "passed",
+      "summary": "変更前のサイズと AST を計測。一時スクリプトは検証後に削除済み。"
+    },
+    {
+      "command": "node tmp/pjr-fbvp/check-bundle.cjs after es2019 /",
+      "status": "passed",
+      "summary": "全出力 JS の ES2019 解析成功。対象の新構文は 0 件。"
+    },
+    {
+      "command": "node tmp/pjr-fbvp/check-bundle.cjs pages es2019 /OpenFisca-Japan/",
+      "status": "passed",
+      "summary": "ES2019 解析成功。HTML のアセット参照 5 件が所定の prefix を持ち、参照先も存在。"
+    },
+    {
+      "command": "node tools/specdojo-pre-commit.mjs prettier docs/ja/projects/prj-0001/controls/project-register/pjr-fbvp-frontend-build-target.md",
+      "status": "passed",
+      "summary": "個票の整形成功。"
+    },
+    {
+      "command": "node tools/specdojo-pre-commit.mjs markdownlint docs/ja/projects/prj-0001/controls/project-register/pjr-fbvp-frontend-build-target.md",
+      "status": "passed",
+      "summary": "個票の Markdown 検査成功。"
+    },
+    {
+      "command": "npx --no-install specdojo register build --project prj-0001 --dry-run > tmp/pjr-fbvp/register-build-dry-run.txt",
+      "status": "passed",
+      "summary": "登録簿一覧を書き換えず、生成処理と入力検証に成功。"
+    },
+    {
+      "command": "git diff --check",
+      "status": "passed",
+      "summary": "project の差分検査成功。"
+    },
+    {
+      "command": "git -C ../openfisca-japan diff --check",
+      "status": "passed",
+      "summary": "product の差分検査成功。"
+    },
+    {
+      "command": "npm run test:ui",
+      "status": "requires_human",
+      "summary": "product の dashboard で統合後にホスト側から実行。sandbox 外でブラウザー起動が必要。"
+    },
+    {
+      "command": "npm run test:e2e",
+      "status": "requires_human",
+      "summary": "product の dashboard で統合後にホスト側から実行。ブラウザーと preview サーバーが必要。"
+    },
+    {
+      "command": "npx --no-install specdojo catalog validate --project prj-0001",
+      "status": "not_applicable",
+      "summary": "catalog 検証は非適用。",
+      "reason": "対象 project に `catalog_path` が設定されていない。"
+    },
+    {
+      "command": "npm run validate:schema:file",
+      "status": "not_applicable",
+      "summary": "schema 検証は非適用。",
+      "reason": "YAML の変更がなく、project に該当 script もない。"
+    },
+    {
+      "command": "npm test",
+      "status": "not_applicable",
+      "summary": "project の test は非適用。product のテストは別途成功。",
+      "reason": "project の test script は npm init の仮置きである。"
+    }
+  ]
+}
+</specdojo_executor_evidence>
