@@ -2,17 +2,19 @@
 specdojo:
   id: prj-0001:pjr-fbvp-frontend-build-target
   type: project
-  status: draft
+  status: ready
   rulebook: specdojo:pjr-rulebook
   part_of:
     - prj-0001:pjr-index
   item_type: todo
-  item_status: review
+  item_status: done
   priority: high
   difficulty: easy
   owner: DEV
   registered_at: "2026-11-10T22:59:04Z"
   due_on: "2026-11-30"
+  completed_at: "2026-11-10T23:12:11Z"
+  conclusion: vite.config.mts の build.target を Vite 2.9 と同じ es2019・Chrome 87・Edge 88・Firefox 78・Safari 13.1 にし、出力が ES2019 として読めることを確かめた
   derived_from:
     - PJR-1EB8
   commit_type: fix

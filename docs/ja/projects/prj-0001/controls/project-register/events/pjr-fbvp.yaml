@@ -67,3 +67,22 @@
       from: in-progress
       to: review
   previous_event_id: reg_94f2753e3eb0439f8b8de6b7956e1b9e
+- v: 1
+  id: reg_28ea094a9c2d41c8b74f8f03c6639f65
+  ts: "2026-11-10T23:12:11Z"
+  action: close
+  actor: specdojo-orchestrator
+  from_status: review
+  to_status: done
+  reason: orchestrator が統合のあとに test:ui・E2E・構文の解析を流して確かめた
+  changes:
+    - field: status
+      from: review
+      to: done
+    - field: completed
+      from: "-"
+      to: "2026-11-10"
+    - field: conclusion
+      from: "-"
+      to: vite.config.mts の build.target を Vite 2.9 と同じ es2019・Chrome 87・Edge 88・Firefox 78・Safari 13.1 にし、出力が ES2019 として読めることを確かめた
+  previous_event_id: reg_5fe931cfe2b8457d9e54db4f1dd3a87e
