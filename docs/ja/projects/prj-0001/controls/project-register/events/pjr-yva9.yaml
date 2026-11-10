@@ -1,0 +1,46 @@
+# yaml-language-server: $schema=../../../../../../specdojo/schemas/v1/register-events.schema.yaml
+- v: 1
+  id: reg_2e481cc947604380b4ee227832f2921c
+  ts: "2026-11-10T22:59:14Z"
+  action: add
+  actor: specdojo-orchestrator
+  from_status: null
+  to_status: open
+  reason: naoji の判断で、期待値を区切り 2 の PR に入れ、実装を sol-executor に任せる
+  changes:
+    - field: status
+      from: ""
+      to: open
+    - field: title
+      from: ""
+      to: 区切り 2 の PR に、更新の前の画面の期待値と比べるテストを入れる
+    - field: description
+      from: ""
+      to: 更新の前の develop の画面を、画像（toHaveScreenshot）と画面の構造（ARIA スナップショット）の期待値として保存し、区切り 2 のあとに Playwright の Docker イメージの中で比べるテストと CI を作る。
+    - field: type
+      from: ""
+      to: todo
+    - field: priority
+      from: ""
+      to: high
+    - field: difficulty
+      from: ""
+      to: hard
+    - field: owner
+      from: ""
+      to: DEV
+    - field: registered
+      from: ""
+      to: "2026-11-10"
+    - field: due
+      from: ""
+      to: "2026-11-30"
+    - field: derived_from
+      from: ""
+      to: '["PJR-1EB8","PJR-X4PS"]'
+    - field: depends_on
+      from: ""
+      to: '["PJR-FBVP"]'
+    - field: commit_type
+      from: ""
+      to: test
