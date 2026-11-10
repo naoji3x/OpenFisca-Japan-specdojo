@@ -73,6 +73,11 @@ JS は約 1.28%、gzip は約 1.17% 増えた。構文の書き換えによる�
 - 申し送り: `npm run test:ui` と `npm run test:e2e` は `requires_human`。ブラウザー起動と preview サーバーの listen を伴うため、統合後に orchestrator がホスト側の `dashboard` で実行する。通常の build・AST 解析・パス検証は sandbox 内で完了している。
 - 保護設定の変更案はない。`dashboard/package.json`・`.github/workflows/**` の変更や依存追加は不要。登録簿一覧・個票のステータス・Git 設定・commit・result は変更していない。result への記録は reporter / runner が本節と executor evidence を反映する。
 
+### orchestrator の確認（2026-11-10、specdojo-orchestrator）
+
+- `feature/frontend-vite8-storybook`（`938caa0`）を一時的な worktree に取り出し、`npm ci` から `npm run test`（937 件）・`lint`・`pretty:check`・`test:ui`（35 件）・`build` が通ることを確かめた。E2E は build のあと 5 件が 2 回とも通った。
+- 出力の JS（`dist/assets/index-DJ7MYRBo.js`）を acorn 8.11.2 で解析し、`ecmaVersion: 2019` では読め、`2018` では読めないことを確かめた（確かめ方が構文の版を見分けている）。Vite 2.9 の既定の `target` も `es2019` で、対応するブラウザーの範囲は今と同じ。
+
 ## 6. 関連ドキュメント
 
 - 由来: [[prj-0001:pjr-1eb8-frontend-pr-assurance|PJR-1EB8]]（区切り 2 の「保証できていないこと」）

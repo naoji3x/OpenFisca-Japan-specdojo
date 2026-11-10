@@ -50,7 +50,7 @@ specdojo:
 
 保証できていないこと:
 
-- **対応するブラウザーの範囲**: Vite の既定の build の `target` が、2.9 の `es2019`・Chrome 87・Edge 88・Firefox 78・Safari 13.1 から、8.3 の Chrome 111・Edge 111・Firefox 114・Safari 16.4・iOS 16.4 に上がる。`vite.config.mts` に `target` の指定がないため、区切り 2 を取り込むと iOS・Safari 16.4 より前、Chrome 111 より前のブラウザーで動かなくなるおそれがある。どのテストも新しいブラウザーで流しているため気づけない（2026-11-10 に orchestrator が Vite 2.9.13 と 8.3.5 の配布物の既定値を読んで確かめた）。
+- ~~対応するブラウザーの範囲~~: Vite の既定の build の `target` が 8.3 で上がる問題は、[[prj-0001:pjr-fbvp-frontend-build-target|PJR-FBVP]]（`938caa0`）で `build.target` を Vite 2.9 と同じ値に指定して直した。出力の JS が ES2019 として読めることを確かめた（2026-11-10）。bundle は約 1.3% 大きくなった。
 - 区切り 2 だけを当てた状態の見た目（区切り 3 のあとの状態で比べた）。
 - story に移した 30 件が移す前と同じことを確かめているか（executor が移すときに記録した。orchestrator は 1 件ずつは突き合わせていない）。
 - Cloudflare Pages での実際の build と配信（取り込む前にはプレビューがない）。取り込んだあとに開発版のページで確かめる。
@@ -63,8 +63,8 @@ specdojo:
 
 ## 3. フォローアップ
 
-- 区切り 2 の対応するブラウザーの範囲: `vite.config.mts` に今までと同じ `build.target`（`es2019`・Chrome 87・Edge 88・Firefox 78・Safari 13.1）を指定するか、上流と対応するブラウザーを決めるか、naoji の判断を待つ。
-- 区切り 2 の見た目の期待値: 更新の前の画面の期待値（画像と ARIA スナップショット）を区切り 2 の PR に入れる案を、naoji と検討中（[[prj-0001:pjr-x4ps-frontend-visual-regression-upstream\|PJR-X4PS]] と関わる）。
+- 区切り 2 の対応するブラウザーの範囲: naoji の判断（案 A）で、今までと同じ `build.target` を指定した（[[prj-0001:pjr-fbvp-frontend-build-target|PJR-FBVP]]、2026-11-10）。
+- 区切り 2 の見た目の期待値: 更新の前の画面の期待値（画像と ARIA スナップショット）を区切り 2 の PR に入れる（[[prj-0001:pjr-yva9-frontend-visual-baseline|PJR-YVA9]]、[[prj-0001:pjr-x4ps-frontend-visual-regression-upstream\|PJR-X4PS]] と関わる）。
 - 区切り 3〜6: PR を準備するたびに節を追記する。
 
 ## 4. 関連ドキュメント
