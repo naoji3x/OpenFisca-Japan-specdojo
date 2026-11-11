@@ -67,3 +67,22 @@
       from: in-progress
       to: review
   previous_event_id: reg_13ef1eb079144bb78f322684e9e8b412
+- v: 1
+  id: reg_1e02159f83f846b491059ec1e455ea66
+  ts: "2026-11-11T12:35:38Z"
+  action: close
+  actor: specdojo-orchestrator
+  from_status: review
+  to_status: done
+  reason: orchestrator が統合のあとに期待値を撮って比べ、naoji の承認のもとで期待値と CI を反映した
+  changes:
+    - field: status
+      from: review
+      to: done
+    - field: completed
+      from: "-"
+      to: "2026-11-11"
+    - field: conclusion
+      from: "-"
+      to: docker.sh を docker cp で渡す形にし、devcontainer から撮り直した期待値がバイト単位で同じで、compare も通ることを確かめた
+  previous_event_id: reg_1aa7270405d5448b8296d9b94744010f

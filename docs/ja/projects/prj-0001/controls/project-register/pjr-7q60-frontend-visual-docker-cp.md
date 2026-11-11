@@ -2,17 +2,19 @@
 specdojo:
   id: prj-0001:pjr-7q60-frontend-visual-docker-cp
   type: project
-  status: draft
+  status: ready
   rulebook: specdojo:pjr-rulebook
   part_of:
     - prj-0001:pjr-index
   item_type: todo
-  item_status: review
+  item_status: done
   priority: high
   difficulty: medium
   owner: DEV
   registered_at: "2026-11-11T12:12:08Z"
   due_on: "2026-11-30"
+  completed_at: "2026-11-11T12:35:38Z"
+  conclusion: docker.sh を docker cp で渡す形にし、devcontainer から撮り直した期待値がバイト単位で同じで、compare も通ることを確かめた
   derived_from:
     - PJR-YVA9
   commit_type: test
