@@ -7,7 +7,7 @@ specdojo:
   part_of:
     - prj-0001:pjr-index
   item_type: todo
-  item_status: open
+  item_status: review
   priority: high
   difficulty: medium
   owner: DEV
@@ -46,15 +46,23 @@ dashboard/e2e/visual/docker.sh の bind mount を、docker cp でファイルを
 
 ## 4. 作業内容
 
-| No  | 作業                                             | 担当                  | 状態 | メモ |
-| --- | ------------------------------------------------ | --------------------- | ---- | ---- |
-| 1   | bind mount を `docker cp` に置き換える           | DEV                   | open | -    |
-| 2   | `docs/dev_note.md` の手順を直す                  | DEV                   | open | -    |
-| 3   | このコンテナから撮って、期待値と同じかを確かめる | specdojo-orchestrator | open | -    |
+| No  | 作業                                           | 担当                  | 状態 | メモ                                                 |
+| --- | ---------------------------------------------- | --------------------- | ---- | ---------------------------------------------------- |
+| 1   | bind mount を `docker cp` に置き換える         | DEV                   | done | 入出力の転送・失敗時の結果回収・コンテナ削除を実装   |
+| 2   | `docs/dev_note.md` の手順を直す                | DEV                   | done | devcontainer とホストで共通の手順と回収先を記載      |
+| 3   | このコンテナから撮って、期待値と同じか確かめる | specdojo-orchestrator | open | `requires_human`。統合後に撮影・バイト比較・26件比較 |
 
 ## 5. 対応結果
 
--
+- `openfisca-japan:dashboard/e2e/visual/docker.sh` を、`docker create` → 入力の `docker cp` → `docker start --attach` → 結果の `docker cp` → コンテナ削除に変更した。bind mount とホストパスの Docker デーモンへの受け渡しはなくした。
+- 現在の `dashboard` は tar で転送し、保存済みの期待値、未commit・未追跡のファイル、ドットファイルを含める。commit 前の画面変更も比較するためである。`node_modules`・`dist`・`tmp` は階層を問わず除外し、依存と build はコンテナ内だけに作る。
+- capture のアプリは引き続き指定 commit の `git archive` と、その commit の lockfile から build する。使い方、固定イメージ、`linux/amd64`、現在のテストコード、`source.json` の完全な commit 値は維持した。成功時だけ期待値をリポジトリに戻す。
+- テスト失敗時も差分画像・report を回収し、テストの終了コードを返す。回収した `tmp/playwright-visual/` は前回分と置き換える。転送失敗と中断を含め、EXIT trap でコンテナとローカルの一時ファイルを削除する。
+- `openfisca-japan:docs/dev_note.md` に、devcontainer とホストで共通のコマンド、必要な CLI、転送対象、ホストの依存・build を使わないこと、結果回収と削除を記載した。保護された設定の変更、依存追加、Git 設定・commit の変更は不要だった。
+- 検証: `bash -n`、`shellcheck`、dashboard の `npm run test`（6ファイル・937件）、`npm run lint`、`npm run pretty:check`、`npm run build` が成功した。build には既存の bundle サイズ警告があるが、終了コードは 0。手順書の変更節を Prettier で整形した。
+- 個票の Prettier・markdownlint と、`specdojo register build --project prj-0001 --dry-run` が成功した。登録簿の一覧・状態を変更しないため、登録簿生成は dry-run で検査した。`catalog_path` が未設定なので catalog 検査は非適用。YAML の変更はなく schema 検査も非適用。result は reporter・runner が記入するため編集していない。
+- Docker CLI のモックによる14シナリオで、compare の成功・失敗、既定引数、capture の成功・失敗、build 失敗、入出力転送の失敗、コンテナ作成失敗、TERM、引数・ref の不正を確認した。空白入りパス、転送除外、未追跡・ドットファイルと期待値の転送、成功時だけの期待値回収、失敗結果の回収、終了コード、ホストの依存・build の保持、一時ファイルとコンテナの削除も確認した。モックは Docker デーモンを起動せず、依存をインストールしていない。
+- 申し送り（`requires_human`）: `feature/frontend-vite8-storybook` への統合後、orchestrator がこの devcontainer の `dashboard` で `bash e2e/visual/docker.sh capture 6e5a6c6` を実行し、回収された snapshots 一式（PNG・ARIA・`source.json`）が `3148deb` の期待値とバイト単位で一致することを確認する。続けて `bash e2e/visual/docker.sh compare` が26件成功することを確認する。実際の Docker・ブラウザー起動とネットワークは executor のサンドボックス外で必要なため、実測はここでは行っていない。
 
 ## 6. 関連ドキュメント
 
