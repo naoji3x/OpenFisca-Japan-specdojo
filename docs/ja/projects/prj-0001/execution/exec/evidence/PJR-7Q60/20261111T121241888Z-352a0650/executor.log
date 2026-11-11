@@ -1,0 +1,97 @@
+`docker cp` 方式への変更と手順書・個票の更新を完了しました。静的検査、937件のテスト、モック14シナリオが通過しています。実機での撮影・比較は統合後の申し送りです。
+
+<specdojo_executor_evidence>
+{
+  "completion_status": "complete",
+  "final_message": "openfisca-japan:dashboard/e2e/visual/docker.sh を bind mount から docker cp に変更し、失敗時の結果回収とコンテナ削除を実装。openfisca-japan:docs/dev_note.md と個票の作業内容・対応結果を更新した。result・登録簿の状態・保護設定は変更していない。",
+  "handoff": [
+    "`requires_human`: feature/frontend-vite8-storybook への統合後、orchestrator がこの devcontainer の dashboard で `bash e2e/visual/docker.sh capture 6e5a6c6` を実行し、回収された snapshots 一式（PNG・ARIA・source.json）が 3148deb の期待値とバイト単位で一致することを確認する。続けて `bash e2e/visual/docker.sh compare` が26件成功することを確認する。Docker・ブラウザー起動とネットワークが必要なため、executor のサンドボックスでは実行していない。個票の対応結果にも記載済み。"
+  ],
+  "validations": [
+    {
+      "command": "bash -n dashboard/e2e/visual/docker.sh && shellcheck dashboard/e2e/visual/docker.sh",
+      "status": "passed",
+      "summary": "openfisca-japan で構文検査・ShellCheck 成功。"
+    },
+    {
+      "command": "python3 tmp/pjr-7q60-docker-smoke.py",
+      "status": "passed",
+      "summary": "Docker モック14シナリオ成功。転送対象・除外、結果回収、終了コード、失敗・中断時の削除、ホストファイル保持を確認。一時検証ファイルは削除済み。"
+    },
+    {
+      "command": "npm run test",
+      "status": "passed",
+      "summary": "openfisca-japan/dashboard: 6ファイル・937件成功。"
+    },
+    {
+      "command": "npm run lint",
+      "status": "passed",
+      "summary": "openfisca-japan/dashboard: ESLint 成功。"
+    },
+    {
+      "command": "npm run pretty:check",
+      "status": "passed",
+      "summary": "openfisca-japan/dashboard: 整形確認成功。"
+    },
+    {
+      "command": "npm run build",
+      "status": "passed",
+      "summary": "openfisca-japan/dashboard: TypeScript・Vite build 成功。bundle サイズ警告あり。"
+    },
+    {
+      "command": "dashboard/node_modules/.bin/prettier --write --range-start 10090 --range-end 12727 docs/dev_note.md",
+      "status": "passed",
+      "summary": "openfisca-japan の手順書の変更節を整形。"
+    },
+    {
+      "command": "node tools/specdojo-pre-commit.mjs prettier docs/ja/projects/prj-0001/controls/project-register/pjr-7q60-frontend-visual-docker-cp.md",
+      "status": "passed",
+      "summary": "個票の整形成功。"
+    },
+    {
+      "command": "node tools/specdojo-pre-commit.mjs markdownlint docs/ja/projects/prj-0001/controls/project-register/pjr-7q60-frontend-visual-docker-cp.md",
+      "status": "passed",
+      "summary": "個票の Markdown 検査成功。"
+    },
+    {
+      "command": "node node_modules/specdojo/dist/specdojo.js register build --project prj-0001 --dry-run",
+      "status": "passed",
+      "summary": "登録簿生成をファイル変更なしで検査。"
+    },
+    {
+      "command": "specdojo catalog validate",
+      "status": "not_applicable",
+      "summary": "catalog 検査は非適用。",
+      "reason": "対象 project に `catalog_path` が設定されていない。"
+    },
+    {
+      "command": "npm run validate:schema:file",
+      "status": "not_applicable",
+      "summary": "schema 検査は非適用。",
+      "reason": "YAML の変更がなく、project の package.json に該当 script もない。"
+    },
+    {
+      "command": "npm test",
+      "status": "not_applicable",
+      "summary": "project リポジトリの test は非適用。",
+      "reason": "project の test script は npm init の仮置き。dashboard の実テストは別途実行済み。"
+    },
+    {
+      "command": "npx markdownlint ../docs/dev_note.md",
+      "status": "not_applicable",
+      "summary": "product 手順書の markdownlint は非適用。",
+      "reason": "openfisca-japan/dashboard の package.json に markdownlint 系依存がない。"
+    },
+    {
+      "command": "bash e2e/visual/docker.sh capture 6e5a6c6",
+      "status": "requires_human",
+      "summary": "統合後、この devcontainer から撮影し、3148deb の期待値とのバイト一致を確認する。"
+    },
+    {
+      "command": "bash e2e/visual/docker.sh compare",
+      "status": "requires_human",
+      "summary": "統合後、実際の Docker・ブラウザーで26件の成功を確認する。"
+    }
+  ]
+}
+</specdojo_executor_evidence>
