@@ -1,0 +1,43 @@
+# yaml-language-server: $schema=../../../../../../specdojo/schemas/v1/register-events.schema.yaml
+- v: 1
+  id: reg_df2cb03cced945eabcb869039cd8ee5c
+  ts: "2026-11-11T12:12:08Z"
+  action: add
+  actor: specdojo-orchestrator
+  from_status: null
+  to_status: open
+  reason: naoji の判断で、docker.sh の直しを executor に任せる
+  changes:
+    - field: status
+      from: ""
+      to: open
+    - field: title
+      from: ""
+      to: 画面の期待値を撮るスクリプトを、ホストの Docker を共有するコンテナからも流せるようにする
+    - field: description
+      from: ""
+      to: dashboard/e2e/visual/docker.sh の bind mount を、docker cp でファイルを渡して結果を取り出す形に変え、devcontainer（docker-outside-of-docker）からも、ふつうのホストからも同じように撮れるようにする。
+    - field: type
+      from: ""
+      to: todo
+    - field: priority
+      from: ""
+      to: high
+    - field: difficulty
+      from: ""
+      to: medium
+    - field: owner
+      from: ""
+      to: DEV
+    - field: registered
+      from: ""
+      to: "2026-11-11"
+    - field: due
+      from: ""
+      to: "2026-11-30"
+    - field: derived_from
+      from: ""
+      to: '["PJR-YVA9"]'
+    - field: commit_type
+      from: ""
+      to: test
