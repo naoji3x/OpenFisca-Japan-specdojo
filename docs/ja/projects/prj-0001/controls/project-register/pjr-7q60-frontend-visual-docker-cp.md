@@ -64,6 +64,13 @@ dashboard/e2e/visual/docker.sh の bind mount を、docker cp でファイルを
 - Docker CLI のモックによる14シナリオで、compare の成功・失敗、既定引数、capture の成功・失敗、build 失敗、入出力転送の失敗、コンテナ作成失敗、TERM、引数・ref の不正を確認した。空白入りパス、転送除外、未追跡・ドットファイルと期待値の転送、成功時だけの期待値回収、失敗結果の回収、終了コード、ホストの依存・build の保持、一時ファイルとコンテナの削除も確認した。モックは Docker デーモンを起動せず、依存をインストールしていない。
 - 申し送り（`requires_human`）: `feature/frontend-vite8-storybook` への統合後、orchestrator がこの devcontainer の `dashboard` で `bash e2e/visual/docker.sh capture 6e5a6c6` を実行し、回収された snapshots 一式（PNG・ARIA・`source.json`）が `3148deb` の期待値とバイト単位で一致することを確認する。続けて `bash e2e/visual/docker.sh compare` が26件成功することを確認する。実際の Docker・ブラウザー起動とネットワークは executor のサンドボックス外で必要なため、実測はここでは行っていない。
 
+### orchestrator の確認（2026-11-11、specdojo-orchestrator）
+
+- `feature/frontend-vite8-storybook`（`218046f`）を一時的な worktree に取り出し、`dashboard/e2e/visual/docker.sh` が `bash -n` と `shellcheck` を通ることを確かめた。
+- このコンテナ（docker-outside-of-docker）から `bash e2e/visual/docker.sh capture` を流した（約 5 分、終了コード 0）。期待値のファイルは worktree を作ったあとの時刻で書き直され、`3148deb` で commit した 53 ファイルとバイト単位で同じだった（`git diff` が空）。同じ手順で撮れば、期待値は揺れない。
+- 続けて `bash e2e/visual/docker.sh compare` を流した（約 2.5 分、終了コード 0）。`tmp/playwright-visual/test-results/` に失敗の記録はなかった。
+- このコンテナでは `docker start --attach` の出力が途中から届かないことがあり、ログに Playwright の結果の行は出なかった。終了コードは正しく返る（終了コード 3 で終わるコンテナで `docker start --attach` が 3 を返すことを確かめた）。スクリプトが作ったコンテナは残っていない。
+
 ## 6. 関連ドキュメント
 
 - 由来: [[prj-0001:pjr-yva9-frontend-visual-baseline|PJR-YVA9]]

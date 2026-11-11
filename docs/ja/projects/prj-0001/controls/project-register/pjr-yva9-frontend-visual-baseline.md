@@ -144,6 +144,13 @@ specdojo:
 - **比べ方が違いを見つけることを確かめた**: コンテナの中のコピーで `src/config/app_config.json` の「安心」を「安全」に変えて比べると、トップ（PC・スマートフォン）と同意の画面（スマートフォン。後ろにトップが見える）で、画像と ARIA スナップショットの比較が失敗した。
 - 期待値の commit と CI の変更は、naoji の承認を待つ。CI の変更案の `setup-node`（26.4.0）は、イメージの Node.js（26.13.0）で確かめたことと合わせるため、外すことを提案する。
 
+### 期待値と CI の反映（2026-11-11、specdojo-orchestrator）
+
+- naoji の承認で、`feature/frontend-vite8-storybook` に `3148deb`（期待値 53 ファイル）と `28c821e`（CI の `visual` の job）を積んだ。期待値の `.aria.yml` 26 個が prettier の書式に合わず、上流の `pretty:check` と commit の hook（`npm run pretty`）で失敗・書き換えが起きるため、`dashboard/.prettierignore` に `e2e/visual/snapshots` を足した（`3148deb` に含む）。CI の job は、executor の案から `setup-node` を外し、イメージの Node.js（26.13.0）で流す。
+- naoji の判断（2026-11-11）: 見た目の比較は CI に入れる（案 A）。期待値を上流に置くなら、CI で毎回比べないと古くなるため。
+- `docker.sh` を devcontainer からも流せるようにする直しは、[[prj-0001:pjr-7q60-frontend-visual-docker-cp|PJR-7Q60]] で行い、直したスクリプトで撮り直した期待値が `3148deb` とバイト単位で同じことを確かめた。
+- CI の `visual` の job は、上流の GitHub Actions でしか確かめられない。区切り 2 の PR の check で確かめる。
+
 ## 6. 関連ドキュメント
 
 - 由来: [[prj-0001:pjr-1eb8-frontend-pr-assurance|PJR-1EB8]]（区切り 2 の見た目の保証）、[[prj-0001:pjr-x4ps-frontend-visual-regression-upstream|PJR-X4PS]]（見た目の回帰テストを上流に入れる）
