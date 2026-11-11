@@ -102,3 +102,22 @@
       from: in-progress
       to: review
   previous_event_id: reg_5408806d595c4e5db7ccb937a9793a67
+- v: 1
+  id: reg_b261dec55be54ff5abae3c4733ac9107
+  ts: "2026-11-11T12:35:41Z"
+  action: close
+  actor: specdojo-orchestrator
+  from_status: review
+  to_status: done
+  reason: orchestrator が統合のあとに期待値を撮って比べ、naoji の承認のもとで期待値と CI を反映した
+  changes:
+    - field: status
+      from: review
+      to: done
+    - field: completed
+      from: "-"
+      to: "2026-11-11"
+    - field: conclusion
+      from: "-"
+      to: 更新の前の develop から撮った 13 画面 × 2 の画像と ARIA スナップショットを期待値として入れ、区切り 2 で 26 件すべて一致し、CI で毎回比べるようにした
+  previous_event_id: reg_eff0216844324eaf9814ae991d928b16
