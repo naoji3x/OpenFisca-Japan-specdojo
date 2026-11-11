@@ -17,3 +17,5 @@ Host <host>-tmux
   RemoteCommand ~/bin/specdojo-tmux.sh
   # devcontainer.json の公開ポート（appPort / forwardPorts）に合わせて LocalForward を追加してください。
   # 例: LocalForward 5173 127.0.0.1:5173
+  # 文書サイト（npm run docs:dev）を接続元のブラウザーで開く場合
+  LocalForward 5177 127.0.0.1:5177

@@ -39,6 +39,11 @@
   "remoteEnv": {
     "PATH": "/home/node/.local/bin:${containerEnv:PATH}"
   },
+  "appPort": ["127.0.0.1:5177:5177"],
+  "forwardPorts": [5177],
+  "portsAttributes": {
+    "5177": { "label": "docs site (npm run docs:dev)" }
+  },
   "postCreateCommand": "bash .devcontainer/post-create.sh",
   "customizations": {
     "vscode": {

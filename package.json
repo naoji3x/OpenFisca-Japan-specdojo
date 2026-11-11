@@ -12,6 +12,7 @@
     "orch:opencode": "specdojo orchestrator launch --provider opencode -- --agent specdojo-orchestrator",
     "orch:flash": "specdojo orchestrator launch --provider antigravity -- --add-dir \"$(pwd)\" --model gemini-3.8-flash-high -i \"$(cat .specdojo/antigravity/orchestrator.md)\"",
     "orch:copilot": "specdojo orchestrator launch --provider copilot -- --agent specdojo-orchestrator",
+    "docs:dev": "specdojo-docs-site dev . --host 0.0.0.0 --port 5177",
     "prepare": "node tools/install-lefthook.mjs",
     "pre-commit": "lefthook run pre-commit"
   },
@@ -22,6 +23,7 @@
   "devDependencies": {
     "@slidev/cli": "^53.0.0",
     "@specdojo/docs-lint": "^0.4.0",
+    "@specdojo/docs-site": "^0.4.0",
     "lefthook": "^2.1.9",
     "markdownlint-cli": "^0.49.1",
     "prettier": "^3.8.4",
