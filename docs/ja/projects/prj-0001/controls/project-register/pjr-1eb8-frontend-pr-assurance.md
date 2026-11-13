@@ -33,7 +33,7 @@ specdojo:
 
 保証できていないこと: なし（アプリのコードを変えていないため）。取り込みのあとの開発版のページの確認は記録していない。
 
-### 区切り 2: Vite 8 への更新と Storybook の導入（PR 準備中、`feature/frontend-vite8-storybook` の `d5a1368`）
+### 区切り 2: Vite 8 への更新と Storybook の導入（PR #509、2026-11-13 に提出、`feature/frontend-vite8-storybook` の `218046f`）
 
 変わったこと: Vite 2.9 → 8.3、`@vitejs/plugin-react` 1.3 → 6.1、Vitest 3.2 → 5.0、`@types/node` 18 → 22。`vite.config.ts` → `vite.config.mts`、`tsconfig.json` の `moduleResolution` を `Bundler`。GitHub Pages の workflow の Node.js を 18 → 26.4.0。Storybook 10.6 と Vitest の Browser Mode の導入（jsdom のテストの一部を story に移した）。`dashboard/netlify.toml` の削除。`develop` の merge（`vite.config.mts` の衝突は区切り 2 の側を採った）。
 
@@ -51,6 +51,8 @@ specdojo:
 | 見た目（更新の前の期待値）             | 更新の前の `develop`（`6e5a6c6`）から、13 画面 × PC・スマートフォンの画像と ARIA スナップショットを Playwright のイメージの中で撮り、区切り 2 と比べる                                            | 26 件すべてで一致した。同じ手順で 2 回撮るとバイト単位で同じ。文字を 1 か所変えると比較が失敗する                                                                                                            | [[prj-0001:pjr-yva9-frontend-visual-baseline\|PJR-YVA9]]、[[prj-0001:pjr-7q60-frontend-visual-docker-cp\|PJR-7Q60]]              |
 | 見た目                                 | 更新の前（`823818e`）と区切り 3 のあと（`378eb36`）で 13 画面 × PC とスマートフォン、フォントあり・なしを撮って比べる                                                                             | 26 枚すべてで画素の差 0%、要素のスタイルも一致。区切り 2 だけの状態は比べていない                                                                                                                            | [[prj-0001:pjr-hqbe-frontend-visual-comparison\|PJR-HQBE]]                                                                       |
 | 自動のテストにない操作                 | 人がかんたん見積もりを通す。災害のモード・共有・画像で保存を、移行の前後で同じ操作をして比べる                                                                                                    | 違いがなかった（区切り 3 のあとの版で）                                                                                                                                                                      | [[prj-0001:pjr-hw09-frontend-manual-walkthrough\|PJR-HW09]]                                                                      |
+
+上流の CI（PR #509、2026-11-13）: build・フロントエンドのテスト・バックエンドのテスト・見た目の比較（`visual` の job、1 分 54 秒）がすべて通った。GitHub の amd64 の環境でも、`develop` から撮った期待値と画素の単位で一致した。Netlify の check は出なかった（つなぎ込みは外れたとみられる）。
 
 保証できていないこと:
 
