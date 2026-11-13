@@ -70,13 +70,15 @@ openfisca-japan-workspace/
 | 区切り                                                                                         | PR に入る項目        | 最後の commit | PR 用のブランチ                          |
 | ---------------------------------------------------------------------------------------------- | -------------------- | ------------- | ---------------------------------------- |
 | 1. テストの基盤がそろったとき（PJR-1RJE の close の後）                                        | PJR-49V3・BZGG・1RJE | `d3475d0`     | `feature/frontend-test-foundation`       |
-| 2. ビルドの道具を上げ、Storybook を入れたとき（PJR-DFWV の close の後）                        | PJR-PP9D・DFWV       | `3f5eaaa`     | `feature/frontend-vite8-storybook`       |
+| 2. ビルドの道具を上げ、Storybook を入れたとき（PJR-DFWV の close の後）                        | PJR-PP9D・DFWV       | `218046f`     | `feature/frontend-vite8-storybook`       |
 | 3. 依存の更新が終わったとき（PJR-BSXA の close の後）                                          | PJR-2CSW・0HYV・BSXA | `378eb36`     | `feature/frontend-react-chakra-upgrade`  |
 | 4. a11y と人数の入力の不具合を直したとき（PJR-14RN の close の後）                             | PJR-4SM2・14RN       | `0134bda`     | `feature/frontend-a11y-person-num`       |
 | 5. E2E を 3 つのブラウザーで流し、網羅率を測れるようにしたとき（PJR-1WNM・MS7F の close の後） | PJR-1WNM・MS7F       | `7d4d632`     | `feature/frontend-e2e-browsers-coverage` |
 | 6. テストのレポートを自動で作れるようにしたとき（PJR-67TM・DT1Q・F70A の close の後）          | PJR-67TM・DT1Q・F70A | `d9fa763`     | `feature/frontend-test-report`           |
 
 区切り 1 は PR #507 で merge 済み（2026-11-10、merge commit）。`d3475d0` は、その PR のレビューの間に積んだ直しである（`vite.config.ts` が Vitest を型だけ読み込み、Node.js 18 でも build できるようにした）。区切り 2 で設定を `vite.config.mts`（Vite 8、Node.js 20.19 以上が必要）に作り直すため、`feature/frontend-test-upgrade` には取り込まない。区切り 2 のブランチに `develop` を merge するときは、`vite.config.ts` の衝突を区切り 2 の側で解く。
+
+区切り 2 は PR #509（2026-11-13 に提出）。PR を出す前に、`3f5eaaa` のあとに次を積んだ: `develop`（#505〜#507）の merge（`8f7884e`。`vite.config.mts` の衝突は区切り 2 の側を採った）、Netlify の設定の削除（`d5a1368`）、`build.target` を Vite 2.9 と同じにする直し（`938caa0`、PJR-FBVP）、更新の前の画面の期待値と比べるテスト・期待値・CI の `visual` の job・撮るスクリプト（`ef2f63c`・`3148deb`・`28c821e`・`218046f`、PJR-YVA9・7Q60）。区切り 3〜6 と統合のためのブランチには、区切り 2 が merge されたあとに `develop` を merge して取り込む。
 
 1. 区切りの項目を close したら、区切りの最後の commit を指す **PR 用のブランチ**を作り、push する。`feature/frontend-test-upgrade` からは PR を出さない（理由は下記）。
 
