@@ -86,3 +86,16 @@
       from: "executor reported incomplete: Added fixed-data stories (11) and Browser Mode tests (14, 2 of them it.fails for a data bug) for helpDesk.tsx, benefit.tsx and loan.tsx in openfisca-japan:dashboard. The …"
       to: "-"
   previous_event_id: reg_e0c1b95d33f34d9b9793c4a248af5d02
+- v: 1
+  id: reg_a1a2ce32eb344674ad7d9e9c213dbcde
+  ts: "2026-11-14T23:44:52Z"
+  action: review
+  actor: sol-executor
+  from_status: in-progress
+  to_status: review
+  reason: ready for review
+  changes:
+    - field: status
+      from: in-progress
+      to: review
+  previous_event_id: reg_396f645bb4f547e5a18974a385cd9d74
