@@ -41,3 +41,16 @@
     - field: commit_type
       from: ""
       to: test
+- v: 1
+  id: reg_962b47b0931b4665a3d19e2af2b84363
+  ts: "2026-11-14T22:53:23Z"
+  action: start
+  actor: sol-executor
+  from_status: open
+  to_status: in-progress
+  reason: work started
+  changes:
+    - field: status
+      from: open
+      to: in-progress
+  previous_event_id: reg_1b0d3c429be3400d808b97a050693c9c
