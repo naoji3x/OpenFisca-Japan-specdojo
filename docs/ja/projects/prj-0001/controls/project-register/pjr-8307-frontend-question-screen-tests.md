@@ -2,17 +2,19 @@
 specdojo:
   id: prj-0001:pjr-8307-frontend-question-screen-tests
   type: project
-  status: draft
+  status: ready
   rulebook: specdojo:pjr-rulebook
   part_of:
     - prj-0001:pjr-index
   item_type: todo
-  item_status: review
+  item_status: done
   priority: high
   difficulty: medium
   owner: DEV
   registered_at: "2026-11-02T23:13:58Z"
   due_on: "2026-11-30"
+  completed_at: "2026-11-14T11:56:44Z"
+  conclusion: 質問の画面と状態の機械のつなぎ目を Browser Mode の 6 件で確かめるテストを足した（区切り 2.5）。網羅率は区切り 5 の PR の後に測る
   derived_from:
     - PJR-MS7F
   commit_type: test

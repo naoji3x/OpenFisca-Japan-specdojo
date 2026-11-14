@@ -67,3 +67,22 @@
       from: in-progress
       to: review
   previous_event_id: reg_bd97f7a7340d4cd7af27d710e5aab7ec
+- v: 1
+  id: reg_353ba598c04c4354ba65cb22febd7bd7
+  ts: "2026-11-14T11:56:44Z"
+  action: close
+  actor: specdojo-orchestrator
+  from_status: review
+  to_status: done
+  reason: orchestrator が統合のあとに test:ui を 3 回流し、判定を外すとテストが失敗することを確かめた
+  changes:
+    - field: status
+      from: review
+      to: done
+    - field: completed
+      from: "-"
+      to: "2026-11-14"
+    - field: conclusion
+      from: "-"
+      to: 質問の画面と状態の機械のつなぎ目を Browser Mode の 6 件で確かめるテストを足した（区切り 2.5）。網羅率は区切り 5 の PR の後に測る
+  previous_event_id: reg_65095538b32c44f8a8655c9a119384ef
