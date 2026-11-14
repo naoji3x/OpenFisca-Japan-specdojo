@@ -1,0 +1,79 @@
+共有機能の 6 stories・Browser Mode 15 ケースを追加し、個票を更新しました。unit 937 件、ビルド、lint、整形検査は成功しています。ブラウザー検査は環境制約により統合後の実行が必要です。
+
+<specdojo_executor_evidence>
+{
+  "completion_status": "complete",
+  "final_message": "共有 URL の新旧形式・モード復元・破損データ・コピー・QR・画像保存のテストを追加し、個票に対応結果を記録した。",
+  "handoff": [
+    "変更ファイル: openfisca-japan:dashboard/src/components/result/resultShare.stories.tsx（6 stories）、openfisca-japan:dashboard/src/components/result/resultShare.browser.test.tsx（15 ケース）、openfisca-japan:dashboard/src/mocks/shareResultTestUtils.tsx（固定共有キーと独立した描画環境）、project の個票 pjr-npc4-frontend-result-share-tests.md。result は pipeline の指示に従い未編集。",
+    "統合後に dashboard で npm run test:ui を Chromium で実行する。今回は Storybook の設定読み込み時に `uv_interface_addresses` のシステムエラーで停止し、追加テストの実ブラウザー実行結果は未確認。QR は renderer に渡す URL、画像保存は変換・ダウンロードの境界を検査する。",
+    "コピー拒否時にも「クリップボードにコピーしました」と表示される不具合を発見した。共有 URL を開き、クリップボード書き込みを拒否してコピーボタンを押すと再現する。`clipBoard` が例外を捕捉して正常終了することが原因。期待動作は成功表示を出さず、失敗と再試行方法を案内し、QR を利用可能にすること。アプリは変更せず現行表示をテストに記録した。orchestrator が別項目に起票し、統合後に実ブラウザーで再現確認する。",
+    "網羅率の前後測定は区切り 2.5 の前提に従い未実施。区切り 5 の PR 後に orchestrator が測定して個票へ追記する。過去の 2276ec5 の数値を今回の実測値として扱わない。区切り 6 の前にテストを分類し、区切り 3 の依存更新後も期待値を変えずに通ることを確認する。"
+  ],
+  "validations": [
+    {
+      "command": "npm run test",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboard。6 files・937 tests 成功。"
+    },
+    {
+      "command": "npm run test:ui",
+      "status": "requires_human",
+      "summary": "openfisca-japan:dashboard。サンドボックスの `uv_interface_addresses` エラーで設定読み込みが停止。統合後に Chromium で実行する。"
+    },
+    {
+      "command": "npm run build",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboard。最終変更後の TypeScript 検査と Vite ビルド成功。chunk サイズ警告あり。"
+    },
+    {
+      "command": "npm run lint",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboard。初回の `require-await` 違反を修正し、再検査成功。"
+    },
+    {
+      "command": "npm run pretty",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboard。pre-commit 相当の整形成功。既存ファイルの差分なし。"
+    },
+    {
+      "command": "npm run pretty:check",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboard。最終変更後の整形チェック成功。"
+    },
+    {
+      "command": "node tools/specdojo-pre-commit.mjs prettier docs/ja/projects/prj-0001/controls/project-register/pjr-npc4-frontend-result-share-tests.md",
+      "status": "passed",
+      "summary": "個票の整形成功。"
+    },
+    {
+      "command": "node tools/specdojo-pre-commit.mjs markdownlint docs/ja/projects/prj-0001/controls/project-register/pjr-npc4-frontend-result-share-tests.md",
+      "status": "passed",
+      "summary": "最終変更後の個票の Markdown 検査成功。"
+    },
+    {
+      "command": "npx specdojo register build --project prj-0001 --dry-run",
+      "status": "passed",
+      "summary": "登録簿生成の確認成功。一覧を書き換えない dry-run で実行。"
+    },
+    {
+      "command": "npx specdojo catalog validate",
+      "status": "not_applicable",
+      "summary": "catalog 検査は適用外。",
+      "reason": "対象 project に `catalog_path` の設定がない。"
+    },
+    {
+      "command": "npm run validate:schema:file",
+      "status": "not_applicable",
+      "summary": "schema 検査は適用外。",
+      "reason": "YAML の変更がなく、対応する npm script もない。"
+    },
+    {
+      "command": "npm run typecheck",
+      "status": "not_applicable",
+      "summary": "独立した typecheck script は適用外。",
+      "reason": "対象リポジトリに typecheck script がない。dashboard の TypeScript 検査は npm run build で成功した。"
+    }
+  ]
+}
+</specdojo_executor_evidence>
