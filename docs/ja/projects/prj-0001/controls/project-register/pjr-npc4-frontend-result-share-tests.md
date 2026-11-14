@@ -60,11 +60,11 @@ specdojo:
 
 ## 4. 作業内容
 
-| No  | 作業                                                           | 担当 | 状態     | メモ                                                                     |
-| --- | -------------------------------------------------------------- | ---- | -------- | ------------------------------------------------------------------------ |
-| 1   | 今の `shareLink.test.ts` と story で確かめていることを洗い出す | DEV  | done     | 既存は符号化の往復、結果の種類、API エラー。共有画面の操作は未検証だった |
-| 2   | story と Browser Mode のテストを足す                           | DEV  | done     | 6 stories と Browser Mode 15 ケース。実ブラウザー検査は統合後に実行する  |
-| 3   | 網羅率を測り直して記録する                                     | DEV  | deferred | 区切り 2.5 の前提に従い、区切り 5 の PR 後に orchestrator が測定する     |
+| No  | 作業                                                           | 担当 | 状態     | メモ                                                                                                            |
+| --- | -------------------------------------------------------------- | ---- | -------- | --------------------------------------------------------------------------------------------------------------- |
+| 1   | 今の `shareLink.test.ts` と story で確かめていることを洗い出す | DEV  | done     | 既存は符号化の往復、結果の種類、API エラー。共有画面の操作は未検証だった                                        |
+| 2   | story と Browser Mode のテストを足す                           | DEV  | done     | 6 stories と Browser Mode 15 ケース。再実行で待機処理と拒否時の期待値を修正。実ブラウザー検査は統合後に実行する |
+| 3   | 網羅率を測り直して記録する                                     | DEV  | deferred | 区切り 2.5 の前提に従い、区切り 5 の PR 後に orchestrator が測定する                                            |
 
 ## 5. 対応結果
 
@@ -89,7 +89,7 @@ specdojo:
 ### 発見したアプリの不具合（アプリのコードは未変更）
 
 - コピーが拒否されても成功した表示になる。再現は、新形式の共有 URL を開き、ブラウザーのクリップボード書き込みを拒否した状態で「結果のリンクをコピー」を押す。Browser Mode の `currently shows the copied message even when the clipboard rejects` は `NotAllowedError` を返すモックでこの操作を再現する。
-- 現行実装の `clipBoard` は例外を内部で捕捉して正常終了するため、呼び出し側が「クリップボードにコピーしました」を表示する。期待する動きは、拒否時に成功表示を出さず、コピー失敗と再試行手段を案内し、QR を利用可能にすること。現行表示をテストの期待値として固定し、修正は orchestrator が別項目に起票する。実ブラウザーでの再現確認も統合後に行う。
+- 現行実装の `clipBoard` は例外を内部で捕捉して正常終了するため、呼び出し側が「クリップボードにコピーしました」を表示する。期待する動きは、拒否時に成功表示を出さず、コピー失敗と再試行手段を案内し、QR を利用可能にすること。初回実装では現行表示をテストの期待値にしていたが、以下の指示に従い再実行で正しい期待値の `it.fails` へ変更した。アプリの修正は [[prj-0001:pjr-4nkn-frontend-clipboard-failure-message|PJR-4NKN]] で行う。実ブラウザーでの再現確認も統合後に行う。
 
 ### orchestrator の確認と直しの指示（2026-11-14、specdojo-orchestrator）
 
@@ -99,6 +99,16 @@ specdojo:
   - `resultShare.browser.test.tsx` の「saves the result as an image and clears the loading state」: `shown('読み込み中...')`（`page.getByText('読み込み中...', { exact: true })`）で失敗する。Chakra UI のボタンは、読み込み中に `<button disabled data-loading><div class="chakra-button__spinner">…<span>Loading...</span>…</div>読み込み中...</button>` を描き、「読み込み中...」はボタンの中に直接書かれた文字で独立した要素ではないため、完全一致の文字では見つからない。ボタンを役割と名前（`page.getByRole('button', { name: /読み込み中/ })`）で探す。
 - **不具合を期待値にしたテスト**: 「currently shows the copied message even when the clipboard rejects」は、誤った今の動きを期待値にしている。naoji の判断（2026-11-14）で、正しい期待値（拒まれたら「クリップボードにコピーしました」を出さない）で書き、Vitest の `it.fails` にする。不具合は [[prj-0001:pjr-4nkn-frontend-clipboard-failure-message|PJR-4NKN]] で起票した。テストの名前も、正しい期待値に合わせる。
 - **この run（2 回目）でしてもらうこと**: 上の 3 つを直す。直したほかにも、描画のあとに現れる要素は `find…` か `expect.poll` で待って探すこと、Chakra UI のボタンの読み込み中のように子の要素と文字が混ざる要素は、文字の完全一致ではなく役割と名前で探すことを、足したテスト全体で見直す。アプリのコードは変えない。`npm run test:ui` は流せなくてよい（統合のあとに orchestrator が 3 回流す）。
+
+### 再実行の対応結果（2026-11-14）
+
+- `openfisca-japan:dashboard/src/components/result/resultShare.stories.tsx`: 復元を確認する 5 stories の児童手当ボタンを `await canvas.findByRole(…)` で待つよう修正した。モードのラベル、エラーの説明、戻るリンクも `findByText` / `findByRole` で待つ。非表示の確認は、対応する結果またはエラー画面の描画を待ったあとに行う。
+- `openfisca-japan:dashboard/src/components/result/resultShare.browser.test.tsx`: 画像保存中は `getByRole('button', { name: /読み込み中/ })` の可視状態を `expect.poll` で待ってから無効状態を検証する。コピー成功の表示もボタンの role と名前で待つ。QR の値は要素がない間も再試行できる `query` と `expect.poll` で確認する。復元の給付・適用制度、エラー画面、復帰先、保存後のボタン再有効化の既存の待機も確認した。
+- コピー拒否のケース名を `does not show the copied message when the clipboard rejects` に変え、正しい期待値「拒否時は成功表示を出さない」を `it.fails` で記述した。既存依存の `@testing-library/react` の `act` で拒否と React の画面更新を完了させ、例外ログと QR の URL を確認したあと、成功表示が存在しないことを検証する。これにより更新前の一瞬の非表示を誤って合格にしない。アプリの不具合が直ってテスト本体が合格すると、`it.fails` が予期しない合格として通知するため、アプリ修正時に通常の `it` へ戻す。
+- アプリのコード、依存、保護された設定、共有キーの fixture、既存 unit テストは変更していない。今回の変更ファイルは上記 2 ファイルと本個票のみ。result は reporter / runner が記入する。
+- 検証: `dashboard` の `npm run test` は 6 files・937 tests が成功し、`npm run lint`・`npm run build`・`npm run pretty`・`npm run pretty:check` も成功した。build の既存の chunk サイズ警告は継続している。
+- `npm run test:ui` は再実行でも Storybook 設定の読み込み時に `uv_interface_addresses` のシステムエラーで停止した。サンドボックスの制約による `requires_human` とし、修正後の 6 stories・Browser Mode 15 ケース（うち期待する失敗 1 ケース）の実行結果は未確認。統合後に orchestrator が Chromium で `npm run test:ui` を 3 回実行し、拒否テストの失敗箇所が成功表示の非表示という期待値であることも確認する。
+- 個票の Prettier・markdownlint と `specdojo register build --project prj-0001 --dry-run` は成功した。登録簿一覧とステータス項目は変更していない。`catalog_path` が未設定のため catalog 検査、YAML の変更と schema script がないため schema 検査は適用外。網羅率の前後測定は区切り 5 の PR 後、テストの分類は区切り 6 の PR 前、同じ期待値での再検証は区切り 3 の依存更新後に orchestrator が行う。
 
 ## 6. 関連ドキュメント
 

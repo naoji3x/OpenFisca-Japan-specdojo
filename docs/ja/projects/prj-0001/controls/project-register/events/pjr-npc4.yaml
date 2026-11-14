@@ -99,3 +99,29 @@
       from: in-progress
       to: review
   previous_event_id: reg_9ad89ba901e242f1b78edbbf5f731a32
+- v: 1
+  id: reg_ea8a15eba11e406bb17cdc880cb0d6b9
+  ts: "2026-11-14T22:42:10Z"
+  action: start
+  actor: sol-executor
+  from_status: review
+  to_status: in-progress
+  reason: work started
+  changes:
+    - field: status
+      from: review
+      to: in-progress
+  previous_event_id: reg_3cc89953e9e9412ba8e2522fbf130f95
+- v: 1
+  id: reg_8709ab716b0e4a23850d090ff30efc3f
+  ts: "2026-11-14T22:48:30Z"
+  action: review
+  actor: sol-executor
+  from_status: in-progress
+  to_status: review
+  reason: ready for review
+  changes:
+    - field: status
+      from: in-progress
+      to: review
+  previous_event_id: reg_ea8a15eba11e406bb17cdc880cb0d6b9
