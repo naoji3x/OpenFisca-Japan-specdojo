@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "task_id": "PJR-8307",
+  "run_id": "20261114T113848719Z-a7052166",
+  "stage": {
+    "role": "executor",
+    "actor": "sol-executor",
+    "status": "succeeded",
+    "started_at": "2026-11-14T11:40:37.937Z",
+    "completed_at": "2026-11-14T11:49:56.864Z",
+    "exit_code": 0,
+    "attempts": 1
+  },
+  "changes": [
+    {
+      "path": "docs/ja/projects/prj-0001/controls/project-register/events/pjr-8307.yaml",
+      "status": "MM"
+    },
+    {
+      "path": "docs/ja/projects/prj-0001/controls/project-register/pjr-8307-frontend-question-screen-tests.md",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/questions/question.browser.test.tsx",
+      "status": "??"
+    }
+  ],
+  "attempt_changes": [
+    {
+      "path": "docs/ja/projects/prj-0001/controls/project-register/pjr-8307-frontend-question-screen-tests.md",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/questions/question.browser.test.tsx",
+      "status": "??"
+    }
+  ],
+  "diff_summary": {
+    "files_changed": 3,
+    "summary": ".../pjr-8307-frontend-question-screen-tests.md     | 35 ++++++++++++++++++----\n 1 file changed, 29 insertions(+), 6 deletions(-)"
+  },
+  "validations": [
+    {
+      "source": "executor",
+      "command": "npm run test",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboard の6ファイル・937テストが成功。Browser Mode は対象外。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run test:ui",
+      "status": "requires_human",
+      "summary": "openfisca-japan:dashboard。サンドボックスのネットワーク情報取得制限で設定読み込みが停止。統合後にホスト環境で実行が必要。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run build",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboard の型検査と本番ビルドが成功。バンドルサイズ警告あり。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run lint",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboard の最終変更で成功。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run pretty",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboard の pre-commit 相当の整形が成功。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run pretty:check",
+      "status": "passed",
+      "summary": "openfisca-japan:dashboard 全体の整形チェックが成功。"
+    },
+    {
+      "source": "executor",
+      "command": "npx prettier --write docs/ja/projects/prj-0001/controls/project-register/pjr-8307-frontend-question-screen-tests.md",
+      "status": "passed",
+      "summary": "個票の整形が成功。"
+    },
+    {
+      "source": "executor",
+      "command": "npx markdownlint docs/ja/projects/prj-0001/controls/project-register/pjr-8307-frontend-question-screen-tests.md",
+      "status": "passed",
+      "summary": "個票の Markdown 検査が成功。"
+    },
+    {
+      "source": "executor",
+      "command": "npx specdojo register build --project prj-0001 --dry-run > tmp/pjr-8307-register-build.log",
+      "status": "passed",
+      "summary": "登録簿生成の dry-run が成功。一覧は未変更。一時ログは削除済み。"
+    },
+    {
+      "source": "executor",
+      "command": "git diff --check; git -C ../openfisca-japan diff --check",
+      "status": "passed",
+      "summary": "両リポジトリの差分チェックが成功。"
+    },
+    {
+      "source": "executor",
+      "command": "npx specdojo catalog validate --project prj-0001",
+      "status": "not_applicable",
+      "summary": "カタログ検証は適用外。",
+      "reason": "対象プロジェクトに `catalog_path` が設定されていない。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run validate:schema:file",
+      "status": "not_applicable",
+      "summary": "スキーマ検証は適用外。",
+      "reason": "この executor は YAML を変更しておらず、project の package.json に同スクリプトもない。"
+    }
+  ],
+  "final_message": "`openfisca-japan:dashboard/src/components/questions/question.browser.test.tsx` を追加し、未入力抑止・回答復元・世帯員切替・3モードの保存と結果遷移を検証する6ケースを実装した。`docs/ja/projects/prj-0001/controls/project-register/pjr-8307-frontend-question-screen-tests.md` に作業内容・検証結果・申し送りを記録した。result、登録簿の状態、アプリ本体、依存、保護された設定は変更していない。",
+  "completion_status": "complete",
+  "handoff": [
+    "統合後、orchestrator はホスト環境の dashboard で `npm run test:ui` を実行し、追加6ケースと既存 story・Browser Mode の成功を確認する。今回の実行は設定読み込み時に `uv_interface_addresses` の `ERR_SYSTEM_ERROR`（errno 1）で停止した。",
+    "網羅率の追加前／追加後の記録は、区切り2.5の前提に従い今回免除した。区切り5のPR後に orchestrator が `components/questions/question.tsx` と `state/questionDefinition.ts` を計測し、個票へ追記する。",
+    "区切り6のPR前に観点を分類する。区切り3では追加テストの期待値を変えずに成功することを確認する。既存E2Eが扱う同意・API送信・結果表示の正常導線は追加せず、今回の完了テストは保存と遷移を確認する。"
+  ],
+  "log_refs": [
+    {
+      "kind": "agent-output-excerpt",
+      "path": "docs/ja/projects/prj-0001/execution/exec/evidence/PJR-8307/20261114T113848719Z-a7052166/executor.log",
+      "bytes": 3848,
+      "truncated": false
+    }
+  ]
+}

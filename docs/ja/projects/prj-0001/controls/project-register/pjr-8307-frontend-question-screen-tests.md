@@ -7,7 +7,7 @@ specdojo:
   part_of:
     - prj-0001:pjr-index
   item_type: todo
-  item_status: open
+  item_status: review
   priority: high
   difficulty: medium
   owner: DEV
@@ -59,15 +59,38 @@ specdojo:
 
 ## 4. 作業内容
 
-| No  | 作業                                                               | 担当 | 状態 | メモ |
-| --- | ------------------------------------------------------------------ | ---- | ---- | ---- |
-| 1   | 今の E2E・story・Browser Mode のテストで確かめていることを洗い出す | DEV  | open | -    |
-| 2   | Browser Mode のテストを足す                                        | DEV  | open | -    |
-| 3   | 網羅率を測り直して記録する                                         | DEV  | open | -    |
+| No  | 作業                                                               | 担当 | 状態     | メモ                                                                 |
+| --- | ------------------------------------------------------------------ | ---- | -------- | -------------------------------------------------------------------- |
+| 1   | 今の E2E・story・Browser Mode のテストで確かめていることを洗い出す | DEV  | done     | 正常導線 E2E と質問テンプレートの既存テストを確認した                |
+| 2   | Browser Mode のテストを足す                                        | DEV  | done     | 6 ケースを追加。ブラウザー実行は統合後へ申し送り                     |
+| 3   | 網羅率を測り直して記録する                                         | DEV  | deferred | 区切り 2.5 の前提に従い、区切り 5 の PR 後に orchestrator が計測する |
 
 ## 5. 対応結果
 
--
+### 5.1. 変更内容（2026-11-14）
+
+- `openfisca-japan:dashboard/src/components/questions/question.browser.test.tsx` に Browser Mode のテストを 6 ケース追加した。実際の状態機械を起動し、購読した状態とイベント送信を `Question` へ渡す。質問コンポーネント・テンプレート・変換処理・Recoil・ルーターは実装を使用する。
+- 未入力および都道府県だけの部分入力ではエラーを表示して遷移を抑止すること、回答後は進めること、質問切替でエラーをリセットすること、戻ると住所・年齢が復元されることを検証する。
+- 配偶者の有無を変更した際の質問分岐、配偶者の年収の復元、子ども向けの学年欄と親向けフォームの切替、子ども 2 人の回答の分離と復元を検証する。
+- かんたん・くわしく・災害の各モードで、到達可能な最後の質問まで実際のイベントで準備し、最後の回答と「次へ」は画面から操作する。`householdAtom` と `frontendHouseholdAtom` の保存内容、収入の円換算、住所、くわしくモードの対象制度、災害モードの被災情報、`/result` と遷移時の household・モードフラグを検証する。日付は `currentDateAtom` で固定する。
+- 要素は表示文字・role・ラベルで検索する。住所の選択欄は role と表示順で区別し、Chakra UI の class や内部構造には依存しない。各ケースの後に描画・actor・ブラウザー URL を後始末する。
+- アプリのコード・依存・保護された設定は変更していない。新たな不具合の起票はない。ブラウザー実行による動作確認は 5.3 の申し送りに従う。
+
+### 5.2. 既存テストとの分担
+
+- `dashboard/e2e/SimpleCalculation.spec.ts` と `DetailedCalculation.spec.ts` は、同意から回答・API 送信・給付／貸付結果表示までの正常導線を検証している。同じ導線の E2E は追加しなかった。今回の完了テストは API や結果コンポーネントを描かず、遷移先で保存状態を読み取る。
+- 質問テンプレートの単体テストと story は、個別フォームの入力・正規化・選択状態を検証している。既存 Browser Mode は年齢入力のキーボード操作を扱う。今回はテンプレート単体の境界値テストを増やさず、画面と状態機械の接続を検証する。
+
+### 5.3. 検証結果と申し送り
+
+- `dashboard` の `npm run test` は 6 ファイル・937 テストが成功した。Browser Mode のファイルは unit project の対象外であり、この数には含まない。
+- `dashboard` の `npm run build` は成功した。既存のバンドルサイズ警告が出る。`npm run lint` と `npm run pretty:check` も成功した。
+- 個票の Prettier 整形と markdownlint は成功した。登録簿生成は `npx specdojo register build --project prj-0001 --dry-run` で成功し、一覧の書き換えは行っていない。
+- テストで使用する 3 モードの準備手順を一時スクリプトに抽出し、実際の状態機械で最後の質問と `result` へ到達すること、収入とフロントエンド制度の変換期待値を確認した。一時スクリプトは削除した。この確認は Browser Mode の代替ではない。
+- `dashboard` の `npm run test:ui` は設定の読み込み時に `uv_interface_addresses` の `ERR_SYSTEM_ERROR`（errno 1）で停止した。サンドボックスによる制限のため `requires_human` とする。統合後、orchestrator はホスト環境で同コマンドを実行し、追加した 6 ケースと既存 story・Browser Mode の成功を確認する。依存の追加・インストールは行っていない。
+- 網羅率の追加前／追加後の数値は、この run では計測しない。計測依存のない区切り 2.5 の前提に従い、区切り 5 の PR 後に orchestrator が対象ファイルを計測して本節へ追記する。
+- 観点のタグは今回付けていない。区切り 6 の PR 前に orchestrator が `viewpoints.yaml` の規則またはタグで分類する。区切り 3 では、今回の期待値を変更せずに同じ Browser Mode テストが通ることを確認する。
+- 保護された設定への変更提案はない。result の記入と登録簿の状態遷移は後続の reporter／runner に委ねる。
 
 ## 6. 関連ドキュメント
 
