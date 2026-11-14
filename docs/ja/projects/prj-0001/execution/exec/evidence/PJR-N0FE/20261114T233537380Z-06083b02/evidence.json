@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "task_id": "PJR-N0FE",
+  "run_id": "20261114T233537380Z-06083b02",
+  "stage": {
+    "role": "executor",
+    "actor": "sol-executor",
+    "status": "succeeded",
+    "started_at": "2026-11-14T23:35:37.380Z",
+    "completed_at": "2026-11-14T23:41:19.093Z",
+    "exit_code": 0,
+    "attempts": 1
+  },
+  "changes": [
+    {
+      "path": "docs/ja/projects/prj-0001/controls/project-register/events/pjr-n0fe.yaml",
+      "status": "M"
+    },
+    {
+      "path": "docs/ja/projects/prj-0001/controls/project-register/pjr-n0fe-frontend-helpdesk-benefit-loan-tests.md",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/result/resultDetails.browser.test.tsx",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/result/resultDetails.stories.tsx",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/mocks/resultDetailsTestUtils.tsx",
+      "status": "??"
+    }
+  ],
+  "attempt_changes": [
+    {
+      "path": "docs/ja/projects/prj-0001/controls/project-register/pjr-n0fe-frontend-helpdesk-benefit-loan-tests.md",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/result/resultDetails.browser.test.tsx",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/result/resultDetails.stories.tsx",
+      "status": "??"
+    }
+  ],
+  "diff_summary": {
+    "files_changed": 5,
+    "summary": ".../controls/project-register/events/pjr-n0fe.yaml | 18 +++++++-\n ...jr-n0fe-frontend-helpdesk-benefit-loan-tests.md | 48 ++++++++++++++++++----\n 2 files changed, 57 insertions(+), 9 deletions(-)"
+  },
+  "validations": [
+    {
+      "source": "executor",
+      "command": "cd ../openfisca-japan/dashboard && npm run test",
+      "status": "passed",
+      "summary": "6 files、937 tests が成功。"
+    },
+    {
+      "source": "executor",
+      "command": "cd ../openfisca-japan/dashboard && npm run test:ui",
+      "status": "requires_human",
+      "summary": "Storybook設定読み込み時にネットワークインターフェース取得がサンドボックスで拒否された。統合後にChromiumで実行する。"
+    },
+    {
+      "source": "executor",
+      "command": "cd ../openfisca-japan/dashboard && npm run build",
+      "status": "passed",
+      "summary": "最終変更後もTypeScript検査とVite buildが成功。chunkサイズの警告のみ。"
+    },
+    {
+      "source": "executor",
+      "command": "cd ../openfisca-japan/dashboard && npm run lint",
+      "status": "passed",
+      "summary": "最終変更後もESLint成功。"
+    },
+    {
+      "source": "executor",
+      "command": "cd ../openfisca-japan/dashboard && npx prettier --write src/components/result/resultDetails.browser.test.tsx src/components/result/resultDetails.stories.tsx src/mocks/resultDetailsTestUtils.tsx",
+      "status": "passed",
+      "summary": "追加した3ファイルを整形した。"
+    },
+    {
+      "source": "executor",
+      "command": "cd ../openfisca-japan/dashboard && npm run pretty:check",
+      "status": "passed",
+      "summary": "最終変更後も全対象ファイルの整形検査が成功。"
+    },
+    {
+      "source": "executor",
+      "command": "npx prettier --write docs/ja/projects/prj-0001/controls/project-register/pjr-n0fe-frontend-helpdesk-benefit-loan-tests.md",
+      "status": "passed",
+      "summary": "更新した個票を整形した。"
+    },
+    {
+      "source": "executor",
+      "command": "npx markdownlint docs/ja/projects/prj-0001/controls/project-register/pjr-n0fe-frontend-helpdesk-benefit-loan-tests.md",
+      "status": "passed",
+      "summary": "最終版の個票で成功。"
+    },
+    {
+      "source": "executor",
+      "command": "node tools/specdojo-pre-commit.mjs register-build",
+      "status": "requires_human",
+      "summary": "Git子プロセスの起動が EPERM で停止。親 runner のコミット前検査で実行する。"
+    },
+    {
+      "source": "executor",
+      "command": "npx specdojo catalog validate --project prj-0001",
+      "status": "not_applicable",
+      "summary": "catalog検査は非適用。",
+      "reason": "対象projectに `catalog_path` が設定されていない。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run validate:schema:file",
+      "status": "not_applicable",
+      "summary": "schemaファイル検査は非適用。",
+      "reason": "projectのpackage.jsonに該当scriptがない。本executorによるYAML編集もない。"
+    },
+    {
+      "source": "executor",
+      "command": "cd ../openfisca-japan/dashboard && npm run typecheck",
+      "status": "not_applicable",
+      "summary": "独立したtypecheck scriptは非適用。",
+      "reason": "dashboardのpackage.jsonにtypecheck scriptがない。TypeScript検査は成功したbuildに含まれる。"
+    },
+    {
+      "source": "executor",
+      "command": "npm test",
+      "status": "not_applicable",
+      "summary": "projectリポジトリのtestは非適用。",
+      "reason": "projectのtest scriptはnpm initの仮置き。productの単体テストは別途実行済み。"
+    }
+  ],
+  "target_coverage": [
+    {
+      "target": "openfisca-japan:dashboard/src/components/result/resultDetails.browser.test.tsx",
+      "status": "changed",
+      "path": "openfisca-japan:dashboard/src/components/result/resultDetails.browser.test.tsx",
+      "reason": ""
+    },
+    {
+      "target": "openfisca-japan:dashboard/src/components/result/resultDetails.stories.tsx",
+      "status": "changed",
+      "path": "openfisca-japan:dashboard/src/components/result/resultDetails.stories.tsx",
+      "reason": ""
+    },
+    {
+      "target": "openfisca-japan:dashboard/src/mocks/resultDetailsTestUtils.tsx",
+      "status": "changed",
+      "path": "openfisca-japan:dashboard/src/mocks/resultDetailsTestUtils.tsx",
+      "reason": ""
+    }
+  ],
+  "final_message": "固定データの9 stories・Browser Mode 14件を追加し、描画待ちを修正。個票の作業内容・対応結果を更新した。単体937件、build、lint、整形検査は成功。UI実行とprojectのpre-commit検査はサンドボックス制限により申し送り。resultは編集していない。",
+  "completion_status": "complete",
+  "handoff": [
+    "統合後、openfisca-japan の dashboard で `npm run test:ui` を Chromium で実行する。今回は Storybook 設定読み込み中の `os.networkInterfaces()` が `uv_interface_addresses returned Unknown system error 1` で停止し、テスト本体は未実行。追加は9 stories・Browser Mode 14件。区切り3の依存更新後も同じ期待値で再実行する。",
+    "project の `node tools/specdojo-pre-commit.mjs register-build` は、ステージ済みファイルを調べる `spawnSync git` が EPERM で停止した。親 runner のコミット前検査で実行する。",
+    "別項目として起票する不具合: `dashboard/src/config/社会福祉協議会.ts` の東京都羽村市・利島村の `WebサイトURL` に施設名が入っている。居住地を該当市村にして社会福祉協議会の窓口を表示すると、施設名のリンクがアプリ内の相対パスになる。期待は正しい http/https URL、またはURL未設定時の通常文字表示。正しい期待値を保持する `it.fails` 2件を追加した。データ修正後は通常の `it` に戻す。アプリ側は未変更。",
+    "起票の要否を判断する観察事項: `HelpDeskTemplate` は渡された窓口データではなく `helloWorkData` で居住地の対応を判定する。現行の市窓口データはすべて富士見市のみなので表示差はないが、データ追加時に非表示や例外の原因になる。現行データで到達できない条件のテストは追加していない。",
+    "区切り2.5の前提に従い、網羅率の追加前後の計測は延期した。区切り5のPR後に orchestrator が `helpDesk.tsx`・`benefit.tsx`・`loan.tsx` と関連する `loanAccordion.tsx` を計測して個票へ追記する。依存追加・保護設定の変更案はない。",
+    "観点タグは未追加。区切り6のPR前に `viewpoints.yaml` の規則またはタグで分類する。以上の申し送りは個票の「5. 対応結果」にも記録済み。"
+  ],
+  "log_refs": [
+    {
+      "kind": "agent-output-excerpt",
+      "path": "docs/ja/projects/prj-0001/execution/exec/evidence/PJR-N0FE/20261114T233537380Z-06083b02/executor.log",
+      "bytes": 6361,
+      "truncated": false
+    }
+  ]
+}
