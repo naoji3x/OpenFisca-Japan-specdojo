@@ -2,17 +2,19 @@
 specdojo:
   id: prj-0001:pjr-0p60-frontend-top-terms-entry-tests
   type: project
-  status: draft
+  status: ready
   rulebook: specdojo:pjr-rulebook
   part_of:
     - prj-0001:pjr-index
   item_type: todo
-  item_status: review
+  item_status: done
   priority: medium
   difficulty: medium
   owner: DEV
   registered_at: "2026-11-02T23:14:07Z"
   due_on: "2026-11-30"
+  completed_at: "2026-11-14T23:17:23Z"
+  conclusion: トップ・同意の取り消しと再表示・各モードの入口・URL の直接表示・404 を Browser Mode で確かめるテストを足した（区切り 2.5）。応答エラーの直接表示の不具合は PJR-S87T、テストは it.fails
   derived_from:
     - PJR-MS7F
   commit_type: test

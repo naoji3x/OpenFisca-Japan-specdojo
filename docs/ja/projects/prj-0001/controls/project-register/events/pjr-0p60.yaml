@@ -67,3 +67,22 @@
       from: in-progress
       to: review
   previous_event_id: reg_962b47b0931b4665a3d19e2af2b84363
+- v: 1
+  id: reg_37cb867cad5d46489ed365f6665aaca9
+  ts: "2026-11-14T23:17:23Z"
+  action: close
+  actor: specdojo-orchestrator
+  from_status: review
+  to_status: done
+  reason: orchestrator が統合のあとに test:ui を 3 回流し、経路を変えるとテストが失敗することを確かめた
+  changes:
+    - field: status
+      from: review
+      to: done
+    - field: completed
+      from: "-"
+      to: "2026-11-14"
+    - field: conclusion
+      from: "-"
+      to: トップ・同意の取り消しと再表示・各モードの入口・URL の直接表示・404 を Browser Mode で確かめるテストを足した（区切り 2.5）。応答エラーの直接表示の不具合は PJR-S87T、テストは it.fails
+  previous_event_id: reg_ca5e7716eee5480b8799fd5d4057c380
