@@ -92,6 +92,13 @@ specdojo:
 - 観点のタグは今回付けていない。区切り 6 の PR 前に orchestrator が `viewpoints.yaml` の規則またはタグで分類する。区切り 3 では、今回の期待値を変更せずに同じ Browser Mode テストが通ることを確認する。
 - 保護された設定への変更提案はない。result の記入と登録簿の状態遷移は後続の reporter／runner に委ねる。
 
+### orchestrator の確認（2026-11-14、specdojo-orchestrator）
+
+- `feature/frontend-ui-tests`（`416eebd`）を一時的な worktree に取り出し、`npm ci` から `npm run test`（937 件）・`lint`・`pretty:check`・`build` が通ることを確かめた。
+- executor が流せなかった `test:ui` を 3 回続けて流し、3 回とも 41 件が通った（区切り 2 の 35 件に、このテストの 6 件が加わった）。E2E は 5 件が 2 回とも通った。
+- **テストが不具合を見つけるかを確かめた**: 一時的な worktree の中で `src/components/questions/question.tsx` の「入力不備がある場合次の質問には進まない」判定を外すと、6 件のうち 5 件が失敗した。元に戻した。
+- 気づいたこと: Browser Mode を流すと `dashboard/.vitest/` ができ、`.gitignore` に入っていない。テストの名前は英語（区切り 1 の上流のテストと同じ書き方）で、区切り 6 で足したテストの名前をそろえた形（日本語で条件が分かる形）とは違う。どちらも区切り 2.5 の PR の前に扱いを決める。
+
 ## 6. 関連ドキュメント
 
 - 由来: [[prj-0001:pjr-ms7f-frontend-test-coverage|PJR-MS7F]]（「4.4. テストを追加する項目の案」）
