@@ -1,0 +1,43 @@
+# yaml-language-server: $schema=../../../../../../specdojo/schemas/v1/register-events.schema.yaml
+- v: 1
+  id: reg_a98735a3875e4e4b9156887c186c392c
+  ts: "2026-11-14T23:16:17Z"
+  action: add
+  actor: specdojo-orchestrator
+  from_status: null
+  to_status: open
+  reason: PJR-0P60 の executor が見つけた不具合を起票する（担当と期限は naoji に確かめる）
+  changes:
+    - field: status
+      from: ""
+      to: open
+    - field: title
+      from: ""
+      to: 応答エラーの画面（/response-error）を URL から直接開くと例外になる
+    - field: description
+      from: ""
+      to: FormResponseError.tsx が null の location.state から値を取り出すため、/response-error を新しいタブなどで直接開くと例外になる。もう一度入力してほしい旨と、見積もりへ戻るリンクを出すのが期待する動き。
+    - field: type
+      from: ""
+      to: issue
+    - field: priority
+      from: ""
+      to: low
+    - field: difficulty
+      from: ""
+      to: easy
+    - field: owner
+      from: ""
+      to: _TODO_
+    - field: registered
+      from: ""
+      to: "2026-11-14"
+    - field: due
+      from: ""
+      to: _TODO_
+    - field: derived_from
+      from: ""
+      to: '["PJR-0P60"]'
+    - field: commit_type
+      from: ""
+      to: fix
