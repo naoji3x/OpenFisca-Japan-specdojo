@@ -7,12 +7,13 @@ specdojo:
   part_of:
     - prj-0001:pjr-index
   item_type: todo
-  item_status: in-progress
+  item_status: waiting
   priority: high
   difficulty: medium
   owner: DEV
   registered_at: "2026-11-02T23:14:03Z"
   due_on: "2026-11-30"
+  block_reason: "executor reported incomplete: Added fixed-data stories (11) and Browser Mode tests (14, 2 of them it.fails for a data bug) for helpDesk.tsx, benefit.tsx and loan.tsx in openfisca-japan:dashboard. The …"
   derived_from:
     - PJR-MS7F
   commit_type: test

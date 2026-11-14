@@ -54,3 +54,19 @@
       from: open
       to: in-progress
   previous_event_id: reg_948b8626e34344a597203c1a6f0a6ca9
+- v: 1
+  id: reg_e0c1b95d33f34d9b9793c4a248af5d02
+  ts: "2026-11-14T23:30:36Z"
+  action: wait
+  actor: opus-executor
+  from_status: in-progress
+  to_status: waiting
+  reason: "executor reported incomplete: Added fixed-data stories (11) and Browser Mode tests (14, 2 of them it.fails for a data bug) for helpDesk.tsx, benefit.tsx and loan.tsx in openfisca-japan:dashboard. The …"
+  changes:
+    - field: status
+      from: in-progress
+      to: waiting
+    - field: block_reason
+      from: "-"
+      to: "executor reported incomplete: Added fixed-data stories (11) and Browser Mode tests (14, 2 of them it.fails for a data bug) for helpDesk.tsx, benefit.tsx and loan.tsx in openfisca-japan:dashboard. The …"
+  previous_event_id: reg_4a7123679b06424ea80232cb26e95cfa
