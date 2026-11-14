@@ -1,0 +1,43 @@
+# yaml-language-server: $schema=../../../../../../specdojo/schemas/v1/register-events.schema.yaml
+- v: 1
+  id: reg_00c5d8686dd442ef96fda71527ad4d28
+  ts: "2026-11-14T23:51:46Z"
+  action: add
+  actor: specdojo-orchestrator
+  from_status: null
+  to_status: open
+  reason: naoji の判断（案 C）で、区切り 2.5 は sol-executor で進め、Claude の executor の設定の直しを別の項目にする
+  changes:
+    - field: status
+      from: ""
+      to: open
+    - field: title
+      from: ""
+      to: exec の Claude の executor が、検査のコマンドを流し、個票を書けるようにする
+    - field: description
+      from: ""
+      to: exec が Claude の executor に渡す .specdojo/claude/settings.edit.json は編集だけを許し、Bash を許していない。PJR-N0FE で npm・npx・node が承認の待ちで止まり、project の個票も書けなかった。許すコマンドと範囲を決め、SpecDojo の側への要望も含めて直す。
+    - field: type
+      from: ""
+      to: todo
+    - field: priority
+      from: ""
+      to: medium
+    - field: difficulty
+      from: ""
+      to: medium
+    - field: owner
+      from: ""
+      to: _TODO_
+    - field: registered
+      from: ""
+      to: "2026-11-14"
+    - field: due
+      from: ""
+      to: _TODO_
+    - field: derived_from
+      from: ""
+      to: '["PJR-N0FE"]'
+    - field: commit_type
+      from: ""
+      to: chore
