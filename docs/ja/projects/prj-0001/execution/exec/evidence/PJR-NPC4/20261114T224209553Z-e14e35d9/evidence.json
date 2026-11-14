@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "task_id": "PJR-NPC4",
+  "run_id": "20261114T224209553Z-e14e35d9",
+  "stage": {
+    "role": "executor",
+    "actor": "sol-executor",
+    "status": "succeeded",
+    "started_at": "2026-11-14T22:43:02.574Z",
+    "completed_at": "2026-11-14T22:46:43.963Z",
+    "exit_code": 0,
+    "attempts": 1
+  },
+  "changes": [
+    {
+      "path": "docs/ja/projects/prj-0001/controls/project-register/events/pjr-npc4.yaml",
+      "status": "MM"
+    },
+    {
+      "path": "docs/ja/projects/prj-0001/controls/project-register/pjr-npc4-frontend-result-share-tests.md",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/result/resultShare.browser.test.tsx",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/result/resultShare.stories.tsx",
+      "status": "M"
+    }
+  ],
+  "attempt_changes": [
+    {
+      "path": "docs/ja/projects/prj-0001/controls/project-register/pjr-npc4-frontend-result-share-tests.md",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/result/resultShare.browser.test.tsx",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/result/resultShare.stories.tsx",
+      "status": "M"
+    }
+  ],
+  "diff_summary": {
+    "files_changed": 4,
+    "summary": ".../pjr-npc4-frontend-result-share-tests.md        | 22 ++++++++++++++++------\n 1 file changed, 16 insertions(+), 6 deletions(-)\n[openfisca-japan]\n.../components/result/resultShare.browser.test.tsx | 91 +++++++++++++---------\n .../src/components/result/resultShare.stories.tsx  | 13 ++--\n 2 files changed, 60 insertions(+), 44 deletions(-)"
+  },
+  "validations": [
+    {
+      "source": "executor",
+      "command": "npm run test",
+      "status": "passed",
+      "summary": "openfisca-japan/dashboard: 6 files・937 tests 成功。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run lint",
+      "status": "passed",
+      "summary": "openfisca-japan/dashboard: ESLint 成功。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run build",
+      "status": "passed",
+      "summary": "openfisca-japan/dashboard: TypeScript・Vite 成功。既存の chunk サイズ警告あり。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run pretty",
+      "status": "passed",
+      "summary": "openfisca-japan/dashboard: pre-commit 相当の整形を実施。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run pretty:check",
+      "status": "passed",
+      "summary": "openfisca-japan/dashboard: 整形チェック成功。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run test:ui",
+      "status": "requires_human",
+      "summary": "openfisca-japan/dashboard: uv_interface_addresses のシステムエラーで起動不可。統合後に Chromium で3回実行する。"
+    },
+    {
+      "source": "executor",
+      "command": "node tools/specdojo-pre-commit.mjs prettier docs/ja/projects/prj-0001/controls/project-register/pjr-npc4-frontend-result-share-tests.md",
+      "status": "passed",
+      "summary": "個票の整形成功。"
+    },
+    {
+      "source": "executor",
+      "command": "node tools/specdojo-pre-commit.mjs markdownlint docs/ja/projects/prj-0001/controls/project-register/pjr-npc4-frontend-result-share-tests.md",
+      "status": "passed",
+      "summary": "個票の Markdown 検査成功。"
+    },
+    {
+      "source": "executor",
+      "command": "node node_modules/specdojo/dist/specdojo.js register build --project prj-0001 --dry-run",
+      "status": "passed",
+      "summary": "登録簿の生成検査成功。一覧は変更していない。"
+    },
+    {
+      "source": "executor",
+      "command": "specdojo catalog validate",
+      "status": "not_applicable",
+      "summary": "catalog 検査は適用外。",
+      "reason": "対象プロジェクトに `catalog_path` が設定されていない。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run validate:schema:file",
+      "status": "not_applicable",
+      "summary": "schema 検査は適用外。",
+      "reason": "executor による YAML の変更がなく、該当 script も存在しない。"
+    },
+    {
+      "source": "executor",
+      "command": "git diff --check",
+      "status": "passed",
+      "summary": "project と openfisca-japan の両リポジトリで成功。"
+    }
+  ],
+  "final_message": "共有結果の story と Browser Mode テストを修正し、個票に対応内容を記録しました。非同期描画の待機、保存中ボタンの検索、コピー拒否時の正しい期待値を反映しました。",
+  "completion_status": "complete",
+  "handoff": [
+    "統合後、orchestrator が dashboard で npm run test:ui を Chromium で3回実行する。サンドボックスでは Storybook 設定読み込み時の uv_interface_addresses エラーで起動できず、修正後のブラウザー検証は未確認。",
+    "コピー拒否は成功表示が出ないことを期待する it.fails に変更した。統合後、その期待値で失敗することを確認する。アプリの修正は PJR-4NKN で行い、修正時に通常の it へ戻す。",
+    "網羅率の前後測定は区切り5の PR 後、テストの分類は区切り6の PR 前、同じ期待値での再検証は区切り3の依存更新後に orchestrator が行う。",
+    "変更ファイルは openfisca-japan:dashboard/src/components/result/resultShare.stories.tsx、openfisca-japan:dashboard/src/components/result/resultShare.browser.test.tsx、個票 pjr-npc4-frontend-result-share-tests.md。result は未編集のため reporter / runner が記入する。"
+  ],
+  "log_refs": [
+    {
+      "kind": "agent-output-excerpt",
+      "path": "docs/ja/projects/prj-0001/execution/exec/evidence/PJR-NPC4/20261114T224209553Z-e14e35d9/executor.log",
+      "bytes": 3305,
+      "truncated": false
+    }
+  ]
+}
