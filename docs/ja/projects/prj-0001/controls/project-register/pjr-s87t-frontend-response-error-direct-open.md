@@ -29,7 +29,7 @@ FormResponseError.tsx が null の location.state から値を取り出すため
 - PJR-0P60 の executor（sol-executor、2026-11-14）が、画面の入口のテストを足しているときに見つけた。再現: 新しいタブで `/response-error` を開く。
 - 原因の見当: `dashboard/src/components/errors/FormResponseError.tsx` が、ふつうは遷移のときに渡される `location.state` から値を取り出す。URL から直接開くと `location.state` が `null` になり、例外になる。
 - 区切り 2.5 の `dashboard/src/App.browser.test.tsx` に、正しい期待値（もう一度入力してほしい旨と、見積もりへ戻るリンクを出す）で書いた `it.fails` がある。不具合を直したら、ふつうの `it` に戻す。
-- 担当と期限は未定（naoji に確かめる）。
+- 担当は DEV、期限は 2026-11-30（naoji が決めた）。
 
 ## 3. 影響範囲
 

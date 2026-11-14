@@ -108,6 +108,13 @@ helpDesk.tsx・benefit.tsx・loan.tsx は網羅率 0%。居住地・URL の有�
 - 網羅率の追加前・追加後の計測は、区切り 2.5 の前提に従い今回は実施していない（`@vitest/coverage-v8` がないため依存を追加しない）。区切り 5 の PR 後に orchestrator が `helpDesk.tsx`・`benefit.tsx`・`loan.tsx`（関連する `loanAccordion.tsx` を含む）を測って本票へ追記する。網羅率の目標・CI 強制は決めていない。
 - 観点のタグは追加していない。区切り 6 の PR の前に `viewpoints.yaml` の規則またはタグで分類する。
 
+### orchestrator の確認（2026-11-14、specdojo-orchestrator）
+
+- 1 回目の run（opus-executor）は、`npm`・`npx`・`node` が承認の待ちで止まり、個票も書けず、「未完了」で止まった（[[prj-0001:pjr-0p7b-claude-executor-permissions|PJR-0P7B]]）。作ったファイルを別の worktree に写して流すと、`test:ui` は 3 回とも通り、直すところは 1 ファイルの書式だけだった。sol-executor で executor の段から再開し、`616d748` で統合された。
+- `feature/frontend-ui-tests`（`616d748`）で、`npm run test`（937 件）・`lint`・`pretty:check`・`build` と E2E（5 件を 2 回）が通った。`test:ui` は 3 回とも 96 件が通り、`it.fails` の 4 件（PJR-NPC4・0P60 の 1 件ずつと、この項目の 2 件）が期待どおりに失敗した（100 件）。
+- **テストが不具合を見つけるかを確かめた**: 一時的な worktree の中で `src/components/result/helpDesk.tsx` の `tel:` を別の文字に変えると、story 6 件が失敗した。元に戻した。
+- 見つかったデータの不具合は [[prj-0001:pjr-fpas-frontend-welfare-council-url-data|PJR-FPAS]] で起票した（担当 BA、期限 2026-11-30）。executor の気づき（`HelpDeskTemplate` がどの窓口の判定にもハローワークのデータを使う）は、[[prj-0001:pjr-1eb8-frontend-pr-assurance|PJR-1EB8]] に記録した。
+
 ## 6. 関連ドキュメント
 
 - 由来: [[prj-0001:pjr-ms7f-frontend-test-coverage|PJR-MS7F]]（「4.4. テストを追加する項目の案」）
