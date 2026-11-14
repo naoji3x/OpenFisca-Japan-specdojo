@@ -125,3 +125,22 @@
       from: in-progress
       to: review
   previous_event_id: reg_ea8a15eba11e406bb17cdc880cb0d6b9
+- v: 1
+  id: reg_55691c7962b249aeb5dff0695dd7ba4d
+  ts: "2026-11-14T22:53:02Z"
+  action: close
+  actor: specdojo-orchestrator
+  from_status: review
+  to_status: done
+  reason: orchestrator が統合のあとに test:ui を 3 回流し、表示を変えるとテストが失敗することを確かめた
+  changes:
+    - field: status
+      from: review
+      to: done
+    - field: completed
+      from: "-"
+      to: "2026-11-14"
+    - field: conclusion
+      from: "-"
+      to: 結果の画面の共有 URL の復元・壊れた URL・コピーと QR・画像で保存を story と Browser Mode で確かめるテストを足した（区切り 2.5）。コピーの不具合は PJR-4NKN、テストは it.fails
+  previous_event_id: reg_8709ab716b0e4a23850d090ff30efc3f

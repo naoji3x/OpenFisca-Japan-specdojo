@@ -2,17 +2,19 @@
 specdojo:
   id: prj-0001:pjr-npc4-frontend-result-share-tests
   type: project
-  status: draft
+  status: ready
   rulebook: specdojo:pjr-rulebook
   part_of:
     - prj-0001:pjr-index
   item_type: todo
-  item_status: review
+  item_status: done
   priority: high
   difficulty: medium
   owner: DEV
   registered_at: "2026-11-02T23:14:00Z"
   due_on: "2026-11-30"
+  completed_at: "2026-11-14T22:53:02Z"
+  conclusion: 結果の画面の共有 URL の復元・壊れた URL・コピーと QR・画像で保存を story と Browser Mode で確かめるテストを足した（区切り 2.5）。コピーの不具合は PJR-4NKN、テストは it.fails
   derived_from:
     - PJR-MS7F
   commit_type: test
