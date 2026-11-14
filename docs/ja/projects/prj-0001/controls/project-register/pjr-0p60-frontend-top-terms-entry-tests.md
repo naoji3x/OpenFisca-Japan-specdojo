@@ -101,6 +101,12 @@ App.tsx・topPage.tsx・TermsModal.tsx は網羅率 0%。同意の取り消し�
 - 網羅率の追加前・追加後の計測は、区切り 2.5 の前提により今回実施していない。`@vitest/coverage-v8` は追加していない。区切り 5 の PR 後に orchestrator が本個票へ対象 6 ファイルの計測値を追記する。観点の分類は区切り 6 の PR 前に行う。
 - 区切り 3 の更新後も、追加テストの期待値を変えずに `npm run test:ui` が通ることを確認する。保護された設定の変更提案はない。
 
+### orchestrator の確認（2026-11-14、specdojo-orchestrator）
+
+- `feature/frontend-ui-tests`（`b8c5756`）で、`npm run test`（937 件）・`lint`・`pretty:check`・`build` と E2E（5 件を 2 回）が通った。`test:ui` は 3 回とも 75 件が通り、`it.fails` の 2 件（PJR-NPC4 の 1 件と、この項目の 1 件）が期待どおりに失敗した（77 件）。1 回目の run で通った（PJR-NPC4 のあとに書き足した書き方の注意に沿っている）。
+- **テストが不具合を見つけるかを確かめた**: 一時的な worktree の中で `src/App.tsx` の `path: '/privacypolicy'` を別の経路に変えると、個人情報の扱いのページを開く 2 件が失敗した。元に戻した。
+- 見つかった不具合は [[prj-0001:pjr-s87t-frontend-response-error-direct-open|PJR-S87T]] で起票した（担当と期限は naoji に確かめる）。
+
 ## 6. 関連ドキュメント
 
 - 由来: [[prj-0001:pjr-ms7f-frontend-test-coverage|PJR-MS7F]]（「4.4. テストを追加する項目の案」）
