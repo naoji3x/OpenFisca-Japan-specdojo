@@ -91,6 +91,15 @@ specdojo:
 - コピーが拒否されても成功した表示になる。再現は、新形式の共有 URL を開き、ブラウザーのクリップボード書き込みを拒否した状態で「結果のリンクをコピー」を押す。Browser Mode の `currently shows the copied message even when the clipboard rejects` は `NotAllowedError` を返すモックでこの操作を再現する。
 - 現行実装の `clipBoard` は例外を内部で捕捉して正常終了するため、呼び出し側が「クリップボードにコピーしました」を表示する。期待する動きは、拒否時に成功表示を出さず、コピー失敗と再試行手段を案内し、QR を利用可能にすること。現行表示をテストの期待値として固定し、修正は orchestrator が別項目に起票する。実ブラウザーでの再現確認も統合後に行う。
 
+### orchestrator の確認と直しの指示（2026-11-14、specdojo-orchestrator）
+
+- `feature/frontend-ui-tests`（`9ff2a32`）を一時的な worktree に取り出し、`npm ci` から `npm run test`（937 件）・`lint`・`pretty:check`・`build` と E2E（5 件を 2 回）が通ることを確かめた。
+- **`test:ui` は 3 回とも、足したテストの 5〜6 件が失敗した**（executor はサンドボックスで流せなかった）。
+  - `resultShare.stories.tsx` の共有 URL から復元する story 5 件（`Compact Simple`・`Compact Detailed`・`Compact Disaster`・`Legacy With Frontend`・`Legacy Without Frontend`）: `findByText('見積もり結果')` の直後に `canvas.getByRole('button', { name: '児童手当 1.5 万円/月' })` で、給付のボタンを待たずに探している。一覧は少し遅れて描かれるため見つからない。`await canvas.findByRole(…)` にすると 6 件すべてが通ることを、一時的な worktree で確かめた。
+  - `resultShare.browser.test.tsx` の「saves the result as an image and clears the loading state」: `shown('読み込み中...')`（`page.getByText('読み込み中...', { exact: true })`）で失敗する。Chakra UI のボタンは、読み込み中に `<button disabled data-loading><div class="chakra-button__spinner">…<span>Loading...</span>…</div>読み込み中...</button>` を描き、「読み込み中...」はボタンの中に直接書かれた文字で独立した要素ではないため、完全一致の文字では見つからない。ボタンを役割と名前（`page.getByRole('button', { name: /読み込み中/ })`）で探す。
+- **不具合を期待値にしたテスト**: 「currently shows the copied message even when the clipboard rejects」は、誤った今の動きを期待値にしている。naoji の判断（2026-11-14）で、正しい期待値（拒まれたら「クリップボードにコピーしました」を出さない）で書き、Vitest の `it.fails` にする。不具合は [[prj-0001:pjr-4nkn-frontend-clipboard-failure-message|PJR-4NKN]] で起票した。テストの名前も、正しい期待値に合わせる。
+- **この run（2 回目）でしてもらうこと**: 上の 3 つを直す。直したほかにも、描画のあとに現れる要素は `find…` か `expect.poll` で待って探すこと、Chakra UI のボタンの読み込み中のように子の要素と文字が混ざる要素は、文字の完全一致ではなく役割と名前で探すことを、足したテスト全体で見直す。アプリのコードは変えない。`npm run test:ui` は流せなくてよい（統合のあとに orchestrator が 3 回流す）。
+
 ## 6. 関連ドキュメント
 
 - 由来: [[prj-0001:pjr-ms7f-frontend-test-coverage|PJR-MS7F]]（「4.4. テストを追加する項目の案」）
