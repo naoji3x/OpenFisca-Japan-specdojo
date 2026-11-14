@@ -7,12 +7,13 @@ specdojo:
   part_of:
     - prj-0001:pjr-index
   item_type: todo
-  item_status: open
+  item_status: waiting
   priority: high
   difficulty: medium
   owner: DEV
   registered_at: "2026-11-02T23:14:00Z"
   due_on: "2026-11-30"
+  block_reason: "agent exited with non-zero code: Warning: this sign-in ends between 2026-11-19 and 2026-11-22 (in 5 days at the earliest). Renewing it does not move those dates. Run claude auth login before then, or …"
   derived_from:
     - PJR-MS7F
   commit_type: test

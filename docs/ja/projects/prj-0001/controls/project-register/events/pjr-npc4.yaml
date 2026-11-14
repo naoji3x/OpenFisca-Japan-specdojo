@@ -41,3 +41,32 @@
     - field: commit_type
       from: ""
       to: test
+- v: 1
+  id: reg_5c586a030459463183caf4d3931015ee
+  ts: "2026-11-14T11:56:52Z"
+  action: start
+  actor: opus-executor
+  from_status: open
+  to_status: in-progress
+  reason: work started
+  changes:
+    - field: status
+      from: open
+      to: in-progress
+  previous_event_id: reg_9605b978c1234fbcae1ec70ad89ee476
+- v: 1
+  id: reg_217aa05a5fc24b1d91566256282c064e
+  ts: "2026-11-14T12:01:35Z"
+  action: wait
+  actor: opus-executor
+  from_status: in-progress
+  to_status: waiting
+  reason: "agent exited with non-zero code: Warning: this sign-in ends between 2026-11-19 and 2026-11-22 (in 5 days at the earliest). Renewing it does not move those dates. Run claude auth login before then, or …"
+  changes:
+    - field: status
+      from: in-progress
+      to: waiting
+    - field: block_reason
+      from: "-"
+      to: "agent exited with non-zero code: Warning: this sign-in ends between 2026-11-19 and 2026-11-22 (in 5 days at the earliest). Renewing it does not move those dates. Run claude auth login before then, or …"
+  previous_event_id: reg_5c586a030459463183caf4d3931015ee
