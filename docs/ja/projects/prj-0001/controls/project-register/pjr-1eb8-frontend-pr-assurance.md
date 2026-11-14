@@ -62,6 +62,14 @@ specdojo:
 - Cloudflare Pages での実際の build と配信（取り込む前にはプレビューがない）。取り込んだあとに開発版のページで確かめる。
 - a11y: story の検査で全 story に違反がある（Chakra UI のトーストのランドマークの重複、コントラスト、リンクの名前）。前からあったもので、区切り 4 と [[prj-0001:pjr-bn8w-a11y-contrast-landmark\|PJR-BN8W]] で扱う。
 
+### 区切り 2.5: 区切り 3 の前に画面のテストを足す（準備中、`feature/frontend-ui-tests`、`develop` の `dbfa6ae` から）
+
+変わること: 画面を描いて確かめるテストを足す。対象は [[prj-0001:pjr-8307-frontend-question-screen-tests\|PJR-8307]]（質問の画面と状態の機械のつなぎ目）、[[prj-0001:pjr-npc4-frontend-result-share-tests\|PJR-NPC4]]（結果の画面の共有）、[[prj-0001:pjr-n0fe-frontend-helpdesk-benefit-loan-tests\|PJR-N0FE]]（窓口・給付・貸付の出し分け）、[[prj-0001:pjr-r4th-frontend-applicable-tests\|PJR-R4TH]]（フロントエンドだけで決める制度の判定と表示）、[[prj-0001:pjr-0p60-frontend-top-terms-entry-tests\|PJR-0P60]]（トップ・同意・画面の入口）、[[prj-0001:pjr-7kay-frontend-input-template-device-tests\|PJR-7KAY]]（入力テンプレートの端末による分岐）。アプリのコードは変えない。
+
+理由（naoji の判断、2026-11-14）: 区切り 3 は React・React Router・Chakra UI など画面を描く仕組みを上げる。区切り 1 と同じく、先に今の動きをテストで固定し、区切り 3 を取り込んだあとも期待値を変えずに通ることで、変わっていないことを示す。ロジックだけのテスト（PJR-4MC9・2KY8・4K59・XBTJ）は区切り 3 で結果が変わる理由がないため、後に回す。
+
+この土台にないもの: 網羅率を測る依存・観点のタグとレポートの道具・E2E の複数のブラウザー（区切り 5・6）。網羅率は区切り 5 の PR の後に測り、観点は区切り 6 の PR の前に分類する。
+
 ## 2. 背景・文脈
 
 - naoji の依頼（2026-11-10）: 区切り 2 の PR を準備するにあたり、Vite などの更新の現行保証をどう担保しているかを確かめたところ、区切りごとに何がどのテストで保証されているかを 1 か所に残しておく必要があると分かった。区切りごとに 1 つの note に追記する。
