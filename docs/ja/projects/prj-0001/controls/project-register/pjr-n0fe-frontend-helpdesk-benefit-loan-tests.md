@@ -2,17 +2,19 @@
 specdojo:
   id: prj-0001:pjr-n0fe-frontend-helpdesk-benefit-loan-tests
   type: project
-  status: draft
+  status: ready
   rulebook: specdojo:pjr-rulebook
   part_of:
     - prj-0001:pjr-index
   item_type: todo
-  item_status: review
+  item_status: done
   priority: high
   difficulty: medium
   owner: DEV
   registered_at: "2026-11-02T23:14:03Z"
   due_on: "2026-11-30"
+  completed_at: "2026-11-14T23:52:53Z"
+  conclusion: 窓口・給付・貸付の表示の出し分けを、固定のデータの story と Browser Mode で確かめるテストを足した（区切り 2.5）。データの不具合は PJR-FPAS、テストは it.fails
   derived_from:
     - PJR-MS7F
   commit_type: test

@@ -99,3 +99,22 @@
       from: in-progress
       to: review
   previous_event_id: reg_396f645bb4f547e5a18974a385cd9d74
+- v: 1
+  id: reg_780e4bbaa5ca43be873d1b6ba6aa90be
+  ts: "2026-11-14T23:52:53Z"
+  action: close
+  actor: specdojo-orchestrator
+  from_status: review
+  to_status: done
+  reason: orchestrator が統合のあとに test:ui を 3 回流し、電話のリンクを壊すとテストが失敗することを確かめた
+  changes:
+    - field: status
+      from: review
+      to: done
+    - field: completed
+      from: "-"
+      to: "2026-11-14"
+    - field: conclusion
+      from: "-"
+      to: 窓口・給付・貸付の表示の出し分けを、固定のデータの story と Browser Mode で確かめるテストを足した（区切り 2.5）。データの不具合は PJR-FPAS、テストは it.fails
+  previous_event_id: reg_a1a2ce32eb344674ad7d9e9c213dbcde
