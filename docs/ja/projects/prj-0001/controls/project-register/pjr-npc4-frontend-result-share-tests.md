@@ -110,6 +110,12 @@ specdojo:
 - `npm run test:ui` は再実行でも Storybook 設定の読み込み時に `uv_interface_addresses` のシステムエラーで停止した。サンドボックスの制約による `requires_human` とし、修正後の 6 stories・Browser Mode 15 ケース（うち期待する失敗 1 ケース）の実行結果は未確認。統合後に orchestrator が Chromium で `npm run test:ui` を 3 回実行し、拒否テストの失敗箇所が成功表示の非表示という期待値であることも確認する。
 - 個票の Prettier・markdownlint と `specdojo register build --project prj-0001 --dry-run` は成功した。登録簿一覧とステータス項目は変更していない。`catalog_path` が未設定のため catalog 検査、YAML の変更と schema script がないため schema 検査は適用外。網羅率の前後測定は区切り 5 の PR 後、テストの分類は区切り 6 の PR 前、同じ期待値での再検証は区切り 3 の依存更新後に orchestrator が行う。
 
+### orchestrator の確認（2 回目の run のあと、2026-11-14、specdojo-orchestrator）
+
+- 2 回目の run（sol-executor）で `e7cea6e` が統合された。story 5 件は `findByRole` で待って探す形、画像で保存のテストは読み込み中のボタンを役割と名前で探す形、不具合のテストは `it.fails('does not show the copied message when the clipboard rejects', …)` になった。
+- `feature/frontend-ui-tests`（`e7cea6e`）で、`npm run test`（937 件）・`lint`・`pretty:check`・`build` と E2E（5 件を 2 回）が通った。`test:ui` は 3 回とも 61 件が通り、`it.fails` の 1 件が期待どおりに失敗した（62 件）。
+- **テストが不具合を見つけるかを確かめた**: 一時的な worktree の中で、`src/config/app_config.json` の「クリップボードにコピーしました」を変えると、コピーのテスト 3 件が失敗し、`it.fails` のテストも「失敗しなくなった」として失敗した（不具合を直したときも同じように知らせる）。`shareLink.ts` の `+` を空白から戻す処理を外す壊し方は、今回のテストでは見つからなかったが、前からある unit の `shareLink.test.ts` が受け持つ。元に戻した。
+
 ## 6. 関連ドキュメント
 
 - 由来: [[prj-0001:pjr-ms7f-frontend-test-coverage|PJR-MS7F]]（「4.4. テストを追加する項目の案」）
