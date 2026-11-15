@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "task_id": "PJR-7KAY",
+  "run_id": "20261115T002303911Z-d3e1e747",
+  "stage": {
+    "role": "executor",
+    "actor": "sol-executor",
+    "status": "succeeded",
+    "started_at": "2026-11-15T00:28:09.936Z",
+    "completed_at": "2026-11-15T00:36:52.568Z",
+    "exit_code": 0,
+    "attempts": 1
+  },
+  "changes": [
+    {
+      "path": "docs/ja/projects/prj-0001/controls/project-register/events/pjr-7kay.yaml",
+      "status": "MM"
+    },
+    {
+      "path": "docs/ja/projects/prj-0001/controls/project-register/pjr-7kay-frontend-input-template-device-tests.md",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/questions/template/questionTemplates.stories.tsx",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/questions/template/questionTemplates.device.test.tsx",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/questions/template/questionTemplates.input.browser.test.tsx",
+      "status": "??"
+    }
+  ],
+  "attempt_changes": [
+    {
+      "path": "docs/ja/projects/prj-0001/controls/project-register/pjr-7kay-frontend-input-template-device-tests.md",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/questions/template/questionTemplates.stories.tsx",
+      "status": "M"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/questions/template/questionTemplates.device.test.tsx",
+      "status": "??"
+    },
+    {
+      "path": "openfisca-japan:dashboard/src/components/questions/template/questionTemplates.input.browser.test.tsx",
+      "status": "??"
+    }
+  ],
+  "diff_summary": {
+    "files_changed": 5,
+    "summary": "...jr-7kay-frontend-input-template-device-tests.md | 46 +++++++++++++++++++---\n 1 file changed, 40 insertions(+), 6 deletions(-)\n[openfisca-japan]\n.../src/components/questions/template/questionTemplates.stories.tsx   | 4 ++--\n 1 file changed, 2 insertions(+), 2 deletions(-)"
+  },
+  "validations": [
+    {
+      "source": "executor",
+      "command": "cd ../openfisca-japan/dashboard && npm run test",
+      "status": "passed",
+      "summary": "8ファイル、1082件成功、3件期待失敗。"
+    },
+    {
+      "source": "executor",
+      "command": "cd ../openfisca-japan/dashboard && npm run build",
+      "status": "passed",
+      "summary": "型検査とproduction build成功。チャンクサイズ警告あり。"
+    },
+    {
+      "source": "executor",
+      "command": "cd ../openfisca-japan/dashboard && npm run lint",
+      "status": "passed",
+      "summary": "ESLint成功。"
+    },
+    {
+      "source": "executor",
+      "command": "cd ../openfisca-japan/dashboard && npm run pretty:check",
+      "status": "passed",
+      "summary": "全対象の整形チェック成功。"
+    },
+    {
+      "source": "executor",
+      "command": "cd ../openfisca-japan/dashboard && npm run test:ui",
+      "status": "requires_human",
+      "summary": "サンドボックスのネットワーク情報取得エラーで設定読み込みに失敗。統合後に再実行が必要。"
+    },
+    {
+      "source": "executor",
+      "command": "npx prettier --write docs/ja/projects/prj-0001/controls/project-register/pjr-7kay-frontend-input-template-device-tests.md",
+      "status": "passed",
+      "summary": "個票の整形成功。"
+    },
+    {
+      "source": "executor",
+      "command": "npx markdownlint docs/ja/projects/prj-0001/controls/project-register/pjr-7kay-frontend-input-template-device-tests.md",
+      "status": "passed",
+      "summary": "個票のMarkdown検査成功。"
+    },
+    {
+      "source": "executor",
+      "command": "npx specdojo register build --project prj-0001 --dry-run",
+      "status": "passed",
+      "summary": "登録簿の生成検査成功。一覧を変更しない条件に従いdry-runで実行。"
+    },
+    {
+      "source": "executor",
+      "command": "npx specdojo catalog validate --project prj-0001",
+      "status": "not_applicable",
+      "summary": "カタログ検査は非適用。",
+      "reason": "対象プロジェクトに `catalog_path` の設定がない。"
+    },
+    {
+      "source": "executor",
+      "command": "npm run validate:schema:file",
+      "status": "not_applicable",
+      "summary": "スキーマ検査は非適用。",
+      "reason": "executorによるYAML変更がなく、package.jsonにも該当scriptがない。"
+    },
+    {
+      "source": "executor",
+      "command": "git diff --check",
+      "status": "passed",
+      "summary": "projectとopenfisca-japanの両リポジトリで成功。"
+    }
+  ],
+  "final_message": "IME・端末属性・初期値とクリア後の有効性のテストを追加し、個票の作業内容・対応結果を更新した。result は編集していない。",
+  "completion_status": "complete",
+  "handoff": [
+    "変更ファイル: openfisca-japan:dashboard/src/components/questions/template/questionTemplates.device.test.tsx（追加、jsdom 121件）、openfisca-japan:dashboard/src/components/questions/template/questionTemplates.input.browser.test.tsx（追加、Browser Mode 6件）、openfisca-japan:dashboard/src/components/questions/template/questionTemplates.stories.tsx（人数クリア直後の誤った期待値を削除）、docs/ja/projects/prj-0001/controls/project-register/pjr-7kay-frontend-input-template-device-tests.md（作業内容・対応結果・申し送りを更新）。",
+    "統合後、openfisca-japan:dashboard で npm run test:ui を実行する。今回は Storybook 設定読み込み時の os.networkInterfaces() が `uv_interface_addresses` のシステムエラー（errno 1）で失敗し、ブラウザーテストは起動していない。区切り3の依存更新後にも期待値を変えず再実行する。",
+    "人数入力の有効性更新の不具合を別項目として起票する。初期値2をクリアしても有効のまま、クリアして「はい」を押した後に3を入力しても無効のまま、未回答で「はい」を押して2を入力しても無効のまま、の3パターンを正しい期待値の it.fails で再現した。アプリは未修正。修正後に通常テストへ変更する。",
+    "今回の網羅率は前提どおり未計測。区切り5のPR後に、対象4テンプレートの追加前後の unit・story・Browser Mode の網羅率を同条件で測定して個票へ追記する。既記載の割合は過去値である。区切り6のPR前に今回のテストを viewpoints.yaml の規則またはタグで分類する。",
+    "スマートフォンの number 入力に全角文字列を保持させる条件、数字除去後の負数、不整合な端末フラグ、許容範囲外の初期値は網羅率目的で作っていない。UAと合成イベントによる検証は実OSのネイティブIMEや実機キーボード表示を保証しない。保護された設定の変更案はない。"
+  ],
+  "log_refs": [
+    {
+      "kind": "agent-output-excerpt",
+      "path": "docs/ja/projects/prj-0001/execution/exec/evidence/PJR-7KAY/20261115T002303911Z-d3e1e747/executor.log",
+      "bytes": 5019,
+      "truncated": false
+    }
+  ]
+}
