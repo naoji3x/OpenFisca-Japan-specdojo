@@ -62,7 +62,7 @@ specdojo:
 - Cloudflare Pages での実際の build と配信（取り込む前にはプレビューがない）。取り込んだあとに開発版のページで確かめる。
 - a11y: story の検査で全 story に違反がある（Chakra UI のトーストのランドマークの重複、コントラスト、リンクの名前）。前からあったもので、区切り 4 と [[prj-0001:pjr-bn8w-a11y-contrast-landmark\|PJR-BN8W]] で扱う。
 
-### 区切り 2.5: 区切り 3 の前に画面のテストを足す（PR 準備中、`feature/frontend-ui-tests` の `7fe44ae`、`develop` の `dbfa6ae` から）
+### 区切り 2.5: 区切り 3 の前に画面のテストを足す（PR #510、2026-11-15 に提出、`feature/frontend-ui-tests` の `bdce692`、`develop` の `dbfa6ae` から）
 
 変わること: 画面を描いて確かめるテストを足す。対象は [[prj-0001:pjr-8307-frontend-question-screen-tests\|PJR-8307]]（質問の画面と状態の機械のつなぎ目）、[[prj-0001:pjr-npc4-frontend-result-share-tests\|PJR-NPC4]]（結果の画面の共有）、[[prj-0001:pjr-n0fe-frontend-helpdesk-benefit-loan-tests\|PJR-N0FE]]（窓口・給付・貸付の出し分け）、[[prj-0001:pjr-r4th-frontend-applicable-tests\|PJR-R4TH]]（フロントエンドだけで決める制度の判定と表示）、[[prj-0001:pjr-0p60-frontend-top-terms-entry-tests\|PJR-0P60]]（トップ・同意・画面の入口）、[[prj-0001:pjr-7kay-frontend-input-template-device-tests\|PJR-7KAY]]（入力テンプレートの端末による分岐）。アプリのコードは変えない。
 
@@ -71,6 +71,8 @@ specdojo:
 この土台にないもの: 網羅率を測る依存・観点のタグとレポートの道具・E2E の複数のブラウザー（区切り 5・6）。網羅率は区切り 5 の PR の後に測り、観点は区切り 6 の PR の前に分類する。
 
 結果（2026-11-15）: 6 件とも統合し、orchestrator が確かめて close した。区切り 2.5 の先端（`7fe44ae`）で、unit は 1,085 件（1,082 件が通り、`it.fails` の 3 件が期待どおりに失敗。`develop` は 937 件）、`test:ui` は 119 件（114 件が通り、`it.fails` の 5 件が期待どおりに失敗。`develop` は 35 件）で、3 回続けて同じ結果になった。E2E・lint・pretty:check・build も通った。どの項目でも、アプリのコードを一時的に壊すと、足したテストが失敗することを確かめた。変更はテストのファイル 13 個と `dashboard/.gitignore`（`/.vitest/` を足した）だけで、アプリのコードと依存は変えていない。executor は 5 件が sol-executor、1 件（N0FE）が opus-executor で作り sol-executor で仕上げた。opus-executor は exec でコマンドを流せなかった（[[prj-0001:pjr-0p7b-claude-executor-permissions\|PJR-0P7B]]）。
+
+上流の CI（PR #510、2026-11-15）: build・フロントエンドのテスト（`it.fails` を含む unit と `test:ui`、E2E）・バックエンドのテスト・見た目の比較（`visual` の job）がすべて通った。`it.fails` の 8 件は、上流の CI でも期待どおりに失敗するものとして扱われた。PR の前に、共有 URL の固定のキーに本物の利用者のリンクを使わないことをコメントに書いた（`bdce692`。キーを取り出すと架空のデータであることを確かめた。共有 URL と記録の関係は [[prj-0001:pjr-rbq9-share-url-privacy\|PJR-RBQ9]] で調べる）。
 
 #### 区切り 2.5 で見つかった不具合と気づき（2026-11-14）
 
