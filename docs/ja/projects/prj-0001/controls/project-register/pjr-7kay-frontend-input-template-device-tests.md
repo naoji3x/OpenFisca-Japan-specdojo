@@ -110,6 +110,12 @@ orchestrator はこの有効性更新の不具合を別項目として起票し�
 - Browser Mode は既存設定の Chromium を使う。Safari・Windows の実 OS でのネイティブ IME 操作や実機キーボードの表示は自動テストの保証範囲に含めていない。
 - 統合後に orchestrator が `npm run test:ui` を実行し、追加テストと変更した story の成功を確認する。区切り 3 の依存更新後も同じ期待値で再実行する。区切り 6 の PR 前には、今回のテストを `viewpoints.yaml` の規則またはタグで分類する。保護された設定の変更案はない。
 
+### orchestrator の確認（2026-11-15、specdojo-orchestrator）
+
+- `feature/frontend-ui-tests`（`c4f8694`）で、`npm run test`（1,082 件が通り、`it.fails` の 3 件が期待どおりに失敗）・`lint`・`pretty:check`・`build` と E2E（5 件を 2 回）が通った。`test:ui` は 3 回とも 114 件が通り、`it.fails` の 5 件が期待どおりに失敗した（119 件）。
+- **見つかった不具合は、区切り 4 の [[prj-0001:pjr-14rn-person-num-validity\|PJR-14RN]] で直してあるものだった**。区切り 2.5 の土台（`develop`）にはまだ入っていない。一時的な worktree の中で、PJR-14RN の直し（`0134bda` の `personNumQuestionTemplate.tsx` の 1 行）だけを当てると、`questionTemplates.device.test.tsx` の `it.fails` の 3 件（「invalidates a restored person count as soon as it is cleared」など）だけが「失敗しなくなった」と知らせ、ほかはすべて通った。元に戻した。新しくは起票しない。区切り 4 を取り込むときに、この 3 件の `.fails` を外す。
+- executor は、前からある `questionTemplates.stories.tsx`（区切り 2 で足したもの）の人数の story から、「クリアした直後も有効」という誤った期待値を消した。区切り 4 の PJR-14RN も同じ story のファイルを変えているため、区切り 4 に `develop` を merge するときに衝突しうる。
+
 ## 6. 関連ドキュメント
 
 - 由来: [[prj-0001:pjr-ms7f-frontend-test-coverage|PJR-MS7F]]（「4.4. テストを追加する項目の案」）
