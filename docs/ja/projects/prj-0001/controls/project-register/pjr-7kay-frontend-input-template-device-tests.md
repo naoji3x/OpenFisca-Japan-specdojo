@@ -2,17 +2,19 @@
 specdojo:
   id: prj-0001:pjr-7kay-frontend-input-template-device-tests
   type: project
-  status: draft
+  status: ready
   rulebook: specdojo:pjr-rulebook
   part_of:
     - prj-0001:pjr-index
   item_type: todo
-  item_status: review
+  item_status: done
   priority: medium
   difficulty: medium
   owner: DEV
   registered_at: "2026-11-03T00:18:41Z"
   due_on: "2026-11-30"
+  completed_at: "2026-11-15T00:54:12Z"
+  conclusion: 入力テンプレートの端末による分岐（UA による属性、IME の変換中、初期値と消したあとの有効性）を jsdom と Browser Mode で確かめるテストを足した（区切り 2.5）。見つかった不具合は区切り 4 の PJR-14RN で直してあり、it.fails 3 件は区切り 4 で外す
   derived_from:
     - PJR-MS7F
   commit_type: test
