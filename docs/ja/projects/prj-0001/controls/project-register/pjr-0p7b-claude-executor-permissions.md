@@ -31,7 +31,7 @@ exec が Claude の executor に渡す .specdojo/claude/settings.edit.json は�
 - 個票を書けなかったのは、`Edit(**)` が executor の作業ディレクトリ（プロダクトの worktree）の中に限られ、project の worktree がその外にあるためと見ている（確かめていない）。
 - naoji の判断（2026-11-14、案 C）: 区切り 2.5 の残りは sol-executor で流し、この設定の直しは別の項目にする。
 - `.specdojo/**` は保護された設定で、変更は naoji の承認のもとで行う。設定は SpecDojo が作ったもので、本来は SpecDojo の側で直すべきかもしれない。
-- 担当と期限は未定（naoji に確かめる）。
+- 担当は ARC、期限は 2026-11-30（naoji が決めた）。
 
 ## 3. 完了条件
 
@@ -44,8 +44,8 @@ exec が Claude の executor に渡す .specdojo/claude/settings.edit.json は�
 
 | No  | 作業                                  | 担当                  | 状態 | メモ |
 | --- | ------------------------------------- | --------------------- | ---- | ---- |
-| 1   | 許すコマンドと範囲を決める            | _TODO_                | open | -    |
-| 2   | 設定を直すか、SpecDojo の側に要望する | _TODO_                | open | -    |
+| 1   | 許すコマンドと範囲を決める            | ARC                   | open | -    |
+| 2   | 設定を直すか、SpecDojo の側に要望する | ARC                   | open | -    |
 | 3   | Claude の executor で流して確かめる   | specdojo-orchestrator | open | -    |
 
 ## 5. 対応結果
