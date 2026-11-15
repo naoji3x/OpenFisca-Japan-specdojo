@@ -41,3 +41,16 @@
     - field: depends_on
       from: ""
       to: '["PJR-BSXA"]'
+- v: 1
+  id: reg_119bfc51415e4c02a08d0f4a35edff26
+  ts: "2026-11-15T01:56:57Z"
+  action: update
+  actor: specdojo-orchestrator
+  from_status: open
+  to_status: open
+  reason: naoji の判断（2026-11-15）で、Chakra UI v3 の移行の前に PJR-T3W9 のテストを足す
+  changes:
+    - field: depends_on
+      from: '["PJR-BSXA"]'
+      to: '["PJR-T3W9"]'
+  previous_event_id: reg_c116bb158e1a435a990063733faae992

@@ -16,7 +16,7 @@ specdojo:
   derived_from:
     - PJR-BSXA
   depends_on:
-    - PJR-BSXA
+    - PJR-T3W9
 ---
 
 # PJR-ERDK Chakra UI 3 に移す
