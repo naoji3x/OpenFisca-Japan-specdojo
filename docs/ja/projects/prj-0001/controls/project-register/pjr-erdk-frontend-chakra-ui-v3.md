@@ -16,6 +16,7 @@ specdojo:
   derived_from:
     - PJR-BSXA
   depends_on:
+    - PJR-BSXA
     - PJR-T3W9
 ---
 

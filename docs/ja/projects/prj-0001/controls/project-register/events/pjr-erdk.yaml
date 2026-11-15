@@ -54,3 +54,16 @@
       from: '["PJR-BSXA"]'
       to: '["PJR-T3W9"]'
   previous_event_id: reg_c116bb158e1a435a990063733faae992
+- v: 1
+  id: reg_4350ddc1895041208ea4e6fd9449a79d
+  ts: "2026-11-15T01:57:20Z"
+  action: update
+  actor: specdojo-orchestrator
+  from_status: open
+  to_status: open
+  reason: 直前の更新で、もともとの先行の PJR-BSXA を消してしまったため、PJR-T3W9 と並べて指定し直す
+  changes:
+    - field: depends_on
+      from: '["PJR-T3W9"]'
+      to: '["PJR-BSXA","PJR-T3W9"]'
+  previous_event_id: reg_119bfc51415e4c02a08d0f4a35edff26
