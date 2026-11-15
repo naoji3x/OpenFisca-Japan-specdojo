@@ -29,7 +29,7 @@ specdojo:
 - 2026-11-15、naoji の質問（テストに固定した共有 URL のキーはセキュリティ的に問題ないか）をきっかけに起票した。テストの固定のキー（`dashboard/src/mocks/shareResultTestUtils.tsx`）は、取り出すと架空のデータ（誕生日 1 月 1 日・収入 0・東京都渋谷区など）で、秘密の情報も入っていないことを orchestrator が確かめた。本物の利用者のリンクを使わないことを、区切り 2.5 のブランチの `bdce692` でコメントに書いた。
 - アプリの共有 URL（`/result?share=…`）は、世帯の回答（年齢・収入・居住地・困りごと・制度の金額など）を、誰でも取り出せる形式（base64 と deflate）でクエリに詰めている（`dashboard/src/components/result/shareLink.ts`・`sharePresets.ts`）。
 - `dashboard/index.html` は Google Tag Manager（`%=YADOKARI_GTM_ID%`）を読み込んでいる。Google Tag Manager・Google Analytics の設定で、ページの URL（クエリを含む）を記録しているかは、リポジトリからは分からない（管理の画面にある）。本番と開発版の配信先（Cloudflare Pages）のアクセスの記録も、同じく分からない。
-- 担当と期限は未定（naoji に確かめる）。
+- 担当は DEV、期限は 2026-11-30（naoji が決めた）。
 
 ## 3. 影響範囲
 
