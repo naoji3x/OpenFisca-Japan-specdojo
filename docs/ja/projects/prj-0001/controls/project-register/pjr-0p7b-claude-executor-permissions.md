@@ -10,7 +10,9 @@ specdojo:
   item_status: open
   priority: medium
   difficulty: medium
+  owner: ARC
   registered_at: "2026-11-14T23:51:45Z"
+  due_on: "2026-11-30"
   derived_from:
     - PJR-N0FE
   commit_type: chore
