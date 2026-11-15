@@ -99,6 +99,12 @@ calculate/calculate.ts は困りごとの答えから結果に出す制度を決
   - `refreshes programs when only the frontend calculation changes` を、この正しい期待値による `it.fails` とした。アプリ本体は修正していない。静的確認に基づく再現テストであり、サンドボックスではBrowser Modeが起動しなかったため、orchestratorが統合後の `test:ui` で再現を確認し、別項目として起票する。
 - 区切り3の更新後にも、追加したテストを期待値を変えずに実行する。区切り6のPR前に `viewpoints.yaml` の規則かタグで分類する。今回タグは追加していない。
 
+### orchestrator の確認（2026-11-15、specdojo-orchestrator）
+
+- `feature/frontend-ui-tests`（`d11b0fb`）で、`npm run test`（964 件。`calculate.test.tsx` の 27 件が増えた）・`lint`・`pretty:check`・`build` と E2E（5 件を 2 回）が通った。`test:ui` は 3 回とも 108 件が通り、`it.fails` の 5 件が期待どおりに失敗した（113 件）。
+- **テストが不具合を見つけるかを確かめた**: 一時的な worktree の中で `src/components/calculate/calculate.ts` の「仕事について」で雇用保険（失業手当）を `true` にする行を `false` にすると、`calculate.test.tsx` の 4 件が失敗した。元に戻した。
+- **`it.fails` の「refreshes programs when only the frontend calculation changes」について**: `applicable.tsx` の該当の `useEffect` には、元の作者のコメント「NOTE: frontendHouseholdResultを指定するとuseEffectが無限ループするためresultのみ指定」があり、依存を `result` だけにしたのは意図した選択である。一時的に依存に `frontendHouseholdResult` を足すと、テストの中では無限ループにならず、この `it.fails` は「失敗しなくなった」と知らせ、ほかの 12 件は通った。実際のアプリでは `frontendHouseholdResult` は Recoil の状態（`result.tsx` の `frontendHousehold`）から渡され、共有 URL から開いたときは状態をあとから入れ直している（`result.tsx` の 109 行目）。フロントエンドの結果だけが変わる場面が実際に起き、一覧が古いまま残るのかは、ここまでの確かめでは決めきれない（PJR-NPC4 の古い形式の共有 URL の story では、フロントエンドの制度も正しく表示された）。扱いは naoji の判断を待つ。
+
 ## 6. 関連ドキュメント
 
 - 由来: [[prj-0001:pjr-ms7f-frontend-test-coverage|PJR-MS7F]]（網羅率の計測。この 2 つは「4.4. テストを追加する項目の案」から漏れていた）
