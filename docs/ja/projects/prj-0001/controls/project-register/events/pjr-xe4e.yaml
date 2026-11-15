@@ -1,0 +1,43 @@
+# yaml-language-server: $schema=../../../../../../specdojo/schemas/v1/register-events.schema.yaml
+- v: 1
+  id: reg_86fc9faea59947248fc63a89b80e42a2
+  ts: "2026-11-15T01:56:39Z"
+  action: add
+  actor: specdojo-orchestrator
+  from_status: null
+  to_status: open
+  reason: naoji の判断で、大きな更新の前にテストを足す項目を起票する
+  changes:
+    - field: status
+      from: ""
+      to: open
+    - field: title
+      from: ""
+      to: Recoil に依存しない、画面の操作だけで流れを確かめるテストを足す
+    - field: description
+      from: ""
+      to: 今のテストの多くは準備で RecoilRoot に状態を直接入れており、状態管理の置き換えでテストも書き換えることになる。準備で状態に触れず、画面の操作だけで、答える・結果・戻って答え直す・共有 URL で開き直す流れを確かめるテストを足す。
+    - field: type
+      from: ""
+      to: todo
+    - field: priority
+      from: ""
+      to: medium
+    - field: difficulty
+      from: ""
+      to: medium
+    - field: owner
+      from: ""
+      to: DEV
+    - field: registered
+      from: ""
+      to: "2026-11-15"
+    - field: due
+      from: ""
+      to: "2026-11-30"
+    - field: derived_from
+      from: ""
+      to: '["PJR-1EB8"]'
+    - field: commit_type
+      from: ""
+      to: test
