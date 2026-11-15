@@ -60,3 +60,16 @@
       from: '["PJR-0HYV"]'
       to: '["PJR-XE4E"]'
   previous_event_id: reg_c9de944b24c146e188f4476397f812c7
+- v: 1
+  id: reg_4adc2b40dede4026aa3ea2a6b6bac0d3
+  ts: "2026-11-15T01:57:15Z"
+  action: update
+  actor: specdojo-orchestrator
+  from_status: open
+  to_status: open
+  reason: 直前の更新で、もともとの先行の PJR-0HYV を消してしまったため、PJR-XE4E と並べて指定し直す
+  changes:
+    - field: depends_on
+      from: '["PJR-XE4E"]'
+      to: '["PJR-0HYV","PJR-XE4E"]'
+  previous_event_id: reg_575bac0fc6f94053a70392a9487702ea

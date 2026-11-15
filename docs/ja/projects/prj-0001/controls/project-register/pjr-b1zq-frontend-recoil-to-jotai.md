@@ -16,6 +16,7 @@ specdojo:
   derived_from:
     - PJR-0HYV
   depends_on:
+    - PJR-0HYV
     - PJR-XE4E
 ---
 
