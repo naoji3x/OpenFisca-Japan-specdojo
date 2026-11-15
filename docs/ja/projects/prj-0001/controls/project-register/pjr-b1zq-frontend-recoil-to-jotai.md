@@ -24,27 +24,32 @@ specdojo:
 
 ## 1. 概要
 
-Recoil は React 19 で動かない。使っているのは単純な atom と useRecoilState・useRecoilValue だけなので、Jotai などの依存を足さず、React 標準の useSyncExternalStore で値ごとに描き直しを絞れる小さな入れ物を作って置き換える。
+Recoil 0.7.7 は 2024-02 を最後に更新がなく、React 19 で消えた内部の仕組み（`ReactCurrentDispatcher`）を使うため、React 19 では動かない（[[prj-0001:pjr-0hyv-frontend-react-upgrade|PJR-0HYV]] の調査）。React 19 に上げる前に、状態管理を置き換える。naoji の判断（2026-10-31）。
+
+置き換えの方式は、naoji の判断（2026-11-15）で、当初の Jotai から、React 標準の `useSyncExternalStore` による小さな入れ物に変えた。アプリが使っているのは、単純な `atom`（`state.ts` の 10 個）と `useRecoilState`・`useRecoilValue`・`RecoilRoot` だけで、`selector`・`atomFamily`・非同期・永続化・スナップショットなど Recoil ならではの機能を使っていないため、依存を足さずに置き換えられる。Context と `useState` で置き換える案は、値が変わると読むすべての部品が描き直されるため採らない。
 
 ## 2. 完了条件
 
-- 着手の時点で Jotai の版と React 18・19 への対応を公式の情報で確かめ、採る版を「4. 対応結果」に記録する（2026-10-31 時点の最新は 3.0.1、React 18 以上）。
-- `openfisca-japan:dashboard/src` の Recoil の利用（2026-10-31 時点で 25 ファイル、`atom` 11 個、`useRecoilState` 37 か所・`useRecoilValue` 28 か所・`RecoilRoot` 6 か所。selector は使っていない）を Jotai に置き換え、`recoil` を依存から外す。
-- 状態の永続化や初期値など、今の挙動を変えない。テストの描画のヘルパーと story の Provider も置き換え、各テストの間で状態が漏れない。
-- 依存の宣言とロックファイルが一致する（クリーンな環境での `npm ci` の成功は、統合のあとに orchestrator が確かめる）。`npm run test`・`test:ui`・`build`・`lint`・`pretty:check`・`test:e2e` が通る。サンドボックスで流せない検査は `requires_human` としてよく、統合のあとに orchestrator が流す。
-- `npm ci` は worktree を作るときに runner が流すため、executor は流さない（executor はネットワークに出られない）。依存の更新は、流す前に orchestrator が入れる。
-- 保護された設定（`package.json`、`.github/workflows/**` など）の変更が必要な場合、executor は変更案を「4. 対応結果」に書き、pipeline では報告の `handoff` にも書く。変更案は未完了の理由にしない。反映は利用者の承認のもとで行う。
+- `dashboard/src` に、React 標準の `useSyncExternalStore` を使う小さな入れ物を作る。値ごとに購読し、値が変わったときは、その値を読む部品だけが描き直される。呼び出し側の書き方は、Recoil の `useRecoilState`・`useRecoilValue` とほぼ同じ形（例: `useAtomState(householdAtom)`・`useAtomValue(householdAtom)`、更新関数は値か「前の値を受け取る関数」を受け付ける）にし、22 ファイルの書き換えを機械的で小さくする。入れ物の置き場所と名前は executor が決め、理由を「4. 対応結果」に書く。
+- 入れ物そのものに単体テストを置く（初期値、値の更新、関数での更新、購読と解除、値ごとに描き直しが絞られること、テストごとに状態を初期に戻せること）。
+- `openfisca-japan:dashboard/src` の Recoil の利用（2026-10-31 時点で 25 ファイル、`atom` 11 個、`useRecoilState` 37 か所・`useRecoilValue` 28 か所・`RecoilRoot` 6 か所。テストの補助を含む）を置き換え、`recoil` を依存から外す。`SetterOrUpdater` などの Recoil の型の利用も置き換える。
+- アプリ全体で 1 つの入れ物を共有する今の挙動（初期値、画面の移動のあとも値が残ること）を変えない。テストの描画の補助と story の Provider も置き換え、各テストの間で状態が漏れない。
+- 置き換えのとき、XState の状態の機械と重なっている値（`questionKeyAtom`・`questionKeyHistoryAtom` など）があるかを確かめ、要らない値を見つけた場合は消さずに「4. 対応結果」に書く（消すかは別に決める）。
+- [[prj-0001:pjr-xe4e-frontend-state-flow-blackbox-tests|PJR-XE4E]] で足した、状態に触れずに画面の操作だけで流れを確かめるテストが、**期待値を変えずに**通る。ほかのテストで、準備のために状態を直接入れているものは、新しい入れ物に合わせて書き換えてよい（書き換えたテストと理由を書く）。
+- `npm run test`・`test:ui`・`build`・`lint`・`pretty:check`・`test:e2e` が通る。見た目の期待値との比較（`bash e2e/visual/docker.sh compare`）も通る。サンドボックスで流せない検査は `requires_human` としてよく、統合のあとに orchestrator が流す。
+- 依存の削除（`dashboard/package.json` の `recoil`）は保護された設定の変更になるので、executor は変更案を「4. 対応結果」と報告の `handoff` に書く。反映は統合のあとに orchestrator が naoji の承認のもとで行う。依存は足さない。
 - 上流の文書・コード・コメントに、登録簿の ID やリンクを書かない。Git の設定と commit には触れない。
 
 ## 3. 作業内容
 
-前提: [[prj-0001:pjr-0hyv-frontend-react-upgrade|PJR-0HYV]] が完了していることを確かめてから着手する。
+前提: [[prj-0001:pjr-0hyv-frontend-react-upgrade|PJR-0HYV]] と [[prj-0001:pjr-xe4e-frontend-state-flow-blackbox-tests|PJR-XE4E]] が完了していることを確かめてから着手する。
 
-| No  | 作業                               | 担当                  | 状態 | メモ                                |
-| --- | ---------------------------------- | --------------------- | ---- | ----------------------------------- |
-| 1   | Jotai の版を確かめ、依存を入れる   | specdojo-orchestrator | open | executor はネットワークに出られない |
-| 2   | Recoil の利用を Jotai に置き換える | DEV                   | open | -                                   |
-| 3   | すべての検査を流す                 | DEV                   | open | -                                   |
+| No  | 作業                                 | 担当 | 状態 | メモ                                            |
+| --- | ------------------------------------ | ---- | ---- | ----------------------------------------------- |
+| 1   | 小さな入れ物と、その単体テストを作る | DEV  | open | -                                               |
+| 2   | Recoil の利用を置き換える            | DEV  | open | -                                               |
+| 3   | `recoil` を依存から外す変更案を書く  | DEV  | open | 反映は orchestrator が naoji の承認のもとで行う |
+| 4   | すべての検査と見た目の比較を流す     | DEV  | open | -                                               |
 
 ## 4. 対応結果
 
@@ -54,3 +59,4 @@ Recoil は React 19 で動かない。使っているのは単純な atom と us
 
 - 由来: [[prj-0001:pjr-0hyv-frontend-react-upgrade|PJR-0HYV]]
 - 後続の項目: [[prj-0001:pjr-6b0q-frontend-react19-upgrade|PJR-6B0Q]]
+- 先に行う項目: [[prj-0001:pjr-xe4e-frontend-state-flow-blackbox-tests|PJR-XE4E]]（状態に触れずに流れを確かめるテスト）
