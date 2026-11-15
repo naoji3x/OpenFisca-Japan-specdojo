@@ -7,7 +7,7 @@ specdojo:
   part_of:
     - prj-0001:pjr-index
   item_type: todo
-  item_status: open
+  item_status: review
   priority: high
   difficulty: medium
   owner: DEV
@@ -66,16 +66,38 @@ calculate/calculate.ts は困りごとの答えから結果に出す制度を決
 
 ## 4. 作業内容
 
-| No  | 作業                                                     | 担当 | 状態 | メモ |
-| --- | -------------------------------------------------------- | ---- | ---- | ---- |
-| 1   | `calculate.ts` の分岐と期待する制度を洗い出す            | DEV  | open | -    |
-| 2   | unit のテストを足す                                      | DEV  | open | -    |
-| 3   | `applicable.tsx` の story か Browser Mode のテストを足す | DEV  | open | -    |
-| 4   | 網羅率を測り直して記録する                               | DEV  | open | -    |
+| No  | 作業                                                     | 担当 | 状態     | メモ                                                                   |
+| --- | -------------------------------------------------------- | ---- | -------- | ---------------------------------------------------------------------- |
+| 1   | `calculate.ts` の分岐と期待する制度を洗い出す            | DEV  | done     | 困りごと8項目、全国・埼玉県・富士見市の制度を整理                      |
+| 2   | unit のテストを足す                                      | DEV  | done     | jsdom・実際のRecoil状態による27件を追加                                |
+| 3   | `applicable.tsx` の story か Browser Mode のテストを足す | DEV  | done     | ChromiumのBrowser Modeに13件を追加。実行確認は統合後に必要             |
+| 4   | 網羅率を測り直して記録する                               | DEV  | deferred | 区切り2.5では計測しない。区切り5のPR後にorchestratorが計測して追記する |
 
 ## 5. 対応結果
 
--
+該当制度の計算と表示について、次のテストを追加した。
+
+- `openfisca-japan:dashboard/src/components/calculate/calculate.test.tsx` にunitテスト27件を追加した。既存のRecoil atomの初期値を複製し、実際の `RecoilRoot` とjsdomで計算する。困りごとの8項目それぞれについて、東京都千代田区・埼玉県さいたま市・埼玉県富士見市の3地域で、対象制度だけが `true`、ほかの全制度が `false` となることを確認する。各ケースは全制度が `true` の前回結果から始め、リセットも検証する。さらに未選択時、妊娠と子育ての複数選択と共通制度、仕事への回答変更から全解除への再計算、Recoilの日付変更に伴う地域制度の追加と削除を確認する。
+- `openfisca-japan:dashboard/src/components/result/applicable.browser.test.tsx` にBrowser Modeのテスト13件（うち既知の不具合を示す `it.fails` が1件）を追加した。実際のChakra UI・Recoil・窓口コンポーネントを描画する。仕事の回答から実際に計算した6制度の表示、説明文・詳細リンク・ハローワーク窓口、窓口の設定がない制度、バックエンドとフロントエンドの結果の統合・重複排除・偽値と未登録制度の除外、結果なしの非表示、新しい計算結果への置換を検証する。
+- 窓口の条件は、特定疾病療養でHIV情報なし・陰性・本人陽性・配偶者陽性の4ケース、私立学校の父母負担軽減で埼玉県内外の2ケースを追加した。私立学校のテストでは、保存された世帯情報の住所を窓口データのある富士見市に固定し、結果の都道府県だけを変える。窓口コンポーネント自身の住所フィルターで、`Applicable` の条件漏れが隠れないようにしている。
+- 要素は表示される文字とrole・名前で探し、描画後に現れる一覧・説明文・リンクは `expect.poll` または `expect.element` で待つ。Chakra UIのclass名や内部DOM構造は使用していない。制度の期待値は、困りごとに関連する制度の名前・説明と、前回結果をリセットするコメント、県・市の制度名から候補一覧として明記した。受給資格そのものを判定するテストではない。
+
+### 検証結果（2026-11-14 UTCに実行）
+
+- `dashboard` で `npm run test` が成功した（7ファイル、964件。追加したunit27件を含む）。
+- `dashboard` で `npm run build`・`npm run lint`・`npm run pretty:check` が成功した。buildには既存の大きなbundleに関する警告が出るが、終了コードは0。
+- 個票にPrettierとmarkdownlintを実行し、成功した。登録簿の検証は `node node_modules/specdojo/dist/specdojo.js register build --project prj-0001 --dry-run` で成功した。生成結果は書き込んでいない。設定に `catalog_path` がないためcatalog検証は非適用。
+- `dashboard` で `npm run test:ui` を実行したが、Storybookを読み込む際に `uv_interface_addresses returned Unknown system error 1` となり、テスト開始前に停止した。サンドボックスのネットワーク情報取得制限によるため `requires_human` とする。orchestratorは統合後に同コマンドを実行し、追加したBrowser Mode13件と既存のstory・Browser Modeを確認する。今回Browser Modeの成功は確認できていない。
+- 対象ファイルの網羅率は、区切り2.5の合意どおり今回の前後計測を省略した。`@vitest/coverage-v8` は追加していない。入力にある2026-11-03の数値は別の依存・ブランチ上の参考値であり、今回の前値として扱わない。区切り5のPR後にorchestratorがunitとUIの網羅率を測り、この節に追記する。
+- 依存、アプリ本体、保護された設定、登録簿一覧、個票のステータスは変更していない。resultへの記入は後続のreporter・runnerが行う。
+
+### 発見した不具合と申し送り
+
+- `Applicable` は `frontendHouseholdResult` も表示入力として受け取るが、一覧を更新する `useEffect` の依存が `result` だけのため、フロントエンドの結果だけが変わっても表示が更新されない。
+  - 再現手順: 同一のバックエンド結果オブジェクトで、フロントエンドの制度に「雇用保険（失業手当）」を指定して描画する。そのあとバックエンド結果は同一のまま、フロントエンドの制度だけを「給付型奨学金」に差し替えて再描画する。
+  - 期待: 「給付型奨学金」が表示され、「雇用保険（失業手当）」は消える。実装では効果が再実行されず、前の一覧が残る。
+  - `refreshes programs when only the frontend calculation changes` を、この正しい期待値による `it.fails` とした。アプリ本体は修正していない。静的確認に基づく再現テストであり、サンドボックスではBrowser Modeが起動しなかったため、orchestratorが統合後の `test:ui` で再現を確認し、別項目として起票する。
+- 区切り3の更新後にも、追加したテストを期待値を変えずに実行する。区切り6のPR前に `viewpoints.yaml` の規則かタグで分類する。今回タグは追加していない。
 
 ## 6. 関連ドキュメント
 
