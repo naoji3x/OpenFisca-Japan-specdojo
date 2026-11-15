@@ -71,7 +71,7 @@ openfisca-japan-workspace/
 | ---------------------------------------------------------------------------------------------- | -------------------------------------- | ------------- | ---------------------------------------- |
 | 1. テストの基盤がそろったとき（PJR-1RJE の close の後）                                        | PJR-49V3・BZGG・1RJE                   | `d3475d0`     | `feature/frontend-test-foundation`       |
 | 2. ビルドの道具を上げ、Storybook を入れたとき（PJR-DFWV の close の後）                        | PJR-PP9D・DFWV                         | `218046f`     | `feature/frontend-vite8-storybook`       |
-| 2.5. 区切り 3 の前に画面のテストを足したとき（6 件の close の後）                              | PJR-8307・NPC4・N0FE・R4TH・0P60・7KAY | （準備中）    | `feature/frontend-ui-tests`              |
+| 2.5. 区切り 3 の前に画面のテストを足したとき（6 件の close の後）                              | PJR-8307・NPC4・N0FE・R4TH・0P60・7KAY | `7fe44ae`     | `feature/frontend-ui-tests`              |
 | 3. 依存の更新が終わったとき（PJR-BSXA の close の後）                                          | PJR-2CSW・0HYV・BSXA                   | `378eb36`     | `feature/frontend-react-chakra-upgrade`  |
 | 4. a11y と人数の入力の不具合を直したとき（PJR-14RN の close の後）                             | PJR-4SM2・14RN                         | `0134bda`     | `feature/frontend-a11y-person-num`       |
 | 5. E2E を 3 つのブラウザーで流し、網羅率を測れるようにしたとき（PJR-1WNM・MS7F の close の後） | PJR-1WNM・MS7F                         | `7d4d632`     | `feature/frontend-e2e-browsers-coverage` |
