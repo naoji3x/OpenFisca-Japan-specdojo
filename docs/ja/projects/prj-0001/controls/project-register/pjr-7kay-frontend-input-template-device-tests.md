@@ -66,15 +66,49 @@ specdojo:
 
 ## 4. 作業内容
 
-| No  | 作業                                                               | 担当 | 状態 | メモ |
-| --- | ------------------------------------------------------------------ | ---- | ---- | ---- |
-| 1   | story・Browser Mode の網羅率を測り、まだ通っていない分岐を洗い出す | DEV  | open | -    |
-| 2   | jsdom と Browser Mode のテストを足す                               | DEV  | open | -    |
-| 3   | 網羅率を測り直して記録する                                         | DEV  | open | -    |
+| No  | 作業                                                       | 担当 | 状態     | メモ                                                                   |
+| --- | ---------------------------------------------------------- | ---- | -------- | ---------------------------------------------------------------------- |
+| 1   | story・Browser Mode の網羅率を測り、未検証の分岐を洗い出す | DEV  | deferred | 区切り 2.5 の前提に従い計測は区切り 5 後へ延期。実装と既存テストを照合 |
+| 2   | jsdom と Browser Mode のテストを足す                       | DEV  | done     | jsdom 121 件（うち期待失敗 3 件）、Browser Mode 6 件を追加             |
+| 3   | 網羅率を測り直して記録する                                 | DEV  | deferred | 計測依存を追加せず、orchestrator の計測へ申し送り                      |
 
 ## 5. 対応結果
 
--
+### 5.1. 変更内容（2026-11-15）
+
+- `openfisca-japan:dashboard/src/components/questions/template/questionTemplates.device.test.tsx` を追加。実際の UA 文字列を既存の `react-device-detect` のパーサーに渡し、その結果でテンプレートが参照する端末フラグだけを切り替える。React・Recoil・Chakra UI は実物で描画し、表示値・回答の通知・有効性を確認する。
+  - Windows の Chrome・Edge・Chromium と macOS の Safari で、既存回答がある場合と未回答の場合の両方について、変換中の `InputEvent` では値を進めず、変換確定後に数値の回答を 1 回反映することを確認。子どもの学年欄についても、変換中は学年と派生する年齢を保つことを確認する。
+  - Windows Firefox と macOS Chrome では抑止対象外の入力を確認。通常の change イベント（`InputEvent` 以外）も受け付けることを確認する。
+  - iPhone Safari・Android Chrome とデスクトップの UA で、4 テンプレートと子どもの学年欄の `type`、`pattern`、`inputmode` を確認。現在のスマートフォン用の属性は `type="number"` と `pattern="[0-9]*"` で、`inputmode` の指定はない。
+  - 未回答は無効、初期値 0 と 2 は有効、描画だけでは回答を通知しないことを確認。年齢・金額・子どもの年齢は、初期値をクリアすると無効になり、0 を入力すると再び有効になる。人数の「いいえ」から「はい」への切り替えも確認する。
+- `openfisca-japan:dashboard/src/components/questions/template/questionTemplates.input.browser.test.tsx` を追加。初期値の復元、実際のフォーカス、矢印キー、Backspace によるクリアと 0 の再入力、Tab による移動、学年入力から年齢への変換、金額欄での Enter の送信抑止、人数の「はい」でのフォーカスを 6 件で確認する。描画後の値と状態は `expect.poll` で待つ。
+- `openfisca-japan:dashboard/src/components/questions/template/questionTemplates.stories.tsx` の人数 story から、クリア直後も有効であるという誤った期待値を削除。既存の「はい」を再選択すると無効になる確認は維持し、即時の有効性は正しい期待値の `it.fails` へ移した。
+- 要素は role・ラベル・表示文字と既存の状態観測用 output で特定する。Chakra UI 内部の class や DOM 構造を参照するテストは追加していない。アプリ実装・依存・保護された設定は変更していない。
+
+### 5.2. 検証結果
+
+- `openfisca-japan:dashboard` で `npm run test`: 8 ファイル、1,082 件成功、3 件期待失敗（合計 1,085 件）。追加した jsdom の 121 件のうち 118 件成功、3 件期待失敗。
+- 同ディレクトリで `npm run build`、`npm run lint`、`npm run pretty:check`: 成功。build のチャンクサイズ警告は残るが、型検査と production build は成功した。
+- 同ディレクトリで `npm run test:ui`: `requires_human`。Storybook の設定読み込み時に `os.networkInterfaces()` が `uv_interface_addresses` のシステムエラー（errno 1）で失敗した。ブラウザー起動前のサンドボックス制約であり、追加 6 件を含む Browser Mode と story の実行結果は未確認。統合後に orchestrator が同コマンドを実行する。
+- 個票の Markdown はプロジェクト側の Prettier と markdownlint で整形・検査し、成功した。`npx specdojo register build --project prj-0001 --dry-run` も成功。登録簿の一覧を書き換えない条件に従い、生成検査は dry-run で行った。個票のステータス項目と result は編集していない。
+
+### 5.3. 発見した不具合と再現手順
+
+人数入力の有効性が、入力欄の有効性だけが変わったときに追従しない。`PersonNumQuestionTemplate` の有効性更新 effect が `formValidated` の変更を参照していないことが原因と考えられる。アプリの修正は行わず、次の 3 パターンを正しい期待値で jsdom の `it.fails` にした。
+
+1. 初期値 2 人で描画し、人数欄を空にする。表示は空、通知する回答は 0 だが、有効性が true のまま残る。期待する動きは、空にした時点で無効になること。
+2. 初期値 2 人で描画し、人数欄を空にして「はい」を押すと無効になる。そのまま 3 人を入力すると、表示と回答は 3 になるが無効のまま残る。期待する動きは、正の人数を入力した時点で有効になること。
+3. 未回答で描画し、「はい」を押してから 2 人を入力する。表示と回答は 2 になるが無効のまま残る。期待する動きは、入力した時点で有効になること。
+
+orchestrator はこの有効性更新の不具合を別項目として起票し、修正後に 3 件の `it.fails` を通常テストへ変更する。
+
+### 5.4. 計測・対象外の分岐・申し送り
+
+- 計測前後の網羅率はこの run では未計測。年齢 41.46%、金額 39.47%、子どもの年齢 56.62%、人数 63.04% は、入力に記載された過去の Branches 値であり、今回の土台での実測値ではない。区切り 2.5 の前提に従い `@vitest/coverage-v8` を追加せず、区切り 5 の PR 後に orchestrator が対象 4 ファイルの unit・story・Browser Mode の網羅率を計測して、この個票へ追記する。比較用の追加前の計測では、今回追加したテストを除いた同じ条件を使う。
+- スマートフォンの number 入力に全角文字列を直接置く条件は、ブラウザーがその値を保持しないため作らない。スマートフォンは UA による属性の分岐を確認し、全角 IME のイベント列はデスクトップの text 入力で確認する。jsdom による UA 切り替えは OS の実 IME やソフトウェアキーボード自体の再現ではない。
+- 数字以外を除去した後の入力から負数を作る経路、許容範囲外の初期値、同時に複数のブラウザーを示す不整合な端末フラグなどは、分岐を通す目的で作らない。既存テストの境界値・学年の暦計算も重複して増やさない。
+- Browser Mode は既存設定の Chromium を使う。Safari・Windows の実 OS でのネイティブ IME 操作や実機キーボードの表示は自動テストの保証範囲に含めていない。
+- 統合後に orchestrator が `npm run test:ui` を実行し、追加テストと変更した story の成功を確認する。区切り 3 の依存更新後も同じ期待値で再実行する。区切り 6 の PR 前には、今回のテストを `viewpoints.yaml` の規則またはタグで分類する。保護された設定の変更案はない。
 
 ## 6. 関連ドキュメント
 
