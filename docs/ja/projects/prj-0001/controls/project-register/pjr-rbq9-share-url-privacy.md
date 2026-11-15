@@ -10,7 +10,9 @@ specdojo:
   item_status: open
   priority: medium
   difficulty: medium
+  owner: DEV
   registered_at: "2026-11-15T05:48:46Z"
+  due_on: "2026-11-30"
   derived_from:
     - PJR-NPC4
   commit_type: fix
