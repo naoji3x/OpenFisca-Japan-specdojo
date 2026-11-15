@@ -16,14 +16,14 @@ specdojo:
   derived_from:
     - PJR-0HYV
   depends_on:
-    - PJR-0HYV
+    - PJR-XE4E
 ---
 
-# PJR-B1ZQ 状態管理を Recoil から Jotai に置き換える
+# PJR-B1ZQ 状態管理を Recoil から React 標準の useSyncExternalStore による小さな入れ物に置き換える
 
 ## 1. 概要
 
-Recoil 0.7.7 は 2024-02 を最後に更新がなく、React 19 で消えた内部の仕組み（`ReactCurrentDispatcher`）を使うため、React 19 では動かない（[[prj-0001:pjr-0hyv-frontend-react-upgrade|PJR-0HYV]] の調査）。React 19 に上げる前に、状態管理を Jotai に置き換える。naoji の判断（2026-10-31）。
+Recoil は React 19 で動かない。使っているのは単純な atom と useRecoilState・useRecoilValue だけなので、Jotai などの依存を足さず、React 標準の useSyncExternalStore で値ごとに描き直しを絞れる小さな入れ物を作って置き換える。
 
 ## 2. 完了条件
 
