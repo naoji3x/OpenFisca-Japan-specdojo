@@ -2,17 +2,19 @@
 specdojo:
   id: prj-0001:pjr-r4th-frontend-applicable-tests
   type: project
-  status: draft
+  status: ready
   rulebook: specdojo:pjr-rulebook
   part_of:
     - prj-0001:pjr-index
   item_type: todo
-  item_status: review
+  item_status: done
   priority: high
   difficulty: medium
   owner: DEV
   registered_at: "2026-11-03T05:16:53Z"
   due_on: "2026-11-30"
+  completed_at: "2026-11-15T00:36:06Z"
+  conclusion: calculate.ts の制度の判定を unit 27 件で、applicable.tsx の表示と窓口の出し分けを Browser Mode 13 件で確かめるテストを足した（区切り 2.5）。一覧の更新の it.fails の扱いは PJR-93NG で調べる
   derived_from:
     - PJR-MS7F
   commit_type: test

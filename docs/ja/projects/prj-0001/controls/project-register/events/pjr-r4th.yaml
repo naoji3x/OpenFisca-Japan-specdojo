@@ -67,3 +67,22 @@
       from: in-progress
       to: review
   previous_event_id: reg_60ffe7d4bd0c47b998d3afe7c540bb07
+- v: 1
+  id: reg_703ee365684042a2b0e9d9cf9fdd54d5
+  ts: "2026-11-15T00:36:06Z"
+  action: close
+  actor: specdojo-orchestrator
+  from_status: review
+  to_status: done
+  reason: orchestrator が統合のあとに test:ui を 3 回流し、判定を壊すとテストが失敗することを確かめた
+  changes:
+    - field: status
+      from: review
+      to: done
+    - field: completed
+      from: "-"
+      to: "2026-11-15"
+    - field: conclusion
+      from: "-"
+      to: calculate.ts の制度の判定を unit 27 件で、applicable.tsx の表示と窓口の出し分けを Browser Mode 13 件で確かめるテストを足した（区切り 2.5）。一覧の更新の it.fails の扱いは PJR-93NG で調べる
+  previous_event_id: reg_0427e632eabc470b98073c7a8beb03ce
